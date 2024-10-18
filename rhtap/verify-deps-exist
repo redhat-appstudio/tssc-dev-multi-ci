@@ -20,7 +20,7 @@ function binary_check ()
 function env_must_be_defined ()
 {
   env_var="$1"
-  if [ -z "${!env_var}" ]; then
+  if [ "${!env_var+defined}" != defined ]; then
     echo "Error: $env_var missing definition."
     ANY_ERRORS=true
   else
