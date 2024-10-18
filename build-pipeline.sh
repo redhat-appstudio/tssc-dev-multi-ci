@@ -39,8 +39,8 @@ sed -i "s!\${{ values.buildContext }}!.!g" $SETUP_ENV
 sed -i "s!\${{ values.repoURL }}!$OPTIONAL_REPO_UPDATE!g" $SETUP_ENV
 
 # Set MY_REKOR_HOST and MY_TUF_MIRROR to 'none' if these services are not available
-sed -i 's!export REKOR_HOST=.*$!export REKOR_HOST="\${MY_REKOR_HOST:-http://rekor-server.rhtap.svc}"!' $SETUP_ENV
-sed -i 's!export TUF_MIRROR=.*$!export TUF_MIRROR="\${MY_TUF_MIRROR:-http://tuf.rhtap.svc}"!' $SETUP_ENV
+sed -i 's!export REKOR_HOST=.*$!export REKOR_HOST="\${MY_REKOR_HOST:-http://rekor-server.rhtap-tas.svc}"!' $SETUP_ENV
+sed -i 's!export TUF_MIRROR=.*$!export TUF_MIRROR="\${MY_TUF_MIRROR:-http://tuf.rhtap-tas.svc}"!' $SETUP_ENV
 
 source $SETUP_ENV
 

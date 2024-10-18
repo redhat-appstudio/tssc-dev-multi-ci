@@ -21,7 +21,12 @@ export DISABLE_ACS=false
 # Optionally set ROX_CENTRAL_ENDPOINT here instead of configuring a Jenkins secret
 # export ROX_CENTRAL_ENDPOINT=central-acs.apps.user.cluster.domain.com:443
 export INSECURE_SKIP_TLS_VERIFY=true
-export GITOPS_REPO_URL=
+
+# for gitops, if acs scans are set, we still may not want that repo 
+# to be updates so include an option to disable
+
+export DISABLE_GITOPS_UPDATE="${DISABLE_GITOPS_UPDATE:-true}"
+export GITOPS_REPO_URL=""
 
 export PARAM_IMAGE=$IMAGE
 export PARAM_IMAGE_DIGEST=$(cat "$BASE_RESULTS/buildah-rhtap/IMAGE_DIGEST" 2>/dev/null || echo "latest")
@@ -35,10 +40,10 @@ export TARGET_BRANCH=""
 # enterprise contract
 export POLICY_CONFIGURATION="github.com/enterprise-contract/config//rhtap-jenkins"
 #internal, assumes jenkins is local openshift
-export REKOR_HOST="${MY_REKOR_HOST:-http://rekor-server.rhtap.svc}"
+export REKOR_HOST="${MY_REKOR_HOST:-http://rekor-server.rhtap-tas.svc}"
 export IGNORE_REKOR=false
 export INFO=true
 export STRICT=true
 export EFFECTIVE_TIME=now
 export HOMEDIR=$(pwd)
-export TUF_MIRROR="${MY_TUF_MIRROR:-http://tuf.rhtap.svc}"
+export TUF_MIRROR="${MY_TUF_MIRROR:-http://tuf.rhtap-tas.svc}"
