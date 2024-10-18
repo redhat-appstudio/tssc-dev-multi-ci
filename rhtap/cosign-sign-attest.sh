@@ -25,7 +25,7 @@ function image-registry() {
 # Cosign can use the same credentials as buildah
 function cosign-login() {
   local image_registry="$(image-registry)"
-  cosign login -u "$QUAY_IO_CREDS_USR" -p "$QUAY_IO_CREDS_PSW" "$image_registry"
+  cosign login --username="$QUAY_IO_CREDS_USR" --password="$QUAY_IO_CREDS_PSW" "$image_registry"
 }
 
 # A wrapper for running cosign used for both sign and attest.
@@ -95,7 +95,9 @@ runDetails:
     startedOn: "$(cat $BASE_RESULTS/init/START_TIME)"
     # Inaccurate, but not sure what else to do here
     finishedOn: "$(timestamp)"
-  byproducts: {}
+  byproducts:
+    - name: SBOM_BLOB
+      uri: "$(cat "$BASE_RESULTS"/buildah-rhtap/SBOM_BLOB_URL)"
 EOT
 }
 

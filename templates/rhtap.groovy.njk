@@ -18,7 +18,7 @@ def run_script (scriptname) {
 
     if (scriptname == 'buildah-rhtap.sh') {
       // Called from buildah-rhtap.sh
-      install_script ('merge-sboms.sh')
+      install_script ('merge_sboms.py')
     }
 
     install_script (scriptname)

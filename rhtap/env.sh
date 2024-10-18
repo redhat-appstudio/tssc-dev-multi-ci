@@ -8,7 +8,6 @@ CI_TYPE=${CI_TYPE:-jenkins}
 TAG=$(git rev-parse HEAD)
 export IMAGE_URL=quay.io/${MY_QUAY_USER:-jduimovich0}/bootstrap:$CI_TYPE-$TAG
 export IMAGE=$IMAGE_URL
-export RESULT_PATH=$DIR/results/temp/files/sbom-url
 
 export DOCKERFILE=Dockerfile
 export CONTEXT=.

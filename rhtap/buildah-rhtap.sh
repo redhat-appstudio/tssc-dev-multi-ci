@@ -11,7 +11,7 @@ function build() {
 	echo "Running $TASK_NAME:build"
 	echo "Running Login"
 	IMAGE_REGISTRY="${IMAGE%%/*}"
-	buildah login -u $QUAY_IO_CREDS_USR -p $QUAY_IO_CREDS_PSW $IMAGE_REGISTRY
+	buildah login --username="$QUAY_IO_CREDS_USR" --password="$QUAY_IO_CREDS_PSW" $IMAGE_REGISTRY
 	ERR=$?
 	if [ $ERR != 0 ]; then
 		echo "Failed buildah login $IMAGE_REGISTRY for user $QUAY_IO_CREDS_USR "
@@ -70,7 +70,7 @@ function generate-sboms() {
 
 function upload-sbom() {
 	echo "Running $TASK_NAME:upload-sbom"
-	cosign login -u $QUAY_IO_CREDS_USR -p $QUAY_IO_CREDS_PSW $IMAGE_REGISTRY
+	cosign login --username="$QUAY_IO_CREDS_USR" --password="$QUAY_IO_CREDS_PSW" $IMAGE_REGISTRY
 	ERR=$?
 	if [ $ERR != 0 ]; then
 		echo "Failed cosign login $IMAGE_REGISTRY for user $QUAY_IO_CREDS_USR "
@@ -87,11 +87,11 @@ delim
 generate-sboms
 delim
 echo "RUNNING PYTHON "
-python3 $SCRIPTDIR/merge-sboms.sh
+RESULT_PATH="$RESULTS/SBOM_BLOB_URL" python3 $SCRIPTDIR/merge_sboms.py
 # check error from python
 ERR=$?
 if [ $ERR != 0 ]; then
-	echo "Failed in step merge-sboms.sh"
+	echo "Failed in step merge_sboms.py"
 	exit $ERR
 fi
 
