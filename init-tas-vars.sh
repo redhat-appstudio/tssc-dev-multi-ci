@@ -2,15 +2,15 @@
 
 RT=$(oc get routes -n rhtap-tas -o name | grep rekor-server)
 HOST=$(oc get -n rhtap-tas $RT -o jsonpath={.spec.host})
-export MY_REKOR_HOST=https://$HOST
+export REKOR_HOST=https://$HOST
 
 
 RT=$(oc get routes -n rhtap-tas -o name | grep tuf)
 HOST=$(oc get -n rhtap-tas $RT -o jsonpath={.spec.host})
-export MY_TUF_MIRROR=https://$HOST
+export TUF_MIRROR=https://$HOST
 
 
-echo "MY_REKOR_HOST set to $MY_REKOR_HOST"
-echo "MY_TUF_MIRROR set to $MY_TUF_MIRROR"
+echo "REKOR_HOST set to $REKOR_HOST"
+echo "TUF_MIRROR set to $TUF_MIRROR"
 
 
