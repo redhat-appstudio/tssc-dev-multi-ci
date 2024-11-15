@@ -1,4 +1,7 @@
 {%- include "do-not-edit.njk" -%}
+import groovy.json.*
+import java.time.*
+import java.time.format.*
 
 def info(message) {
     echo "INFO: ${message}"
@@ -43,3 +46,11 @@ def {{ substep | replace("-", "_") }}( ) {
 
 {% endfor -%}
 {%- endfor -%}
+
+def env() {
+    [
+        pipeline_path: currentBuild.rawBuild.parent.definition.scriptPath,
+        run_causes: JsonOutput.toJson(currentBuild.rawBuild.causes.collect { it.shortDescription }),
+        start_time: DateTimeFormatter.ISO_INSTANT.format(Instant.ofEpochMilli(currentBuild.rawBuild.startTimeInMillis)),
+    ]
+}

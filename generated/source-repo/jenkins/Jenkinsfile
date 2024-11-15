@@ -1,9 +1,5 @@
 /* Generated from templates/source-repo/Jenkinsfile.njk. Do not edit directly. */
 
-library identifier: 'RHTAP_Jenkins@main', retriever: modernSCM(
-  [$class: 'GitSCMSource',
-   remote: 'https://github.com/redhat-appstudio/tssc-sample-jenkins.git'])
-
 pipeline {
     agent any
     environment {
@@ -16,6 +12,9 @@ pipeline {
         COSIGN_SECRET_PASSWORD = credentials('COSIGN_SECRET_PASSWORD')
         COSIGN_SECRET_KEY = credentials('COSIGN_SECRET_KEY')
         COSIGN_PUBLIC_KEY = credentials('COSIGN_PUBLIC_KEY')
+        PIPELINE_PATH = "${rhtap.env().pipeline_path}"
+        RUN_CAUSES = "${rhtap.env().run_causes}"
+        START_TIME = "${rhtap.env().start_time}"
     }
     stages {
         stage('init') {

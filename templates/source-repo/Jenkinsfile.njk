@@ -1,13 +1,14 @@
 {%- include "do-not-edit.njk" -%}
 
-{%- include "jenkins-library-source.njk" -%}
-
 pipeline {
     agent any
     environment {
         {%- for secret in build_secrets -%}
         {%- include "jenkins-secret.njk" -%}
         {%- endfor %}
+        PIPELINE_PATH = "${rhtap.env().pipeline_path}"
+        RUN_CAUSES = "${rhtap.env().run_causes}"
+        START_TIME = "${rhtap.env().start_time}"
     }
     stages {
         {%- for step in build_steps %}

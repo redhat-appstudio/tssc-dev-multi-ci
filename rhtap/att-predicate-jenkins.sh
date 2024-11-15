@@ -11,8 +11,20 @@ yq -o=json -I=0 << EOT
 ---
 buildDefinition:
   buildType: "https://redhat.com/rhtap/slsa-build-types/${CI_TYPE}-build/v1"
-  externalParameters: {}
-  internalParameters: {}
+  externalParameters:
+    pipeline:
+      ref: "${GIT_COMMIT}"
+      repository: "${GIT_URL}"
+      path: "${PIPELINE_PATH}"
+  internalParameters:
+    jenkins:
+      run_causes: "${RUN_CAUSES}"
+      job_name: "${JOB_NAME}"
+      node_labels: "${NODE_LABELS}"
+      build_number: "${BUILD_NUMBER}"
+      executor_number: "${EXECUTOR_NUMBER}"
+      build_url: "${BUILD_URL}"
+      job_url: "${JOB_URL}"
   resolvedDependencies:
     - uri: "git+${GIT_URL}"
       digest:
@@ -21,19 +33,10 @@ buildDefinition:
 runDetails:
   builder:
     id: "${NODE_NAME}"
-    builderDependencies: []
-    version:
-      # Not sure if this is the right place for these...
-      buildNumber: "${BUILD_NUMBER}"
-      jobName: "${JOB_NAME}"
-      executorNumber: "${EXECUTOR_NUMBER}"
-      jenkinsHome: "${JENKINS_HOME}"
-      buildUrl: "${BUILD_URL}"
-      jobUrl: "${JOB_URL}"
 
   metadata:
     invocationID: "${BUILD_TAG}"
-    startedOn: "$(cat $BASE_RESULTS/init/START_TIME)"
+    startedOn: "${START_TIME}"
     # Inaccurate, but maybe close enough
     finishedOn: "$(timestamp)"
 

@@ -1,5 +1,9 @@
 /* Generated from templates/rhtap.groovy.njk. Do not edit directly. */
 
+import groovy.json.*
+import java.time.*
+import java.time.format.*
+
 def info(message) {
     echo "INFO: ${message}"
 }
@@ -85,4 +89,12 @@ def gather_images_to_upload_sbom( ) {
 
 def download_sbom_from_url_in_attestation( ) {
     run_script ('download-sbom-from-url-in-attestation.sh')
+}
+
+def env() {
+    [
+        pipeline_path: currentBuild.rawBuild.parent.definition.scriptPath,
+        run_causes: JsonOutput.toJson(currentBuild.rawBuild.causes.collect { it.shortDescription }),
+        start_time: DateTimeFormatter.ISO_INSTANT.format(Instant.ofEpochMilli(currentBuild.rawBuild.startTimeInMillis)),
+    ]
 }
