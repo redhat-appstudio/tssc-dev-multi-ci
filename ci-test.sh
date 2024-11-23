@@ -39,6 +39,9 @@ function updateBuild() {
     updateGitAndQuayRefs $SETUP_ENV
     cat $SETUP_ENV
 }
+
+# create latest image for dev github and gitlab
+make build-push-image
 # Repos on github and gitlab, github and jenkins
 # source repos are updated with the name of the corresponding GITOPS REPO for update-deployment
 updateBuild $BUILD $TEST_GITOPS_REPO
@@ -91,20 +94,22 @@ function updateRepos() {
 # github
 bash hack/ghub-set-vars $TEST_BUILD_REPO
 bash hack/ghub-set-vars $TEST_GITOPS_REPO
-updateRepos $BUILD
 updateRepos $GITOPS
+updateRepos $BUILD
 
 # gitlab
 bash hack/glab-set-vars $(basename $TEST_BUILD_GITLAB_REPO)
 bash hack/glab-set-vars $(basename $TEST_GITOPS_GITLAB_REPO)
-updateRepos $GITLAB_BUILD
 updateRepos $GITLAB_GITOPS
+updateRepos $GITLAB_BUILD
 
 # Jenkins
 # note, jenkins secrets are global so set once"
 bash hack/jenkins-set-secrets
-updateRepos $JENKINS_BUILD
 updateRepos $JENKINS_GITOPS
+updateRepos $JENKINS_BUILD
+bash hack/jenkins-run-pipeline $(basename $TEST_BUILD_JENKINS_REPO) 
+
 
 echo
 echo "Github Build and Gitops Repos"

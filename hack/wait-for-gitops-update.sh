@@ -31,9 +31,14 @@ function promoteIfUpdated() {
     echo "P: ${!PREV_IMAGE_ENV_NAME}"
     echo "C: $CURRENT_IMAGE"
 
+    DEFAULT_INIT_IMAGE="quay.io/redhat-appstudio/dance-bootstrap-app:latest"
     if [[ "${!PREV_IMAGE_ENV_NAME}" != "$CURRENT_IMAGE" ]]; then
-        echo "$REPO being updated from ${!PREV_IMAGE_ENV_NAME} to $CURRENT_IMAGE"
-        bash $SCRIPTDIR/rhtap-promote --repo $REPO
+        echo "$REPO dev changes, from ${!PREV_IMAGE_ENV_NAME} to $CURRENT_IMAGE" 
+        if [[ "$CURRENT_IMAGE" == "$DEFAULT_INIT_IMAGE" ]]; then
+            echo "Image changed back to default, skipping using PR to promote image"
+        else 
+            bash $SCRIPTDIR/rhtap-promote --repo $REPO
+        fi
         eval "$PREV_IMAGE_ENV_NAME"="$CURRENT_IMAGE"
     fi
 }
@@ -47,8 +52,16 @@ function pushIfUpdated() {
     echo "C: $CURRENT_IMAGE"
 
     if [[ "${!PREV_IMAGE_ENV_NAME}" != "$CURRENT_IMAGE" ]]; then
-        echo "$REPO  being updated from ${!PREV_IMAGE_ENV_NAME} to $CURRENT_IMAGE"
-        bash $SCRIPTDIR/rhtap-push-dev --repo $REPO
+        echo "$REPO dev changes, from ${!PREV_IMAGE_ENV_NAME} to $CURRENT_IMAGE" 
+        if [[ "$CURRENT_IMAGE" == "$DEFAULT_INIT_IMAGE" ]]; then
+            echo "Image changed, skipping reset for default base image"
+        else 
+            # jenkins update the gitops repo with a push and then run the job
+            bash $SCRIPTDIR/rhtap-push-dev --repo $REPO
+            JOB=$(basename $REPO) 
+            echo "Running Jenkins Job"
+            bash $SCRIPTDIR/jenkins-run-pipeline $JOB
+        fi 
         eval "$PREV_IMAGE_ENV_NAME"="$CURRENT_IMAGE"
     fi
 }
