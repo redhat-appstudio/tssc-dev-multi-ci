@@ -66,7 +66,7 @@ In order to run the Jenkinsfile you must push to the Jenkins library https://git
 If you want to use a fork you must update your jenkinsfile to reference your fork repository in the jenkins file. 
 
 ```
-library identifier: 'RHTAP_Jenkins@main', retriever: modernSCM(
+library identifier: 'RHTAP_Jenkins@v1.3', retriever: modernSCM(
   [$class: 'GitSCMSource',
    remote: 'https://github.com/redhat-appstudio/tssc-sample-jenkins.git'])
 ```
