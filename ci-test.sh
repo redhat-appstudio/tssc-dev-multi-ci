@@ -7,9 +7,17 @@ eval "$(hack/get-trustification-env.sh)"
 # after the first setting, you can skip this step
 # warning, if your secrets are stale, do not skip this step
 SKIP_SECRETS=${SKIP_SECRETS:-false}
+USE_RHTAP_IMAGES=${USE_RHTAP_IMAGES:-false}
 
 if [ $SKIP_SECRETS == "true" ]; then
     echo "WARNING SKIP_SECRETS set to true, skipping configuration of secrets"
+fi
+if [ $USE_RHTAP_IMAGES == "true" ]; then
+    echo "USE_RHTAP_IMAGES is set to $USE_RHTAP_IMAGES"
+    echo "Note - configuration is going to use the runner images and Jenkins from redhat-appstudio"
+else 
+    echo "USE_RHTAP_IMAGES is set to $USE_RHTAP_IMAGES"
+    echo "Note - configuration is going to use the runner images#MY_QUAY_USER and Jenkins MY_GITHUB_USER"
 fi
 
 if [ $TEST_REPO_ORG == "redhat-appstudio" ]; then
@@ -19,11 +27,18 @@ if [ $TEST_REPO_ORG == "redhat-appstudio" ]; then
 fi
 
 function updateGitAndQuayRefs() {
-    if [ -f $1 ]; then
-        sed -i "s!quay.io/redhat-appstudio/rhtap-task-runner.*!quay.io/$MY_QUAY_USER/rhtap-task-runner:dev!g" $1
-        sed -i "s!https://github.com/redhat-appstudio!https://github.com/$MY_GITHUB_USER!g" $1
-        sed -i "s!RHTAP_Jenkins@main!RHTAP_Jenkins@dev!g" $1
-    fi
+    if [ $USE_RHTAP_IMAGES == "true" ]; then
+        echo "USE_RHTAP_IMAGES is set to $USE_RHTAP_IMAGES"
+        echo "No images or Jenkins references patched"
+    else         
+        echo "USE_RHTAP_IMAGES is set to $USE_RHTAP_IMAGES"
+        echo "images or Jenkins references patched to quay.io/$MY_QUAY_USER and github.com/$MY_GITHUB_USER"
+        if [ -f $1 ]; then
+            sed -i "s!quay.io/redhat-appstudio/rhtap-task-runner.*!quay.io/$MY_QUAY_USER/rhtap-task-runner:dev!g" $1
+            sed -i "s!https://github.com/redhat-appstudio!https://github.com/$MY_GITHUB_USER!g" $1
+            sed -i "s!RHTAP_Jenkins@.*'!RHTAP_Jenkins@dev'!g" $1 
+        fi
+    fi 
 }
 
 function updateBuild() {
