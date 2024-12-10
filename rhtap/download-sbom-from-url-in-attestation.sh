@@ -295,7 +295,8 @@ find_blob_url() {
       end' < "$attestation_file"
 }
 
-echo "Making sure $SBOMS_DIR directory exists"
+echo "Making sure $SBOMS_DIR directory exists and is empty prior to downloading"
+rm -rf "$SBOMS_DIR"
 mkdir -p "$SBOMS_DIR"
 
 jq -r '.components[].containerImage' <<< "$IMAGES" | while read -r image; do
