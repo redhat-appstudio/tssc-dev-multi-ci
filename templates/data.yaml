@@ -27,6 +27,13 @@ build_secrets:
   - name: IMAGE_REGISTRY_PASSWORD 
     if: 'isGitHub'
     comment: "Set this password for your specific registry" 
+  # Expose Rekor and TUF in GitHub Actions so they can be set by user in secrets
+  - name: REKOR_HOST
+    if: 'isGitHub'
+    comment: "Set this only when using an external Rekor instance"
+  - name: TUF_MIRROR
+    if: 'isGitHub'
+    comment: "Set this only when using an external TUF instance"
   - name: IMAGE_REGISTRY_USER
     if: '!isGitHub'
     commented_out: true
@@ -66,6 +73,15 @@ build_secrets:
   - name: COSIGN_SECRET_PASSWORD
   - name: COSIGN_SECRET_KEY
   - name: COSIGN_PUBLIC_KEY
+  # Rekor and TUF again, but there is a difference between GH Actions and Jenkins
+  - name: REKOR_HOST
+    if: 'isJenkins'
+    comment: "Set when using Jenkins on non-local cluster and using an external Rekor instance"
+    commented_out: true
+  - name: TUF_MIRROR
+    if: 'isJenkins'
+    comment: "Set when using Jenkins on non-local cluster and using an external TUF instance"
+    commented_out: true
 
 gitops_steps:
   - name: Verify EC
@@ -91,7 +107,14 @@ gitops_secrets:
     comment: "Set this to the user for your specific registry"
   - name: IMAGE_REGISTRY_PASSWORD 
     if: 'isGitHub'
-    comment: "Set this password for your specific registry" 
+    comment: "Set this password for your specific registry"
+  # Expose Rekor and TUF in GitHub Actions so they can be set by user in secrets
+  - name: REKOR_HOST
+    if: 'isGitHub'
+    comment: "Set this only when using an external Rekor instance"
+  - name: TUF_MIRROR
+    if: 'isGitHub'
+    comment: "Set this only when using an external TUF instance"
   # other CIs in transition so comment out and leave Quay.io
   - name: IMAGE_REGISTRY_USER
     if: '!isGitHub'
@@ -129,4 +152,13 @@ gitops_secrets:
     commented_out: true 
   - name: NEXUS_IO_CREDS_PSW
     if: '!isJenkins'  
-    commented_out: true 
+    commented_out: true
+  # Rekor and TUF again, but there is a difference between GH Actions and Jenkins
+  - name: REKOR_HOST
+    if: 'isJenkins'
+    comment: "Set when using Jenkins on non-local cluster and using an external Rekor instance"
+    commented_out: true
+  - name: TUF_MIRROR
+    if: 'isJenkins'
+    comment: "Set when using Jenkins on non-local cluster and using an external TUF instance"
+    commented_out: true
