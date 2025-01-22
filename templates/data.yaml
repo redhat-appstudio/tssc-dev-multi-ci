@@ -31,9 +31,11 @@ build_secrets:
   - name: REKOR_HOST
     if: 'isGitHub'
     comment: "Set this only when using an external Rekor instance"
+    commented_out: true
   - name: TUF_MIRROR
     if: 'isGitHub'
     comment: "Set this only when using an external TUF instance"
+    commented_out: true
   - name: IMAGE_REGISTRY_USER
     if: '!isGitHub'
     commented_out: true
@@ -112,9 +114,11 @@ gitops_secrets:
   - name: REKOR_HOST
     if: 'isGitHub'
     comment: "Set this only when using an external Rekor instance"
+    commented_out: true
   - name: TUF_MIRROR
     if: 'isGitHub'
     comment: "Set this only when using an external TUF instance"
+    commented_out: true
   # other CIs in transition so comment out and leave Quay.io
   - name: IMAGE_REGISTRY_USER
     if: '!isGitHub'
