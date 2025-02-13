@@ -20,7 +20,7 @@ RUN \
   go install -trimpath --mod=readonly github.com/anchore/syft/cmd/syft && \
   syft version
 
-FROM registry.access.redhat.com/ubi9/ubi-minimal:9.5@sha256:66b99214cb9733e77c4a12cc3e3cbbe76769a213f4e2767f170a4f0fdf9db490
+FROM registry.access.redhat.com/ubi9/ubi-minimal:9.5@sha256:db8bf20cac0f250659f1ffbba929639dcd7e09863c20c99c5cb8f3ce8ded0497
 
 RUN \
   microdnf upgrade --assumeyes --nodocs --setopt=keepcache=0 --refresh && \
