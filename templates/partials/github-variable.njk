@@ -1,0 +1,6 @@
+{%- if var | eval_if_condition -%}
+{%- if var.comment %}
+  # {{ var.comment }}
+{%- endif %}
+  {% if var.commented_out -%}# {% endif -%}{{- var.name -}}: ${{- ("vars." + var.name) | inCurlies -}}
+{%- endif -%}
