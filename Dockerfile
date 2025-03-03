@@ -2,7 +2,7 @@ FROM registry.redhat.io/rhtas/cosign-rhel9:1.1.1@sha256:3cd261cd4fed03688c6fd3c6
 
 FROM registry.redhat.io/rhtas/ec-rhel9:0.5@sha256:53d0f52da3a5f9b8837f1f5f895c4dfcebb87aee1bc8a33b903d1918603499f5 as ec
 
-FROM brew.registry.redhat.io/rh-osbs/openshift-golang-builder:v1.23@sha256:744be415305e1cf3701484b69e41bd67df2e0b728a5804fa170069cec6c9a189 as go-builder
+FROM brew.registry.redhat.io/rh-osbs/openshift-golang-builder:v1.23@sha256:4bd7cb8abd091e6161490da1c3dd615532e537c62b8b98d6b2acd77e248ead62 as go-builder
 
 WORKDIR /build
 
