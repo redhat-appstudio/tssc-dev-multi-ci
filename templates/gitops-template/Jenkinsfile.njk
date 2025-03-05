@@ -8,9 +8,22 @@ pipeline {
         /* Not used but init.sh will fail if they're missing */
         COSIGN_SECRET_PASSWORD = 'dummy'
         COSIGN_SECRET_KEY = 'dummy'
+        {%- filter indent(8) -%}
+        {%- for var in gitops_variables -%}
+        {# Variables currently have to be set as secrets so they can be limited to a folder #}
+        {# Except those that have to be exposed via Eyecatcher and that do not have to be limited to a folder #}
+        {%- if var.name === "TRUSTIFICATION_BOMBASTIC_API_URL" -%}
+        {%- include "jenkins-variable.njk" -%}
+        {%- else -%}
+        {# "jenkins-secret.njk" partial is expecting the variable to be named 'secret' #}
+        {%- set secret = var -%}
+        {%- include "jenkins-secret.njk" -%}
+        {%- endif -%}
+        {%- endfor -%}
         {%- for secret in gitops_secrets -%}
         {%- include "jenkins-secret.njk" -%}
-        {%- endfor %}
+        {%- endfor -%}
+        {%- endfilter -%}
     }
     stages {
         {%- for step in gitops_steps %}

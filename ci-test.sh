@@ -146,7 +146,7 @@ updateRepos $GITLAB_GITOPS
 # Jenkins
 # note, jenkins secrets are global so set once"
 if [ $SKIP_SECRETS == "false" ]; then
-    bash hack/jenkins-set-secrets
+    bash hack/jenkins-set-variables
 fi
 updateRepos $JENKINS_BUILD
 updateRepos $JENKINS_GITOPS

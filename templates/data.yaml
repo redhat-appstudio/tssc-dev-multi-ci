@@ -13,20 +13,105 @@ build_steps:
     substeps: [show-sbom-rhdh, summary]
     concurrent: true
 
-build_secrets:
-  - name: ROX_API_TOKEN
+build_variables:
   - name: ROX_CENTRAL_ENDPOINT
-  - name: GITOPS_AUTH_PASSWORD
-  - name: GITOPS_AUTH_USERNAME
-    commented_out: true
-    comment: Uncomment this when using Gitlab
 
-  - name: IMAGE_REGISTRY_USER 
+  - name: GITOPS_AUTH_USERNAME
+    if: '!isGitLab'
+    commented_out: true
+  - name: GITOPS_AUTH_USERNAME
+    if: 'isGitLab'
+
+  - name: IMAGE_REGISTRY_USER
     if: 'isGitHub'
     comment: "Set this to the user for your specific registry"
-  - name: IMAGE_REGISTRY_PASSWORD 
+  - name: IMAGE_REGISTRY_USER
+    if: '!isGitHub'
+    commented_out: true
+    comment: "Set this to the user for your specific registry"
+
+  - name: REKOR_HOST
+    comment: "Set this only when using an external Rekor instance"
+    commented_out: true
+  - name: TUF_MIRROR
+    comment: "Set this only when using an external TUF instance"
+    commented_out: true
+
+  - name: QUAY_IO_CREDS_USR
+    if: '!isJenkins'
+    commented_out: true
+
+  - name: ARTIFACTORY_IO_CREDS_USR
+    if: '!isJenkins'
+    commented_out: true
+
+  - name: NEXUS_IO_CREDS_USR
+    if: '!isJenkins'
+    commented_out: true
+
+  - name: COSIGN_PUBLIC_KEY
+
+build_secrets:
+  - name: ROX_API_TOKEN
+
+  - name: GITOPS_AUTH_PASSWORD
+
+  - name: IMAGE_REGISTRY_PASSWORD
     if: 'isGitHub'
     comment: "Set this password for your specific registry" 
+  - name: IMAGE_REGISTRY_PASSWORD
+    if: '!isGitHub'
+    commented_out: true
+    comment: "Set this password for your specific registry" 
+
+  - name: QUAY_IO_CREDS
+    if: isJenkins
+    comment: "Default registry is set to quay.io" 
+  - name: QUAY_IO_CREDS_PSW
+    if: '!isJenkins' 
+    commented_out: true
+
+  - name: ARTIFACTORY_IO_CREDS
+    if: isJenkins
+    commented_out: true 
+  - name: ARTIFACTORY_IO_CREDS_PSW
+    if: '!isJenkins'  
+    commented_out: true
+
+  - name: NEXUS_IO_CREDS
+    if: isJenkins
+    commented_out: true 
+  - name: NEXUS_IO_CREDS_PSW
+    if: '!isJenkins'  
+    commented_out: true
+
+  - name: COSIGN_SECRET_PASSWORD
+  - name: COSIGN_SECRET_KEY
+
+gitops_steps:
+  - name: Verify EC
+    substeps: [gather-deploy-images, verify-enterprise-contract]
+  - name: Upload SBOM
+    substeps: [gather-images-to-upload-sbom, download-sbom-from-url-in-attestation, upload-sbom-to-trustification]
+
+gitops_variables:
+  - name: COSIGN_PUBLIC_KEY
+    comment: Used to verify the image signature and attestation
+
+  - name: TRUSTIFICATION_BOMBASTIC_API_URL
+    comment: URL of the BOMbastic api host (e.g. https://sbom.trustification.dev)
+  - name: TRUSTIFICATION_OIDC_ISSUER_URL
+    comment: URL of the OIDC token issuer (e.g. https://sso.trustification.dev/realms/chicken)
+  - name: TRUSTIFICATION_OIDC_CLIENT_ID
+  - name: TRUSTIFICATION_SUPPORTED_CYCLONEDX_VERSION
+
+  # If the OCI registry is not public then ec needs some credentials so it can see the attestations.
+  # Todo: Use different credentials here so we provide read access only instead of read/write access.
+  # github always uses these
+  - name: IMAGE_REGISTRY_USER
+    if: 'isGitHub'
+    comment: "Set this to the user for your specific registry"
+
   # Expose Rekor and TUF in GitHub Actions so they can be set by user in secrets
   - name: REKOR_HOST
     if: 'isGitHub'
@@ -36,45 +121,6 @@ build_secrets:
     if: 'isGitHub'
     comment: "Set this only when using an external TUF instance"
     commented_out: true
-  - name: IMAGE_REGISTRY_USER
-    if: '!isGitHub'
-    commented_out: true
-    comment: "Set this to the user for your specific registry"
-  - name: IMAGE_REGISTRY_PASSWORD
-    if: '!isGitHub'
-    commented_out: true
-    comment: "Set this password for your specific registry" 
-
-  - name: QUAY_IO_CREDS
-    if: isJenkins
-    comment: "Default registry is set to quay.io" 
-  - name: QUAY_IO_CREDS_USR
-    if: '!isJenkins'
-    commented_out: true 
-  - name: QUAY_IO_CREDS_PSW
-    if: '!isJenkins' 
-    commented_out: true 
-  - name: ARTIFACTORY_IO_CREDS
-    if: isJenkins
-    commented_out: true 
-  - name: ARTIFACTORY_IO_CREDS_USR
-    if: '!isJenkins'
-    commented_out: true 
-  - name: ARTIFACTORY_IO_CREDS_PSW
-    if: '!isJenkins'  
-    commented_out: true 
-  - name: NEXUS_IO_CREDS
-    if: isJenkins
-    commented_out: true 
-  - name: NEXUS_IO_CREDS_USR
-    if: '!isJenkins'
-    commented_out: true 
-  - name: NEXUS_IO_CREDS_PSW
-    if: '!isJenkins'  
-    commented_out: true 
-  - name: COSIGN_SECRET_PASSWORD
-  - name: COSIGN_SECRET_KEY
-  - name: COSIGN_PUBLIC_KEY
   # Rekor and TUF again, but there is a difference between GH Actions and Jenkins
   - name: REKOR_HOST
     if: 'isJenkins'
@@ -85,45 +131,29 @@ build_secrets:
     comment: "Set when using Jenkins on non-local cluster and using an external TUF instance"
     commented_out: true
 
-gitops_steps:
-  - name: Verify EC
-    substeps: [gather-deploy-images, verify-enterprise-contract]
-  - name: Upload SBOM
-    substeps: [gather-images-to-upload-sbom, download-sbom-from-url-in-attestation, upload-sbom-to-trustification]
-
-gitops_secrets:
-  - name: COSIGN_PUBLIC_KEY
-    comment: Used to verify the image signature and attestation
-  - name: TRUSTIFICATION_BOMBASTIC_API_URL
-    comment: URL of the BOMbastic api host (e.g. https://sbom.trustification.dev)
-  - name: TRUSTIFICATION_OIDC_ISSUER_URL
-    comment: URL of the OIDC token issuer (e.g. https://sso.trustification.dev/realms/chicken)
-  - name: TRUSTIFICATION_OIDC_CLIENT_ID
-  - name: TRUSTIFICATION_OIDC_CLIENT_SECRET
-  - name: TRUSTIFICATION_SUPPORTED_CYCLONEDX_VERSION
-  # If the OCI registry is not public then ec needs some credentials so it can see the attestations.
-  # Todo: Use different credentials here so we provide read access only instead of read/write access.
-  # github always uses these 
-  - name: IMAGE_REGISTRY_USER 
-    if: 'isGitHub'
-    comment: "Set this to the user for your specific registry"
-  - name: IMAGE_REGISTRY_PASSWORD 
-    if: 'isGitHub'
-    comment: "Set this password for your specific registry"
-  # Expose Rekor and TUF in GitHub Actions so they can be set by user in secrets
-  - name: REKOR_HOST
-    if: 'isGitHub'
-    comment: "Set this only when using an external Rekor instance"
-    commented_out: true
-  - name: TUF_MIRROR
-    if: 'isGitHub'
-    comment: "Set this only when using an external TUF instance"
-    commented_out: true
   # other CIs in transition so comment out and leave Quay.io
   - name: IMAGE_REGISTRY_USER
     if: '!isGitHub'
     commented_out: true
     comment: "Set this to the user for your specific registry"
+
+  - name: QUAY_IO_CREDS_USR
+    if: '!isJenkins'
+    commented_out: true
+
+  - name: ARTIFACTORY_IO_CREDS_USR
+    if: '!isJenkins'
+    commented_out: true
+
+  - name: NEXUS_IO_CREDS_USR
+    if: '!isJenkins'
+    commented_out: true
+
+gitops_secrets:
+  - name: TRUSTIFICATION_OIDC_CLIENT_SECRET
+  - name: IMAGE_REGISTRY_PASSWORD
+    if: 'isGitHub'
+    comment: "Set this password for your specific registry"
   - name: IMAGE_REGISTRY_PASSWORD
     if: '!isGitHub'
     commented_out: true
@@ -133,17 +163,11 @@ gitops_secrets:
   # to be documented 
   - name: QUAY_IO_CREDS
     if: isJenkins
-  - name: QUAY_IO_CREDS_USR
-    if: '!isJenkins'
-    commented_out: true 
   - name: QUAY_IO_CREDS_PSW
     if: '!isJenkins' 
     commented_out: true 
   - name: ARTIFACTORY_IO_CREDS
     if: isJenkins
-    commented_out: true 
-  - name: ARTIFACTORY_IO_CREDS_USR
-    if: '!isJenkins'
     commented_out: true 
   - name: ARTIFACTORY_IO_CREDS_PSW
     if: '!isJenkins'  
@@ -151,18 +175,6 @@ gitops_secrets:
   - name: NEXUS_IO_CREDS
     if: isJenkins
     commented_out: true 
-  - name: NEXUS_IO_CREDS_USR
-    if: '!isJenkins'
-    commented_out: true 
   - name: NEXUS_IO_CREDS_PSW
     if: '!isJenkins'  
-    commented_out: true
-  # Rekor and TUF again, but there is a difference between GH Actions and Jenkins
-  - name: REKOR_HOST
-    if: 'isJenkins'
-    comment: "Set when using Jenkins on non-local cluster and using an external Rekor instance"
-    commented_out: true
-  - name: TUF_MIRROR
-    if: 'isJenkins'
-    comment: "Set when using Jenkins on non-local cluster and using an external TUF instance"
     commented_out: true

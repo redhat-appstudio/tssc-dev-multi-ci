@@ -5,9 +5,16 @@
 pipeline {
     agent any
     environment {
+        {%- filter indent(8) -%}
+        {%- for var in build_variables -%}
+        {# Variables currently have to be set as secrets so they can be limited to a folder #}
+        {%- set secret = var -%}
+        {%- include "jenkins-secret.njk" -%}
+        {%- endfor %}
         {%- for secret in build_secrets -%}
         {%- include "jenkins-secret.njk" -%}
         {%- endfor %}
+        {%- endfilter -%}
     }
     stages {
         {%- for step in build_steps %}
