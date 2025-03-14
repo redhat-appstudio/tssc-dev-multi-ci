@@ -86,47 +86,6 @@ function updateBuild() {
     cat "$SETUP_ENV"
 }
 
-# create latest images for dev github and gitlab
-make build-push-image
-# update the jenkins library in the dev branch
-bash hack/update-jenkins-library
-
-# Repos on github and gitlab, github and jenkins
-# source repos are updated with the name of the corresponding GITOPS REPO for update-deployment
-updateBuild "$BUILD" "$TEST_GITOPS_REPO"
-updateBuild "$GITOPS"
-updateBuild "$GITLAB_BUILD" "$TEST_GITOPS_GITLAB_REPO"
-updateBuild "$GITLAB_GITOPS"
-updateBuild "$JENKINS_BUILD" "$TEST_GITOPS_JENKINS_REPO"
-updateBuild "$JENKINS_GITOPS"
-
-# source repos for copying the generated manifests
-GEN_SRC=generated/source-repo
-GEN_GITOPS=generated/gitops-template
-
-#Jenkins
-echo "Update Jenkins file in $JENKINS_BUILD and $JENKINS_GITOPS"
-echo "NEW - JENKINS USES A SEPARATE REPO FROM GITHUB ACTIONS"
-cp $GEN_SRC/jenkins/Jenkinsfile "$JENKINS_BUILD"/Jenkinsfile
-cp $GEN_GITOPS/jenkins/Jenkinsfile "$JENKINS_GITOPS"/Jenkinsfile
-updateGitAndQuayRefs "$JENKINS_BUILD"/Jenkinsfile
-updateGitAndQuayRefs "$JENKINS_GITOPS"/Jenkinsfile
-
-# Gitlab CI
-echo "Update .gitlab-ci.yml file in $GITLAB_BUILD and $GITLAB_GITOPS"
-cp $GEN_SRC/gitlabci/.gitlab-ci.yml "$GITLAB_BUILD"/.gitlab-ci.yml
-cp $GEN_GITOPS/gitlabci/.gitlab-ci.yml "$GITLAB_GITOPS"/.gitlab-ci.yml
-updateGitAndQuayRefs "$GITLAB_BUILD"/.gitlab-ci.yml
-updateGitAndQuayRefs "$GITLAB_GITOPS"/.gitlab-ci.yml
-
-# Github Actions
-echo "Update .github workflows in $BUILD and $GITOPS"
-cp -r $GEN_SRC/githubactions/.github "$BUILD"
-cp -r $GEN_GITOPS/githubactions/.github "$GITOPS"
-for wf in "$BUILD"/.github/workflows/* "$GITOPS"/.github/workflows/*; do
-    updateGitAndQuayRefs "$wf"
-done
-
 function updateRepos() {
     REPO=$1
     echo
@@ -138,43 +97,107 @@ function updateRepos() {
     popd
 }
 
-# set secrets and then push to repos to ensure pipeline runs are
-# with correct values
-# github
-if [ "$SKIP_SECRETS" == "false" ]; then
-    bash hack/ghub-set-vars "$TEST_BUILD_REPO"
-    bash hack/ghub-set-vars "$TEST_GITOPS_REPO"
-fi
+function test_jenkins() {
+    echo "Testing Jenkins..."
+    echo
 
-updateRepos "$BUILD"
-updateRepos "$GITOPS"
+    # update the jenkins library in the dev branch
+    bash hack/update-jenkins-library
 
-# gitlab
-if [ "$SKIP_SECRETS" == "false" ]; then
-    bash hack/glab-set-vars "$(basename "$TEST_BUILD_GITLAB_REPO")"
-    bash hack/glab-set-vars "$(basename "$TEST_GITOPS_GITLAB_REPO")"
-fi
-updateRepos "$GITLAB_BUILD"
-updateRepos "$GITLAB_GITOPS"
+    # source repos are updated with the name of the corresponding GITOPS REPO for update-deployment
+    updateBuild "$JENKINS_BUILD" "$TEST_GITOPS_JENKINS_REPO"
+    updateBuild "$JENKINS_GITOPS"
 
-# Jenkins
-# note, jenkins secrets are global so set once"
-if [ "$SKIP_SECRETS" == "false" ]; then
-    bash hack/jenkins-set-secrets
-fi
-updateRepos "$JENKINS_BUILD"
-updateRepos "$JENKINS_GITOPS"
-bash hack/jenkins-run-pipeline "$(basename "$TEST_BUILD_JENKINS_REPO")"
+    echo "Update Jenkins file in $JENKINS_BUILD and $JENKINS_GITOPS"
+    echo "NEW - JENKINS USES A SEPARATE REPO FROM GITHUB ACTIONS"
+    cp $GEN_SRC/jenkins/Jenkinsfile "$JENKINS_BUILD"/Jenkinsfile
+    cp $GEN_GITOPS/jenkins/Jenkinsfile "$JENKINS_GITOPS"/Jenkinsfile
+    updateGitAndQuayRefs "$JENKINS_BUILD"/Jenkinsfile
+    updateGitAndQuayRefs "$JENKINS_GITOPS"/Jenkinsfile
 
-echo
-echo "Github Build and Gitops Repos"
-echo "Build: $TEST_BUILD_REPO"
-echo "Gitops: $TEST_GITOPS_REPO"
-echo
-echo "Gitlab Build and Gitops Repos"
-echo "Build: $TEST_BUILD_GITLAB_REPO"
-echo "Gitops: $TEST_GITOPS_GITLAB_REPO"
-echo
-echo "Jenkins Build and Gitops Repos"
-echo "Build: $TEST_BUILD_JENKINS_REPO"
-echo "Gitops: $TEST_GITOPS_JENKINS_REPO"
+    # note, jenkins secrets are global so set once
+    if [ "$SKIP_SECRETS" == "false" ]; then
+        bash hack/jenkins-set-secrets
+    fi
+    updateRepos "$JENKINS_BUILD"
+    updateRepos "$JENKINS_GITOPS"
+
+    bash hack/jenkins-run-pipeline "$(basename "$TEST_BUILD_JENKINS_REPO")"
+
+    echo
+    echo "Jenkins Build and Gitops Repos"
+    echo "Build: $TEST_BUILD_JENKINS_REPO"
+    echo "Gitops: $TEST_GITOPS_JENKINS_REPO"
+}
+
+function test_gh_actions() {
+    echo "Testing GitHub Actions..."
+    echo
+
+    # source repos are updated with the name of the corresponding GITOPS REPO for update-deployment
+    updateBuild "$BUILD" "$TEST_GITOPS_REPO"
+    updateBuild "$GITOPS"
+
+    echo "Update .github workflows in $BUILD and $GITOPS"
+    cp -r $GEN_SRC/githubactions/.github "$BUILD"
+    cp -r $GEN_GITOPS/githubactions/.github "$GITOPS"
+    for wf in "$BUILD"/.github/workflows/* "$GITOPS"/.github/workflows/*; do
+        updateGitAndQuayRefs "$wf"
+    done
+
+    # set secrets and then push to repos to ensure pipeline runs are
+    # with correct values
+    # github
+    if [ "$SKIP_SECRETS" == "false" ]; then
+        bash hack/ghub-set-vars "$TEST_BUILD_REPO"
+        bash hack/ghub-set-vars "$TEST_GITOPS_REPO"
+    fi
+
+    updateRepos "$BUILD"
+    updateRepos "$GITOPS"
+
+    echo
+    echo "Github Build and Gitops Repos"
+    echo "Build: $TEST_BUILD_REPO"
+    echo "Gitops: $TEST_GITOPS_REPO"
+}
+
+function test_gitlab_ci() {
+    echo "Testing GitLab CI..."
+    echo
+
+    # source repos are updated with the name of the corresponding GITOPS REPO for update-deployment
+    updateBuild "$GITLAB_BUILD" "$TEST_GITOPS_GITLAB_REPO"
+    updateBuild "$GITLAB_GITOPS"
+
+    # Gitlab CI
+    echo "Update .gitlab-ci.yml file in $GITLAB_BUILD and $GITLAB_GITOPS"
+    cp $GEN_SRC/gitlabci/.gitlab-ci.yml "$GITLAB_BUILD"/.gitlab-ci.yml
+    cp $GEN_GITOPS/gitlabci/.gitlab-ci.yml "$GITLAB_GITOPS"/.gitlab-ci.yml
+    updateGitAndQuayRefs "$GITLAB_BUILD"/.gitlab-ci.yml
+    updateGitAndQuayRefs "$GITLAB_GITOPS"/.gitlab-ci.yml
+
+    # gitlab
+    if [ "$SKIP_SECRETS" == "false" ]; then
+        bash hack/glab-set-vars "$(basename "$TEST_BUILD_GITLAB_REPO")"
+        bash hack/glab-set-vars "$(basename "$TEST_GITOPS_GITLAB_REPO")"
+    fi
+    updateRepos "$GITLAB_BUILD"
+    updateRepos "$GITLAB_GITOPS"
+
+    echo ""
+    echo "Gitlab Build and Gitops Repos"
+    echo "Build: $TEST_BUILD_GITLAB_REPO"
+    echo "Gitops: $TEST_GITOPS_GITLAB_REPO"
+}
+
+# create latest images for dev github and gitlab
+make build-push-image
+
+# source repos for copying the generated manifests
+GEN_SRC=generated/source-repo
+GEN_GITOPS=generated/gitops-template
+
+test_gh_actions
+test_gitlab_ci
+test_jenkins
