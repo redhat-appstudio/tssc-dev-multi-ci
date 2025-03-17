@@ -159,7 +159,7 @@ push-image:
 
 .PHONY: build-image
 build-image:
-	podman build $(if $(NOCACHE),--no-cache) -f Dockerfile -t $(floating-tag)
+	podman build $(if $(NOCACHE),--no-cache) -f Dockerfile -t $(floating-tag) --platform linux/amd64
 	podman tag $(floating-tag) $(unique-tag)
 
 .PHONY: run-image
