@@ -7,14 +7,7 @@ source $SCRIPTDIR/common.sh
 
 function login() {
     echo "Running $TASK_NAME:login"
-    IMAGE_REGISTRY="${IMAGE%%/*}"
-    prepare-registry-user-pass $IMAGE_REGISTRY
-    buildah login --username="$IMAGE_REGISTRY_USER" --password="$IMAGE_REGISTRY_PASSWORD" $IMAGE_REGISTRY
-    ERR=$?
-    if [ $ERR != 0 ]; then
-        echo "Failed buildah login $IMAGE_REGISTRY for user $IMAGE_REGISTRY_USER "
-        exit $ERR
-    fi
+    registry-login "$IMAGE"
 }
 
 function build() {
