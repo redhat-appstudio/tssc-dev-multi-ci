@@ -23,10 +23,10 @@ build_variables:
     if: 'isGitLab'
 
   - name: IMAGE_REGISTRY_USER
-    if: 'isGitHub'
+    if: 'isGitHub || isAzure'
     comment: "Set this to the user for your specific registry"
   - name: IMAGE_REGISTRY_USER
-    if: '!isGitHub'
+    if: '!isGitHub && !isAzure'
     commented_out: true
     comment: "Set this to the user for your specific registry"
 
@@ -57,10 +57,10 @@ build_secrets:
   - name: GITOPS_AUTH_PASSWORD
 
   - name: IMAGE_REGISTRY_PASSWORD
-    if: 'isGitHub'
+    if: 'isGitHub || isAzure'
     comment: "Set this password for your specific registry" 
   - name: IMAGE_REGISTRY_PASSWORD
-    if: '!isGitHub'
+    if: '!isGitHub && !isAzure'
     commented_out: true
     comment: "Set this password for your specific registry" 
 
