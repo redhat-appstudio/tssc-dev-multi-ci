@@ -6,6 +6,7 @@ FILES=\
   generated/source-repo/jenkins/Jenkinsfile \
   generated/source-repo/githubactions/.github/workflows/build-and-update-gitops.yml \
   generated/source-repo/gitlabci/.gitlab-ci.yml \
+  generated/source-repo/azure/azure-pipelines.yml \
   \
   generated/gitops-template/jenkins/Jenkinsfile \
   generated/gitops-template/githubactions/.github/workflows/gitops-promotion.yml \
@@ -37,7 +38,8 @@ endef
 TARGET_DIRS=\
   jenkins \
   githubactions/.github/workflows \
-  gitlabci
+  gitlabci \
+  azure
 
 define targets_for_ci_type
 generated/source-repo/$(1)/%: templates/source-repo/%.njk templates/data.yaml

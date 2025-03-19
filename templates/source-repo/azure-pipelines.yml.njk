@@ -1,0 +1,19 @@
+{%- include "do-not-edit.njk" -%}
+{%- set secrets = build_secrets -%}
+
+trigger:
+- main
+
+pool:
+  name: resourcehub
+
+container:
+  image: quay.io/redhat-appstudio/rhtap-task-runner:latest
+  options: --privileged
+
+steps:
+{%- filter indent(2) -%}
+{%- for step in build_steps %}
+{% include "azure-step.njk" %}
+{%- endfor -%}
+{%- endfilter -%}
