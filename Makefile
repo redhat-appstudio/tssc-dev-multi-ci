@@ -11,6 +11,7 @@ FILES=\
   generated/gitops-template/jenkins/Jenkinsfile \
   generated/gitops-template/githubactions/.github/workflows/gitops-promotion.yml \
   generated/gitops-template/gitlabci/.gitlab-ci.yml \
+  generated/gitops-template/azure/azure-pipelines.yml \
   \
   rhtap.groovy \
   rhtap/build-pipeline-steps.sh \
