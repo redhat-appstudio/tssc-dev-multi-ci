@@ -191,6 +191,27 @@ function test_gitlab_ci() {
     echo "Gitops: $TEST_GITOPS_GITLAB_REPO"
 }
 
+function test_azure_pipelines() {
+    updateBuild $AZURE_BUILD $TEST_GITOPS_AZURE_REPO
+    updateBuild $AZURE_GITOPS
+
+    echo "Update .azure-pipelines.yml file in $AZURE_BUILD and $AZURE_GITOPS"
+    cp $GEN_SRC/azure/azure-pipelines.yml $AZURE_BUILD/azure-pipelines.yml
+    cp $GEN_GITOPS/azure/azure-pipelines.yml $AZURE_GITOPS/azure-pipelines.yml
+    updateGitAndQuayRefs $AZURE_BUILD/azure-pipelines.yml
+    updateGitAndQuayRefs $AZURE_GITOPS/azure-pipelines.yml
+
+    if [ $SKIP_SECRETS == "false" ]; then
+        python3 hack/azure_set_vars.py
+    fi
+    updateRepos $AZURE_BUILD
+    updateRepos $AZURE_GITOPS
+
+    echo "Azure Build and Gitops Repos"
+    echo "Build: $TEST_BUILD_AZURE_REPO"
+    echo "Gitops: $TEST_GITOPS_AZURE_REPO"
+}
+
 # create latest images for dev github and gitlab
 make build-push-image
 
@@ -201,3 +222,4 @@ GEN_GITOPS=generated/gitops-template
 test_gh_actions
 test_gitlab_ci
 test_jenkins
+test_azure_pipelines
