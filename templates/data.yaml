@@ -89,9 +89,9 @@ build_secrets:
   - name: COSIGN_SECRET_KEY
 
 gitops_steps:
-  - name: Verify EC
+  - name: Verify_EC
     substeps: [gather-deploy-images, verify-enterprise-contract]
-  - name: Upload SBOM
+  - name: Upload_SBOM
     substeps: [gather-images-to-upload-sbom, download-sbom-from-url-in-attestation, upload-sbom-to-trustification]
 
 gitops_variables:

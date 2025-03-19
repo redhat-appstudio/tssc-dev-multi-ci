@@ -147,13 +147,13 @@ jobs:
         ec version
         git config --global --add safe.directory $(pwd)
         cat rhtap/env.sh
-    - name: Verify Ec
+    - name: Verify_ec
       run: |
         echo "• gather-deploy-images"
         bash /work/rhtap/gather-deploy-images.sh
         echo "• verify-enterprise-contract"
         bash /work/rhtap/verify-enterprise-contract.sh
-    - name: Upload Sbom
+    - name: Upload_sbom
       run: |
         echo "• gather-images-to-upload-sbom"
         bash /work/rhtap/gather-images-to-upload-sbom.sh

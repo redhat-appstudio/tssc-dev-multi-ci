@@ -32,7 +32,7 @@ pipeline {
         /* NEXUS_IO_CREDS = credentials('NEXUS_IO_CREDS') */
     }
     stages {
-        stage('Verify EC') {
+        stage('Verify_EC') {
             steps {
                 script {
                     rhtap.info('gather_deploy_images')
@@ -43,7 +43,7 @@ pipeline {
             }
         }
 
-        stage('Upload SBOM') {
+        stage('Upload_SBOM') {
             steps {
                 script {
                     rhtap.info('gather_images_to_upload_sbom')
