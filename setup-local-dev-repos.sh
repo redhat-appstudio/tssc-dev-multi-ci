@@ -31,6 +31,9 @@ TEST_GITOPS_GITLAB_REPO=https://gitlab.com/$TEST_REPO_GITLAB_ORG/tssc-dev-gitops
 TEST_BUILD_JENKINS_REPO=https://github.com/$TEST_REPO_ORG/tssc-dev-source-jenkins
 TEST_GITOPS_JENKINS_REPO=https://github.com/$TEST_REPO_ORG/tssc-dev-gitops-jenkins
 
+TEST_BUILD_AZURE_REPO=https://github.com/$TEST_REPO_ORG/tssc-dev-source-azure
+TEST_GITOPS_AZURE_REPO=https://github.com/$TEST_REPO_ORG/tssc-dev-gitops-azure
+
 # If you prefer to use ssh git urls
 if [ -n "$USE_SSH_GIT_URLS" ]; then
     TEST_BUILD_REPO_SSH=git@github.com:$TEST_REPO_ORG/devfile-sample-nodejs-dance.git
@@ -39,6 +42,8 @@ if [ -n "$USE_SSH_GIT_URLS" ]; then
     TEST_GITOPS_GITLAB_REPO_SSH=git@gitlab.com:$TEST_REPO_GITLAB_ORG/tssc-dev-gitops.git
     TEST_BUILD_JENKINS_REPO_SSH=git@github.com:$TEST_REPO_ORG/tssc-dev-source-jenkins.git
     TEST_GITOPS_JENKINS_REPO_SSH=git@github.com:$TEST_REPO_ORG/tssc-dev-gitops-jenkins.git
+    TEST_BUILD_AZURE_REPO_SSH=git@github.com:$TEST_REPO_ORG/tssc-dev-source-azure.git
+    TEST_GITOPS_AZURE_REPO_SSH=git@github.com:$TEST_REPO_ORG/tssc-dev-gitops-azure.git
 fi
 
 function cloneRepo() {
@@ -92,6 +97,7 @@ function cloneRepo() {
 # Github in build/gitops
 # Gitlab in gitlab-build, gitlab-gitops
 # Jenkins in jenkins-build, jenkins-gitops
+# Azure in azure-build, azure-gitops
 
 TMP_REPOS=tmp
 rm -rf $TMP_REPOS/*
@@ -101,6 +107,8 @@ GITLAB_BUILD=$TMP_REPOS/gitlab-build
 GITLAB_GITOPS=$TMP_REPOS/gitlab-gitops
 JENKINS_BUILD=$TMP_REPOS/jenkins-build
 JENKINS_GITOPS=$TMP_REPOS/jenkins-gitops
+AZURE_BUILD=$TMP_REPOS/azure-build
+AZURE_GITOPS=$TMP_REPOS/azure-gitops
 
 # Change this for public or private image testing
 export TEST_PRIVATE_REGISTRY=${TEST_PRIVATE_REGISTRY:-true}
@@ -117,6 +125,8 @@ cloneRepo $UPSTREAM_BUILD_REPO ${TEST_BUILD_GITLAB_REPO_SSH:-$TEST_BUILD_GITLAB_
 cloneRepo $UPSTREAM_GITOPS_REPO ${TEST_GITOPS_GITLAB_REPO_SSH:-$TEST_GITOPS_GITLAB_REPO} $TEST_GITOPS_GITLAB_REPO $GITLAB_GITOPS
 cloneRepo $UPSTREAM_BUILD_REPO ${TEST_BUILD_JENKINS_REPO_SSH:-$TEST_BUILD_JENKINS_REPO} $TEST_BUILD_JENKINS_REPO $JENKINS_BUILD
 cloneRepo $UPSTREAM_GITOPS_REPO ${TEST_GITOPS_JENKINS_REPO_SSH:-$TEST_GITOPS_JENKINS_REPO} $TEST_GITOPS_JENKINS_REPO $JENKINS_GITOPS
+cloneRepo $UPSTREAM_BUILD_REPO ${TEST_BUILD_AZURE_REPO_SSH:-$TEST_BUILD_AZURE_REPO} $TEST_BUILD_AZURE_REPO $AZURE_BUILD
+cloneRepo $UPSTREAM_GITOPS_REPO ${TEST_GITOPS_AZURE_REPO_SSH:-$TEST_GITOPS_AZURE_REPO} $TEST_GITOPS_AZURE_REPO $AZURE_GITOPS
 
 # Avoid messing with your real $HOME/.gitconfig when running locally
 if [ -n "$LOCAL_SHELL_RUN" ]; then

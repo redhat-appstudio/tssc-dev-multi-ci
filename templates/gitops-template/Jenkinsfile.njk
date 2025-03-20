@@ -8,6 +8,9 @@ pipeline {
         /* Not used but init.sh will fail if they're missing */
         COSIGN_SECRET_PASSWORD = 'dummy'
         COSIGN_SECRET_KEY = 'dummy'
+        {%- for secret in gitops_variables -%}
+        {%- include "jenkins-secret.njk" -%}
+        {%- endfor %}
         {%- for secret in gitops_secrets -%}
         {%- include "jenkins-secret.njk" -%}
         {%- endfor %}
