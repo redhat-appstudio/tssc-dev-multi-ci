@@ -6,11 +6,11 @@ variables:
   CI_TYPE: gitlab
 
 stages:
-  - Verify EC
-  - Upload SBOM
+  - Verify_EC
+  - Upload_SBOM
 
 gather-deploy-images:
-  stage: Verify EC
+  stage: Verify_EC
   script:
     - echo "• gather-deploy-images"
     - bash /work/rhtap/gather-deploy-images.sh
@@ -21,7 +21,7 @@ gather-deploy-images:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
 
 verify-enterprise-contract:
-  stage: Verify EC
+  stage: Verify_EC
   needs: [gather-deploy-images]
   script:
     - echo "• verify-enterprise-contract"
@@ -33,7 +33,7 @@ verify-enterprise-contract:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
 
 gather-images-to-upload-sbom:
-  stage: Upload SBOM
+  stage: Upload_SBOM
   script:
     - echo "• gather-images-to-upload-sbom"
     - bash /work/rhtap/gather-images-to-upload-sbom.sh
@@ -44,7 +44,7 @@ gather-images-to-upload-sbom:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
 
 download-sbom-from-url-in-attestation:
-  stage: Upload SBOM
+  stage: Upload_SBOM
   needs: [gather-images-to-upload-sbom]
   script:
     - echo "• download-sbom-from-url-in-attestation"
@@ -56,7 +56,7 @@ download-sbom-from-url-in-attestation:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
 
 upload-sbom-to-trustification:
-  stage: Upload SBOM
+  stage: Upload_SBOM
   needs: [download-sbom-from-url-in-attestation]
   script:
     - echo "• upload-sbom-to-trustification"

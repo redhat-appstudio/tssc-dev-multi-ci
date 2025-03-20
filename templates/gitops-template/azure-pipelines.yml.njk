@@ -1,0 +1,19 @@
+{%- include "do-not-edit.njk" -%}
+{%- set secrets = gitops_secrets -%}
+
+trigger:
+- main
+
+pool:
+  name: resourcehub
+
+container:
+  image: quay.io/redhat-appstudio/rhtap-task-runner:latest
+  options: --privileged
+
+steps:
+{%- filter indent(2) -%}
+{%- for step in gitops_steps %}
+{% include "azure-step.njk" %}
+{%- endfor -%}
+{%- endfilter -%}
