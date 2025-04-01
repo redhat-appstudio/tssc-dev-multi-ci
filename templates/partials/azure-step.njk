@@ -1,0 +1,19 @@
+- bash: |
+{%- filter indent(2) -%}
+{%- for substep in step.substeps %}
+  echo "• {{ substep }}"
+  bash /work/rhtap/{{ substep }}.sh
+{%- endfor %}
+name: {{ step.name | title }}
+env:
+{%- filter indent(2) -%}
+{%- for secret in secrets %}
+{%- if secret | eval_if_condition %}
+{%- if secret.comment %}
+# {{ secret.comment }}
+{%- endif %}
+{% if secret.commented_out %}# {% endif %}{{ secret.name }}: $({{ secret.name}})
+{%- endif %}
+{%- endfor %}
+{%- endfilter -%}
+{%- endfilter -%}
