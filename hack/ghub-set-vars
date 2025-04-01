@@ -1,45 +1,67 @@
 #!/bin/bash
-SCRIPTDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" > /dev/null 2>&1 && pwd)"
 
-if [ $# -eq 1 ]; then
-    REPO_URL=$1
-    # Assume $REPO_URL is like "https://github.com/org/repo"
-    # and use cut to pull out the "org/repo" part
-    ORG_AND_REPO=$(echo "$REPO_URL" | cut -d/ -f4,5)
-fi
+# Helper script used to simplify setting
+# variables and secrets in a GitHub repository
 
-function setVars() {
-    NAME=$1
-    VALUE=$2
+set -euo pipefail
 
-    echo "setting Secret $NAME in github.com/$ORG_AND_REPO"
-    if [ -z "$VALUE" ]; then
-        gh secret set "$NAME" --body " " --repo "$ORG_AND_REPO"
-    else
-        gh secret set "$NAME" --body "$VALUE" --repo "$ORG_AND_REPO"
-    fi
+function echo_usage() {
+    echo "Usage: $0 OWNER/REPO"
+    echo "       $0 https://github.com/OWNER/REPO"
 }
 
-setVars IMAGE_REGISTRY quay.io/$QUAY_IO_CREDS_USR
-setVars IMAGE_REGISTRY_USER $QUAY_IO_CREDS_USR
-setVars IMAGE_REGISTRY_PASSWORD $QUAY_IO_CREDS_PSW
+if [ $# -ne 1 ]; then
+    echo "Invalid number of arguments"
+    echo
+    echo_usage
+    exit 1
+fi
 
-setVars ROX_CENTRAL_ENDPOINT $ROX_CENTRAL_ENDPOINT
-setVars ROX_API_TOKEN $ROX_API_TOKEN
+github_repository=$1
 
-setVars GITOPS_AUTH_PASSWORD $GITOPS_AUTH_PASSWORD
+# Naive check that the provided repository in the argument matches
+# the expected format (see usage)
+if ! [[ "$github_repository" =~ ^(https://github.com/)?(.+/.+)$ ]]; then
+    echo "Invalid format of the provided argument '${github_repository}'"
+    echo
+    echo_usage
+fi
 
-setVars QUAY_IO_CREDS_USR $QUAY_IO_CREDS_USR
-setVars QUAY_IO_CREDS_PSW $QUAY_IO_CREDS_PSW
+# Set repository variable via GitHub CLI
+# The value of the variable will NOT be hidden in the logs
+function set_variable() {
+    echo "Setting variable '$1' in $github_repository..."
+    gh variable set "$1" --body "$2" --repo "$github_repository"
+}
 
-setVars COSIGN_SECRET_PASSWORD $COSIGN_SECRET_PASSWORD
-setVars COSIGN_SECRET_KEY $COSIGN_SECRET_KEY
-setVars COSIGN_PUBLIC_KEY $COSIGN_PUBLIC_KEY
+# Set repository secret via GitHub CLI
+function set_secret() {
+    echo "Setting secret '$1' in $github_repository..."
+    gh secret set "$1" --body "$2" --repo "$github_repository"
+}
 
-setVars TRUSTIFICATION_BOMBASTIC_API_URL "$TRUSTIFICATION_BOMBASTIC_API_URL"
-setVars TRUSTIFICATION_OIDC_ISSUER_URL "$TRUSTIFICATION_OIDC_ISSUER_URL"
-setVars TRUSTIFICATION_OIDC_CLIENT_ID "$TRUSTIFICATION_OIDC_CLIENT_ID"
-setVars TRUSTIFICATION_OIDC_CLIENT_SECRET "$TRUSTIFICATION_OIDC_CLIENT_SECRET"
-setVars TRUSTIFICATION_SUPPORTED_CYCLONEDX_VERSION "$TRUSTIFICATION_SUPPORTED_CYCLONEDX_VERSION"
+# Set the minimum required variables and secrets
+set_variable IMAGE_REGISTRY quay.io/"$QUAY_IO_CREDS_USR"
+set_variable IMAGE_REGISTRY_USER "$QUAY_IO_CREDS_USR"
+set_secret IMAGE_REGISTRY_PASSWORD "$QUAY_IO_CREDS_PSW"
 
-gh secret list
+set_variable ROX_CENTRAL_ENDPOINT "$ROX_CENTRAL_ENDPOINT"
+set_secret ROX_API_TOKEN "$ROX_API_TOKEN"
+
+set_secret GITOPS_AUTH_PASSWORD "$GITOPS_AUTH_PASSWORD"
+
+set_variable QUAY_IO_CREDS_USR "$QUAY_IO_CREDS_USR"
+set_secret QUAY_IO_CREDS_PSW "$QUAY_IO_CREDS_PSW"
+
+set_secret COSIGN_SECRET_PASSWORD "$COSIGN_SECRET_PASSWORD"
+set_secret COSIGN_SECRET_KEY "$COSIGN_SECRET_KEY"
+set_variable COSIGN_PUBLIC_KEY "$COSIGN_PUBLIC_KEY"
+
+set_variable TRUSTIFICATION_BOMBASTIC_API_URL "$TRUSTIFICATION_BOMBASTIC_API_URL"
+set_variable TRUSTIFICATION_OIDC_ISSUER_URL "$TRUSTIFICATION_OIDC_ISSUER_URL"
+set_variable TRUSTIFICATION_OIDC_CLIENT_ID "$TRUSTIFICATION_OIDC_CLIENT_ID"
+set_variable TRUSTIFICATION_SUPPORTED_CYCLONEDX_VERSION "$TRUSTIFICATION_SUPPORTED_CYCLONEDX_VERSION"
+set_secret TRUSTIFICATION_OIDC_CLIENT_SECRET "$TRUSTIFICATION_OIDC_CLIENT_SECRET"
+
+echo
+echo "All variables and secrets are set."

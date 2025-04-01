@@ -5,6 +5,9 @@
 pipeline {
     agent any
     environment {
+        {%- for secret in build_vars -%}
+        {%- include "jenkins-secret.njk" -%}
+        {%- endfor %}
         {%- for secret in build_secrets -%}
         {%- include "jenkins-secret.njk" -%}
         {%- endfor %}
