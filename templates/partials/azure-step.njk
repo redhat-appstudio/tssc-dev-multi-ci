@@ -4,7 +4,7 @@
   echo "• {{ substep }}"
   bash /work/rhtap/{{ substep }}.sh
 {%- endfor %}
-name: {{ step.name | title }}
+name: {{ step.name | replace(" ", "_") }}
 env:
 {%- filter indent(2) -%}
 {%- for secret in secrets %}

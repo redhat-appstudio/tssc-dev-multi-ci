@@ -14,7 +14,7 @@ steps:
   - bash: |
       echo "• init"
       bash /work/rhtap/init.sh
-    name: Init
+    name: init
     env:
       ROX_API_TOKEN: $(ROX_API_TOKEN)
       GITOPS_AUTH_PASSWORD: $(GITOPS_AUTH_PASSWORD)
@@ -30,7 +30,7 @@ steps:
       bash /work/rhtap/buildah-rhtap.sh
       echo "• cosign-sign-attest"
       bash /work/rhtap/cosign-sign-attest.sh
-    name: Build
+    name: build
     env:
       ROX_API_TOKEN: $(ROX_API_TOKEN)
       GITOPS_AUTH_PASSWORD: $(GITOPS_AUTH_PASSWORD)
@@ -44,7 +44,7 @@ steps:
   - bash: |
       echo "• update-deployment"
       bash /work/rhtap/update-deployment.sh
-    name: Deploy
+    name: deploy
     env:
       ROX_API_TOKEN: $(ROX_API_TOKEN)
       GITOPS_AUTH_PASSWORD: $(GITOPS_AUTH_PASSWORD)
@@ -62,7 +62,7 @@ steps:
       bash /work/rhtap/acs-image-check.sh
       echo "• acs-image-scan"
       bash /work/rhtap/acs-image-scan.sh
-    name: Scan
+    name: scan
     env:
       ROX_API_TOKEN: $(ROX_API_TOKEN)
       GITOPS_AUTH_PASSWORD: $(GITOPS_AUTH_PASSWORD)
@@ -78,7 +78,7 @@ steps:
       bash /work/rhtap/show-sbom-rhdh.sh
       echo "• summary"
       bash /work/rhtap/summary.sh
-    name: Summary
+    name: summary
     env:
       ROX_API_TOKEN: $(ROX_API_TOKEN)
       GITOPS_AUTH_PASSWORD: $(GITOPS_AUTH_PASSWORD)
