@@ -1,6 +1,6 @@
 module github.com/redhat-appstudio/tssc-dev-multi-ci/tools/syft
 
-go 1.23.2
+go 1.23.6
 
 require github.com/anchore/syft v1.19.0
 
