@@ -1,6 +1,6 @@
 module github.com/redhat-appstudio/tssc-dev-multi-ci/tools/yq
 
-go 1.23.0
+go 1.23.6
 
 require github.com/mikefarah/yq/v4 v4.45.1
 
