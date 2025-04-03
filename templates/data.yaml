@@ -160,10 +160,10 @@ gitops_variables:
 gitops_secrets:
   - name: TRUSTIFICATION_OIDC_CLIENT_SECRET
   - name: IMAGE_REGISTRY_PASSWORD
-    if: 'isGitHub'
+    if: 'isGitHub || isAzure'
     comment: "Set this password for your specific registry"
   - name: IMAGE_REGISTRY_PASSWORD
-    if: '!isGitHub'
+    if: '!isGitHub && !isAzure'
     commented_out: true
     comment: "Set this password for your specific registry" 
   # show all the values options in the jenkins file and other CIs
