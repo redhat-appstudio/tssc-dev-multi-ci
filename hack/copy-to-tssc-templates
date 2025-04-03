@@ -70,7 +70,7 @@ rm -rf $JENKINS_SHARED_LIB/resources/env.template.sh
 rm -rf $JENKINS_SHARED_LIB/resources/signing-secret-env.sh
 
 # templates are copied 1-1
-for ciType in jenkins gitlabci githubactions; do
+for ciType in jenkins gitlabci githubactions azure; do
     update-tssc-templates $CI_ROOT_SRC $ciType rhtap/env.template.sh $GEN_SRC
     update-tssc-templates $CI_ROOT_GITOPS $ciType rhtap/env.template.sh $GEN_GITOPS
 done
