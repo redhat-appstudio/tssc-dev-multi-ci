@@ -1,6 +1,6 @@
 {%- include "do-not-edit.njk" -%}
 
-image: quay.io/redhat-appstudio/rhtap-task-runner:latest
+image: quay.io/redhat-appstudio/rhtap-task-runner:1.5
 
 variables:
   CI_TYPE: gitlab
@@ -27,7 +27,7 @@ stages:
       - results/
   {#- The update-deployment should run only after changes are merged -#}
   {% if substep == "update-deployment" %}
-  rules: 
+  rules:
     - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   {%- endif %}
 {%- endfor -%}
