@@ -21,6 +21,10 @@ build_variables:
     commented_out: true
   - name: GITOPS_AUTH_USERNAME
     if: 'isGitLab'
+  - name: GITOPS_AUTH_USERNAME
+    if: 'isAzure'
+    commented_out: true
+    comment: "Uncomment this when using Bitbucket"
 
   - name: IMAGE_REGISTRY_USER
     if: 'isGitHub || isAzure'
@@ -63,6 +67,11 @@ build_variables:
 
 build_secrets:
   - name: ROX_API_TOKEN
+
+  - name: GITOPS_AUTH_USERNAME
+    if: 'isAzure'
+    commented_out: true
+    comment: "Uncomment this when using Bitbucket"
 
   - name: GITOPS_AUTH_PASSWORD
 
