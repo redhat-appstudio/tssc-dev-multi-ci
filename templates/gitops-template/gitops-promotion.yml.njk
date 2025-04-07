@@ -13,15 +13,14 @@ env:
   # 🖊️ EDIT to change the image registry settings.
   # Registries such as GHCR, Quay.io, and Docker Hub are supported.
   IMAGE_REGISTRY: ${{ "secrets.IMAGE_REGISTRY" | inCurlies }}
-{% filter indent(2) %}
+{{ '' }}{# Ensure new line for better readability #}
 {%- for var in gitops_variables -%}
 {% include "github-variable.njk" %}
 {%- endfor %}
-# Secrets
+  # Secrets
 {%- for secret in gitops_secrets -%}
 {% include "github-secret.njk" %}
 {%- endfor %}
-{% endfilter %}
 
   # 🖊️ EDIT to specify custom tags for the container image, or default tags will be generated below.
   IMAGE_TAGS: ""
@@ -41,97 +40,97 @@ jobs:
     environment: production
 
     steps:
-    - name: Check for required secrets
-      uses: actions/github-script@v7
-      with:
-        script: |
-          {#-
-            Perhaps this could use the bash var/secret checker too for consistency
-          #}
-          const vars = {
-            IMAGE_REGISTRY: `${{ "vars.IMAGE_REGISTRY" | inCurlies }}`,
+      - name: Check for required secrets
+        uses: actions/github-script@v7
+        with:
+          script: |
+            {#-
+              Perhaps this could use the bash var/secret checker too for consistency
+            #}
+            const vars = {
+              IMAGE_REGISTRY: `${{ "vars.IMAGE_REGISTRY" | inCurlies }}`,
 {% for var in gitops_variables %}
 {%- if var | eval_if_condition %}
 {%- if var.comment %}
-            /* {{ var.comment }} */
+             /* {{ var.comment }} */
 {%- endif %}
-            {% if var.commented_out %}/*{% endif %}{{ var.name }}: `${{ ("vars." + var.name) | inCurlies }}`, {% if var.commented_out %}*/{% endif %}
+             {% if var.commented_out %}/*{% endif %}{{ var.name }}: `${{ ("vars." + var.name) | inCurlies }}`,{% if var.commented_out %}*/{% endif %}
 {%- endif %}
 {%- endfor %}
-          };
+            };
 
-          const missingVars = Object.entries(vars).filter(([ name, value ]) => {
-            if (value.length === 0) {
-              core.error(`Variable "${name}" is not set`);
-              return true;
-            }
-            core.info(`✔️ Variable "${name}" is set`);
-            return false;
-          });
+            const missingVars = Object.entries(vars).filter(([ name, value ]) => {
+              if (value.length === 0) {
+                core.error(`Variable "${name}" is not set`);
+                return true;
+              }
+              core.info(`✔️ Variable "${name}" is set`);
+              return false;
+            });
 
-          const secrets = {
+            const secrets = {
 {% for secret in gitops_secrets %}
 {%- if secret | eval_if_condition %}
 {%- if secret.comment %}
-            /* {{ secret.comment }} */
+              /* {{ secret.comment }} */
 {%- endif %}
-            {% if secret.commented_out %}/*{% endif %}{{ secret.name }}: `${{ ("secrets." + secret.name) | inCurlies }}`, {% if secret.commented_out %}*/{% endif %}
+             {% if secret.commented_out %}/*{% endif %}{{ secret.name }}: `${{ ("secrets." + secret.name) | inCurlies }}`,{% if secret.commented_out %}*/{% endif %}
 {%- endif %}
 {%- endfor %}
-          };
+            };
 
-          const missingSecrets = Object.entries(secrets).filter(([ name, value ]) => {
-            if (value.length === 0) {
-              core.error(`Secret "${name}" is not set`);
-              return true;
+            const missingSecrets = Object.entries(secrets).filter(([ name, value ]) => {
+              if (value.length === 0) {
+                core.error(`Secret "${name}" is not set`);
+                return true;
+              }
+              core.info(`✔️ Secret "${name}" is set`);
+              return false;
+            });
+
+            if (missingVars.length > 0) {
+              core.error(`❌ At least one required variable is not set in the repository. \n` +
+                "You can add it using:\n" +
+                "GitHub UI: https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/store-information-in-variables#creating-configuration-variables-for-a-repository \n" +
+                "GitHub CLI: https://cli.github.com/manual/gh_variable_set \n" +
+                "Also, refer to https://github.com/redhat-actions/oc-login#getting-started-with-the-action-or-see-example");
             }
-            core.info(`✔️ Secret "${name}" is set`);
-            return false;
-          });
 
-          if (missingVars.length > 0) {
-            core.error(`❌ At least one required variable is not set in the repository. \n` +
-              "You can add it using:\n" +
-              "GitHub UI: https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/store-information-in-variables#creating-configuration-variables-for-a-repository \n" +
-              "GitHub CLI: https://cli.github.com/manual/gh_variable_set \n" +
-              "Also, refer to https://github.com/redhat-actions/oc-login#getting-started-with-the-action-or-see-example");
-          }
+            if (missingSecrets.length > 0) {
+              core.error(`❌ At least one required secret is not set in the repository. \n` +
+                "You can add it using:\n" +
+                "GitHub UI: https://docs.github.com/en/actions/reference/encrypted-secrets#creating-encrypted-secrets-for-a-repository \n" +
+                "GitHub CLI: https://cli.github.com/manual/gh_secret_set \n" +
+                "Also, refer to https://github.com/redhat-actions/oc-login#getting-started-with-the-action-or-see-example");
+            }
 
-          if (missingSecrets.length > 0) {
-            core.error(`❌ At least one required secret is not set in the repository. \n` +
-              "You can add it using:\n" +
-              "GitHub UI: https://docs.github.com/en/actions/reference/encrypted-secrets#creating-encrypted-secrets-for-a-repository \n" +
-              "GitHub CLI: https://cli.github.com/manual/gh_secret_set \n" +
-              "Also, refer to https://github.com/redhat-actions/oc-login#getting-started-with-the-action-or-see-example");
-          }
-
-          if (missingVars.length > 0 || missingSecrets.length > 0) {
-            core.setFailed()
-          } else {
-            core.info(`✅ All the required variables and secrets are set`);
-          }
-    - name: Check out repository
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: '2'
-    - name: Pre-init
-      run: |
-        buildah --version
-        syft --version
-        cosign version
-        ec version
-        {# So git doesn't throw "dubious ownership" errors -#}
-        git config --global --add safe.directory $(pwd)
-        cat rhtap/env.sh
+            if (missingVars.length > 0 || missingSecrets.length > 0) {
+              core.setFailed()
+            } else {
+              core.info(`✅ All the required variables and secrets are set`);
+            }
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: '2'
+      - name: Pre-init
+        run: |
+          buildah --version
+          syft --version
+          cosign version
+          ec version
+          {# So git doesn't throw "dubious ownership" errors -#}
+          git config --global --add safe.directory $(pwd)
+          cat rhtap/env.sh
 
 {%- for step in gitops_steps %}
-    - name: {{ step.name | title }}
-      run: |
+      - name: {{ step.name | title }}
+        run: |
 {%- for substep in step.substeps %}
-        echo "• {{ substep }}"
-        bash /work/rhtap/{{ substep }}.sh
+          echo "• {{ substep }}"
+          bash /work/rhtap/{{ substep }}.sh
 {%- endfor -%}
 {%- endfor %}
-    - name: Done
-      run: |
-        echo "Done"
+      - name: Done
+        run: |
+          echo "Done"

@@ -2,7 +2,7 @@
 {%- set secrets = build_secrets -%}
 
 trigger:
-- main
+  - main
 
 # Using self-hosted 'Default' agent pool by default
 # Change accordingly when using a different agent pool
@@ -20,7 +20,7 @@ container:
 # Can be deleted if the variables are set differently
 # See https://learn.microsoft.com/en-us/azure/devops/pipelines/process/variables
 variables:
-- group: rhtap
+  - group: rhtap
 
 steps:
 {%- filter indent(2) -%}
