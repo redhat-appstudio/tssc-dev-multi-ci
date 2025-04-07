@@ -8,7 +8,13 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "false"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-cel-expression: event == "push" && target_branch
-      == "release-v1.5.x"
+      == "release-v1.5.x" &&
+      (
+        ".tekton/rhtap-task-runner-1-5-push.yaml".pathChanged() ||
+        "Dockerfile".pathChanged() ||
+        "rhtap/***".pathChanged() ||
+        "tools/***".pathChanged()
+      )
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rhtap-task-runner-1-5
@@ -28,6 +34,17 @@ spec:
     value: Dockerfile
   - name: path-context
     value: .
+  - name: hermetic
+    value: "true"
+  - name: prefetch-input
+    value: |
+      [
+        {"type": "gomod", "path": "tools/syft"},
+        {"type": "gomod", "path": "tools/yq"},
+        {"type": "rpm", "path": "tools/rpm-manifests"}
+      ]
+  - name: build-source-image
+    value: "true"
   pipelineSpec:
     description: |
       This pipeline is ideal for building container images from a Containerfile while maintaining trust after pipeline customization.
@@ -169,6 +186,8 @@ spec:
       params:
       - name: input
         value: $(params.prefetch-input)
+      - name: dev-package-managers
+        value: "true"
       - name: SOURCE_ARTIFACT
         value: $(tasks.clone-repository.results.SOURCE_ARTIFACT)
       - name: ociStorage
