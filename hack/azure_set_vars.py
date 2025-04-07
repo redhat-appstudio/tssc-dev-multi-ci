@@ -143,6 +143,7 @@ def main() -> None:
     variables_to_set = [
         VarFromEnv("ROX_CENTRAL_ENDPOINT", is_secret=False),
         VarFromEnv("ROX_API_TOKEN"),
+        VarFromEnv("GITOPS_AUTH_USERNAME"),
         VarFromEnv("GITOPS_AUTH_PASSWORD"),
         VarFromEnv("QUAY_IO_CREDS_USR", is_secret=False),
         VarFromEnv("QUAY_IO_CREDS_PSW"),
