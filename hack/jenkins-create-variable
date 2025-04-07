@@ -1,0 +1,31 @@
+#!/bin/bash
+
+set -euo pipefail
+
+SCRIPTDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" > /dev/null 2>&1 && pwd)"
+
+if [ $# -ne 2 ]; then
+    echo "Invalid number of arguments"
+    echo
+    echo "Usage: $0 <key> <value>"
+    exit 1
+fi
+
+key="$1"
+value="$2"
+
+# Define a Groovy script that creates/updates an environment variable
+read -r -d '' groovy_create_var << EOF
+import jenkins.model.*
+nodes = Jenkins.instance.globalNodeProperties
+nodes.getAll(hudson.slaves.EnvironmentVariablesNodeProperty.class)
+envVars = nodes[0].envVars
+envVars['${key}'] = '"${value}"'
+println("Set '${key}' to: " + envVars['${key}'])
+EOF
+
+# Run the Groovy script via Jenkins CLI
+java -jar "$SCRIPTDIR/jenkins-cli.jar" \
+    -s "$MY_JENKINS_SERVER" \
+    -auth "$MY_JENKINS_USER:$MY_JENKINS_TOKEN" \
+    groovy = < <(echo "$groovy_create_var")
