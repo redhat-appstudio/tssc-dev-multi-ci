@@ -198,3 +198,13 @@ for sbom_path in "${sboms_to_upload[@]}"; do
         --data "@$supported_version_of_sbom" \
         "$bombastic_api_url/api/v1/sbom?id=$sbom_id"
 done
+
+echo ""
+echo "TPA_SBOM_URL_EYECATCHER_BEGIN"
+
+tpa_url=${bombastic_api_url//sbom/console}
+tpa_sbom_id="${sbom_id//sha256:/sha256%3A}"
+
+jq -n --arg url "$tpa_url/sbom/content/$tpa_sbom_id" '{"TPA_SBOM_URL": $url}'
+
+echo "TPA_SBOM_URL_EYECATCHER_END"
