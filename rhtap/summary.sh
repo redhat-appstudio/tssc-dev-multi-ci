@@ -34,6 +34,20 @@ function cosignTree() {
     cosign tree $URL
 }
 
+echo "SUMMARY_EYECATCHER_BEGIN"
+
+jq '{results: .}' -s < <(
+    find "$BASE_RESULTS" -mindepth 2 -maxdepth 2 -name STATUS | while read -r status_file; do
+        name=$(basename "$(dirname "$status_file")")
+        result=$(tr '[:upper:]' '[:lower:]' < "$status_file")
+
+        jq -n --arg name "$name" --arg result "$result" \
+            '{name: $name, result: $result}'
+    done
+)
+
+echo "SUMMARY_EYECATCHER_END"
+
 # Task Steps
 appstudio-summary
 showTree $BASE_RESULTS
