@@ -1,4 +1,4 @@
-FROM registry.redhat.io/rhtas/cosign-rhel9:1.1.1@sha256:3cd261cd4fed03688c6fd3c6161ae1ec69e908bbb6593ec279415414c7422535 as cosign
+FROM registry.redhat.io/rhtas/cosign-rhel9:1.2.0@sha256:cb53dcc3bc912dd7f12147f33af1b435eae5ff4ab83b85c0277b4004b20a0248 as cosign
 
 FROM registry.redhat.io/rhtas/ec-rhel9:0.6@sha256:378aeb6734bd0738fd3639c875901290c5de43d955060989d94ad81b3b3915dd as ec
 
