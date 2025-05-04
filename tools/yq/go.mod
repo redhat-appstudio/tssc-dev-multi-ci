@@ -2,7 +2,7 @@ module github.com/redhat-appstudio/tssc-dev-multi-ci/tools/yq
 
 go 1.23.6
 
-require github.com/mikefarah/yq/v4 v4.45.1
+require github.com/mikefarah/yq/v4 v4.45.2
 
 require (
 	github.com/a8m/envsubst v1.4.2 // indirect
