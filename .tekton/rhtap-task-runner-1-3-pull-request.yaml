@@ -583,7 +583,8 @@ spec:
       optional: true
     - name: netrc
       optional: true
-  taskRunTemplate: {}
+  taskRunTemplate:
+    serviceAccountName: build-pipeline-rhtap-task-runner-1-3
   workspaces:
   - name: git-auth
     secret:
