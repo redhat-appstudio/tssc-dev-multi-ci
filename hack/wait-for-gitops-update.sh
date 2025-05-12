@@ -5,6 +5,11 @@ GITHUB_REPO=https://github.com/$MY_GITHUB_USER/tssc-dev-gitops
 GITLAB_REPO=https://gitlab.com/$MY_GITLAB_USER/tssc-dev-gitops
 JENKINS_REPO=https://github.com/$MY_GITHUB_USER/tssc-dev-gitops-jenkins
 
+DEFAULT_INIT_IMAGES=(
+    'quay.io/redhat-appstudio/dance-bootstrap-app:latest'
+    'registry.redhat.io/ubi9/httpd-24:latest'
+)
+
 WORK=$(mktemp -d)
 
 GH_LOCAL=$WORK/gh-gitops
@@ -34,11 +39,20 @@ function promoteIfUpdated() {
     DEFAULT_INIT_IMAGE="quay.io/redhat-appstudio/dance-bootstrap-app:latest"
     if [[ "${!PREV_IMAGE_ENV_NAME}" != "$CURRENT_IMAGE" ]]; then
         echo "$REPO dev changes, from ${!PREV_IMAGE_ENV_NAME} to $CURRENT_IMAGE"
-        if [[ "$CURRENT_IMAGE" == "$DEFAULT_INIT_IMAGE" ]]; then
-            echo "Image changed back to default, skipping using PR to promote image"
-        else
+
+        is_default=false
+        for default_image in "${DEFAULT_INIT_IMAGES[@]}"; do
+            if [[ "$CURRENT_IMAGE" == "$default_image" ]]; then
+                echo "Image changed back to default, skipping using PR to promote image"
+                is_default=true
+                break
+            fi
+        done
+
+        if ! "$is_default"; then
             bash $SCRIPTDIR/rhtap-promote --repo $REPO
         fi
+
         eval "$PREV_IMAGE_ENV_NAME"="$CURRENT_IMAGE"
     fi
 }

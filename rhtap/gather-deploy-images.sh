@@ -3,7 +3,10 @@ SCRIPTDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" > /dev/null 2>&1 && pwd)"
 # gather-deploy-images
 source $SCRIPTDIR/common.sh
 
-# Top level parameters
+DEFAULT_INIT_IMAGES=(
+    'quay.io/redhat-appstudio/dance-bootstrap-app:latest'
+    'registry.redhat.io/ubi9/httpd-24:latest'
+)
 
 function get-images-per-env() {
     echo "Running $TASK_NAME:get-images-per-env"
@@ -23,11 +26,12 @@ function get-images-per-env() {
         yaml_path=components/${component_name}/overlays/${env}/deployment-patch.yaml
         image=$(yq "$IMAGE_PATH" "$yaml_path")
 
-        # Workaround for RHTAPBUGS-1284
-        if [[ "$image" =~ quay.io/redhat-appstudio/dance-bootstrap-app ]]; then
-            # Don't check the dance-bootstrap-app image
-            continue
-        fi
+        for default_image in "${DEFAULT_INIT_IMAGES[@]}"; do
+            if [[ "$image" == "$default_image" ]]; then
+                # Don't check the default placeholder images
+                continue 2 # Go to the next iteration of outer loop, different environment.
+            fi
+        done
 
         if [ -n "$TARGET_BRANCH" ]; then
             prev_image=$(git show "origin/$TARGET_BRANCH:$yaml_path" | yq "$IMAGE_PATH")
