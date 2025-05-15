@@ -1,7 +1,7 @@
 #!/bin/bash
 set -o errexit -o nounset -o pipefail
 
-kubectl -n rhtap get secret rhtap-github-integration -o json | jq --raw-output '
+kubectl -n rhtap get secret tssc-github-integration -o json | jq --raw-output '
     .data |
     {
         GITHUB__APP__ID: .id,
