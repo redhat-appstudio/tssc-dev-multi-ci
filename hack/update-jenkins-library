@@ -1,5 +1,4 @@
 #!/bin/bash
-SCRIPTDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" > /dev/null 2>&1 && pwd)"
 
 # Copy the jenkins file contents the shared library
 # Can be used to update the release by setting
