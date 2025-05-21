@@ -1,8 +1,6 @@
 #!/bin/bash -e
 set -o pipefail
 
-ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" > /dev/null 2>&1 && pwd)"/..
-
 # Print help message
 function print_help() {
     echo "Usage: $0 [--env dev | development | stage ] [--repo <repo-url>] [-h|--help]"

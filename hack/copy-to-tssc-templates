@@ -1,5 +1,4 @@
 #!/bin/bash
-SCRIPTDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" > /dev/null 2>&1 && pwd)"
 
 # Assumes local copies of the repos
 # https://github.com/redhat-appstudio/tssc-sample-templates or user fork in ../

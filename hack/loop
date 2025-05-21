@@ -1,9 +1,0 @@
-#!/bin/bash
-while true; do
-    echo "----"
-    sleep 2
-    for i in json/*.json; do
-        scriptname=$(basename $i .json)
-        node ../hack/convert.js $i > $scriptname.sh
-    done
-done
