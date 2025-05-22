@@ -9,6 +9,14 @@ function version() {
     ec version
 }
 
+function addRootCert() {
+    if [ ! -z "$CUSTOM_ROOT_CA" ]; then
+        echo "Using provided CA bundle"
+        echo "$CUSTOM_ROOT_CA" > /etc/pki/ca-trust/source/anchors/ca-bundle.crt
+        update-ca-trust
+    fi
+}
+
 function initialize-tuf() {
     echo "Running $TASK_NAME:initialize-tuf"
     set -euo pipefail
@@ -98,6 +106,7 @@ function assert() {
 }
 
 # Task Steps
+addRootCert
 version
 initialize-tuf
 login

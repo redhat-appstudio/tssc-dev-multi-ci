@@ -4,6 +4,14 @@ SCRIPTDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" > /dev/null 2>&1 && pwd)"
 # acs-deploy-check
 source $SCRIPTDIR/common.sh
 
+function addRootCert() {
+    if [ ! -z "$CUSTOM_ROOT_CA" ]; then
+        echo "Using provided CA bundle"
+        echo "$CUSTOM_ROOT_CA" > /etc/pki/ca-trust/source/anchors/ca-bundle.crt
+        update-ca-trust
+    fi
+}
+
 function rox-deploy-check() {
     echo "Running $TASK_NAME:rox-deploy-check"
     #!/usr/bin/env bash
@@ -97,6 +105,7 @@ function report() {
 }
 
 # Task Steps
+addRootCert
 rox-deploy-check
 report
 exit_with_success_result
