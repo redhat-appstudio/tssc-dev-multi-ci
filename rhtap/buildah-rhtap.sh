@@ -1,9 +1,18 @@
 #!/bin/bash
+set -euo pipefail
 
 SCRIPTDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" > /dev/null 2>&1 && pwd)"
 
 # buildah-rhtap
 source $SCRIPTDIR/common.sh
+
+function addRootCert() {
+    if [ ! -z "$CUSTOM_ROOT_CA" ]; then
+        echo "Using provided CA bundle"
+        echo "$CUSTOM_ROOT_CA" > /etc/pki/ca-trust/source/anchors/ca-bundle.crt
+        update-ca-trust
+    fi
+}
 
 function login() {
     echo "Running $TASK_NAME:login"
@@ -71,6 +80,8 @@ function delim() {
     printf '=%.0s' {1..8}
 }
 # Task Steps
+delim
+addRootCert
 delim
 login
 delim

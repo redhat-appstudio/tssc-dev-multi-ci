@@ -57,6 +57,14 @@ function create-att-predicate() {
     source "$SCRIPTDIR/att-predicate-$CI_TYPE.sh"
 }
 
+function addRootCert() {
+    if [ ! -z "$CUSTOM_ROOT_CA" ]; then
+        echo "Using provided CA bundle"
+        echo "$CUSTOM_ROOT_CA" > /etc/pki/ca-trust/source/anchors/ca-bundle.crt
+        update-ca-trust
+    fi
+}
+
 # Login to registry using cosign.
 function login() {
     echo "Running $TASK_NAME:login"
@@ -96,6 +104,7 @@ function show-public-key() {
 }
 
 # Task Steps
+addRootCert
 login
 sign
 attest
