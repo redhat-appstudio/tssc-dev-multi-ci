@@ -48,6 +48,14 @@ prepare-registry-user-pass() {
     fi
 }
 
+function addRootCert() {
+    if [ ! -z "$CUSTOM_ROOT_CA" ]; then
+        echo "Using provided CA bundle"
+        echo "$CUSTOM_ROOT_CA" > /etc/pki/ca-trust/source/anchors/ca-bundle.crt
+        update-ca-trust
+    fi
+}
+
 # Performs an image registry login. It takes a single parameter which could be either an image
 # registry, e.g. quay.io, or a full image reference, e.g. quay.io/spam/bacon:crispy.
 function registry-login() {
@@ -81,3 +89,5 @@ export PATH=$PATH:/usr/local/bin
 
 # env.sh comes from the users repo in rhtap/env.sh
 source $DIR/rhtap/env.sh
+
+addRootCert
