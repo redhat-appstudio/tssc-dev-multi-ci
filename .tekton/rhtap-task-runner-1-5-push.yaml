@@ -8,12 +8,8 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "false"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-cel-expression: event == "push" && target_branch
-      == "release-v1.5.x" &&
-      (
-        ".tekton/rhtap-task-runner-1-5-push.yaml".pathChanged() ||
-        "Dockerfile".pathChanged() ||
-        "rhtap/***".pathChanged() ||
-        "tools/***".pathChanged()
+      == "release-v1.5.x" && ( ".tekton/rhtap-task-runner-1-5-push.yaml".pathChanged()
+      || "Dockerfile".pathChanged() || "rhtap/***".pathChanged() || "tools/***".pathChanged()
       )
   creationTimestamp: null
   labels:
@@ -601,7 +597,8 @@ spec:
       optional: true
     - name: netrc
       optional: true
-  taskRunTemplate: {}
+  taskRunTemplate:
+    serviceAccountName: build-pipeline-rhtap-task-runner-1-5
   workspaces:
   - name: git-auth
     secret:
