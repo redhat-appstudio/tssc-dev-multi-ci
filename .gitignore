@@ -1,7 +1,7 @@
 results/
 tmp/
 node_modules/
-rhtap/signing-secret-env.sh
+tssc/signing-secret-env.sh
 render/node_modules/
 .env
 .envrc

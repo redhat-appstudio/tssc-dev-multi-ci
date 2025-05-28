@@ -35,7 +35,7 @@ else
 fi
 
 # copy scripts and groovy files in to proper locations
-# delete extra files - We should move these outside of ./rhtap
+# delete extra files - We should move these outside of ./tssc
 # so we don't copy extra files by mistake
 cp $MULTI_CI/rhtap/* $JENKINS_SHARED_LIB/resources
 cp $MULTI_CI/rhtap.groovy $JENKINS_SHARED_LIB/vars

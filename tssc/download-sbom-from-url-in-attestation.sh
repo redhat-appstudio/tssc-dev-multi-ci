@@ -26,7 +26,7 @@ set -o errexit -o nounset -o pipefail
 #     sboms-workspace/registry.example.org/namespace/bar@sha256:<checksum>/sbom.json
 
 SCRIPTDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" > /dev/null 2>&1 && pwd)"
-# shellcheck source=rhtap/common.sh
+# shellcheck source=tssc/common.sh
 source "$SCRIPTDIR"/common.sh
 
 # Load IMAGES from the results of the gather-deploy-images script (unless the var is already set)

@@ -49,6 +49,6 @@ COPY --from=go-builder /usr/local/bin/syft /usr/bin/syft
 
 WORKDIR /work
 
-COPY ./rhtap ./rhtap/
+COPY tssc ./tssc/
 
 CMD ["/bin/bash"]

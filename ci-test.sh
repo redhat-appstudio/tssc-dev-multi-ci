@@ -57,8 +57,8 @@ function updateBuild() {
     REPO=$1
     GITOPS_REPO_UPDATE=$2
     mkdir -p "$REPO/rhtap"
-    SETUP_ENV=$REPO/rhtap/env.sh
-    cp rhtap/env.template.sh "$SETUP_ENV"
+    SETUP_ENV=$REPO/tssc/env.sh
+    cp tssc/env.template.sh "$SETUP_ENV"
     SED_CMD "s!\${{ values.image }}!$IMAGE_TO_BUILD!g" "$SETUP_ENV"
     SED_CMD "s!\${{ values.dockerfile }}!Dockerfile!g" "$SETUP_ENV"
     SED_CMD "s!\${{ values.buildContext }}!.!g" "$SETUP_ENV"

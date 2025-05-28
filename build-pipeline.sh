@@ -47,7 +47,7 @@ fi
 source $SIGNING_SECRET_ENV
 
 # change into the cloned repository to continue this
-# assume rhtap and other assets have been copied into the repo
+# assume tssc and other assets have been copied into the repo
 
 cd $BUILD
 
