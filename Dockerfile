@@ -52,3 +52,4 @@ WORKDIR /work
 COPY ./rhtap ./rhtap/
 
 CMD ["/bin/bash"]
+
