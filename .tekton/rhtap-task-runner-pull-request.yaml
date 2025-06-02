@@ -8,13 +8,13 @@ metadata:
     build.appstudio.redhat.com/target_branch: '{{target_branch}}'
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-cel-expression: event == "pull_request" && target_branch
-      == "main" && ( ".tekton/rhtap-task-runner-pull-request.yaml".pathChanged() ||
+      == "release-v1.6.x" && ( ".tekton/rhtap-task-runner-pull-request.yaml".pathChanged() ||
       "Dockerfile".pathChanged() || "rhtap/***".pathChanged() || "tools/***".pathChanged()
       )
   creationTimestamp: null
   labels:
-    appstudio.openshift.io/application: rhtap-task-runner
-    appstudio.openshift.io/component: rhtap-task-runner
+    appstudio.openshift.io/application: rhtap-task-runner-1-6
+    appstudio.openshift.io/component: rhtap-task-runner-1-6
     pipelines.appstudio.openshift.io/type: build
   name: rhtap-task-runner-on-pull-request
   namespace: rhtap-shared-team-tenant

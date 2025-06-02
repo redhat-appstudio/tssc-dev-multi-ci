@@ -27,7 +27,7 @@ FROM registry.access.redhat.com/ubi9/ubi-minimal:9.6@sha256:92b1d5747a93608b6adb
 # required per https://github.com/release-engineering/rhtap-ec-policy/blob/main/data/rule_data.yml
 LABEL com.redhat.component="rhtap-task-runner"
 LABEL name="rhtap-task-runner"
-LABEL version="1.5.0"
+LABEL version="1.6.0"
 LABEL release="1"
 LABEL summary="RHTAP Task Runner"
 LABEL description="A collection of CLI tools and scripts needed for RHTAP pipelines"
