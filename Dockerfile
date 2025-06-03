@@ -22,6 +22,10 @@ RUN \
   go install -trimpath --mod=readonly github.com/anchore/syft/cmd/syft && \
   syft version
 
+RUN \
+  cd splashy && \
+  go install -trimpath --mod=readonly github.com/redhat-appstudio/tssc-dev-multi-ci/tools/splashy
+
 FROM registry.access.redhat.com/ubi9/ubi-minimal:9.6@sha256:92b1d5747a93608b6adb64dfd54515c3c5a360802db4706765ff3d8470df6290
 
 # required per https://github.com/release-engineering/rhtap-ec-policy/blob/main/data/rule_data.yml
@@ -46,9 +50,12 @@ COPY --from=cosign /usr/local/bin/cosign /usr/bin/cosign
 COPY --from=ec /usr/local/bin/ec /usr/bin/ec
 COPY --from=go-builder /usr/local/bin/yq /usr/bin/yq
 COPY --from=go-builder /usr/local/bin/syft /usr/bin/syft
+COPY --from=go-builder /usr/local/bin/splashy /usr/bin/splashy
 
 WORKDIR /work
 
 COPY ./rhtap ./rhtap/
 
-CMD ["/bin/bash"]
+COPY ./entrypoint.sh /usr/local/bin/
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
