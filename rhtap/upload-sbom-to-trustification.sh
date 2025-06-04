@@ -196,7 +196,7 @@ for sbom_path in "${sboms_to_upload[@]}"; do
         -H "transfer-encoding: chunked" \
         -H "content-type: application/json" \
         --data "@$supported_version_of_sbom" \
-        "$bombastic_api_url/api/v1/sbom?id=$sbom_id"
+        "$bombastic_api_url/api/v2/sbom?id=$sbom_id"
 done
 
 echo ""
