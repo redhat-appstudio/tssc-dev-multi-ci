@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>RHADS-SSC Bootstrap App</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css">
+
+    <style>
+        body,
+        h1 {
+            font-family: "Lato", sans-serif;
+        }
+
+        .w3-bar,
+        h1,
+        button {
+            font-family: "Montserrat", sans-serif;
+        }
+
+        .column {
+            float: left;
+            width: 80%;
+            text-align: center;
+        }
+
+        .columnr {
+            float: right;
+            width: 20%;
+            text-align: center;
+        }
+
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="w3-container w3-red w3-center" style="padding:64px 16px">
+        <i class="fab fa-redhat fa-5x"></i>
+        <h1 class="w3-margin w3-jumbo">Red Hat Advanced Developer Suite - Software Supply Chain</h1>
+    </header>
+
+    <div class="w3-row-padding w3-padding-64 w3-container">
+        <div class="w3-content">
+            <p class="w3-xlarge">
+                Please wait, your application is still building...
+            </p>
+
+            <h1>Deployed from gitops repository GIT_REPO</h1>
+
+            <p class="w3-xlarge">
+                This is a simple landing page bootstrapped by Red Hat Advanced Developer Suite -
+                Software Supply Chain. This default container was installed into the generated
+                gitops repository as a placeholder image while the source application builds.
+                When the application completes its build and validation, it will replace this
+                landing page via the gitops repository shown above.
+            </p>
+
+            <p>
+                As a demo application this container responds to ports 8080, 8081, and 3001 to
+                enable reuse across multiple deployment ports.
+            </p>
+        </div>
+    </div>
+</body>
+</html>
