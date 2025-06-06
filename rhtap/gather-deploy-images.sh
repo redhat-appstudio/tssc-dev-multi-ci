@@ -6,6 +6,7 @@ source $SCRIPTDIR/common.sh
 DEFAULT_INIT_IMAGES=(
     'quay.io/redhat-appstudio/dance-bootstrap-app'
     'registry.access.redhat.com/rhtap-task-runner/rhtap-task-runner-rhel9'
+    'quay.io/redhat-appstudio/rhtap-task-runner'
 )
 
 function get-images-per-env() {
