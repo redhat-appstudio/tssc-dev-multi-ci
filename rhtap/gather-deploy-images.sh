@@ -4,8 +4,8 @@ SCRIPTDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" > /dev/null 2>&1 && pwd)"
 source $SCRIPTDIR/common.sh
 
 DEFAULT_INIT_IMAGES=(
-    'quay.io/redhat-appstudio/dance-bootstrap-app:latest'
-    'registry.redhat.io/ubi9/httpd-24:latest'
+    'quay.io/redhat-appstudio/dance-bootstrap-app'
+    'registry.access.redhat.com/rhtap-task-runner/rhtap-task-runner-rhel9'
 )
 
 function get-images-per-env() {
@@ -27,7 +27,7 @@ function get-images-per-env() {
         image=$(yq "$IMAGE_PATH" "$yaml_path")
 
         for default_image in "${DEFAULT_INIT_IMAGES[@]}"; do
-            if [[ "$image" == "$default_image" ]]; then
+            if [[ "$image" =~ ^"$default_image" ]]; then
                 # Don't check the default placeholder images
                 continue 2 # Go to the next iteration of outer loop, different environment.
             fi

@@ -6,8 +6,8 @@ GITLAB_REPO=https://gitlab.com/$MY_GITLAB_USER/tssc-dev-gitops
 JENKINS_REPO=https://github.com/$MY_GITHUB_USER/tssc-dev-gitops-jenkins
 
 DEFAULT_INIT_IMAGES=(
-    'quay.io/redhat-appstudio/dance-bootstrap-app:latest'
-    'registry.redhat.io/ubi9/httpd-24:latest'
+    'quay.io/redhat-appstudio/dance-bootstrap-app'
+    'registry.access.redhat.com/rhtap-task-runner/rhtap-task-runner-rhel9'
 )
 
 WORK=$(mktemp -d)
@@ -26,6 +26,17 @@ function getImage() {
     )
 }
 
+function isDefaultImage() {
+    local image
+    image=$1
+    for default_image in "${DEFAULT_INIT_IMAGES[@]}"; do
+        if [[ "$image" =~ ^"$default_image" ]]; then
+            return 0
+        fi
+    done
+    return 1
+}
+
 # Note, the env var name PREV_IMAGE_ENV_NAME is passed so it can be updated
 function promoteIfUpdated() {
     PREV_IMAGE_ENV_NAME=$1
@@ -36,20 +47,10 @@ function promoteIfUpdated() {
     echo "P: ${!PREV_IMAGE_ENV_NAME}"
     echo "C: $CURRENT_IMAGE"
 
-    DEFAULT_INIT_IMAGE="quay.io/redhat-appstudio/dance-bootstrap-app:latest"
     if [[ "${!PREV_IMAGE_ENV_NAME}" != "$CURRENT_IMAGE" ]]; then
         echo "$REPO dev changes, from ${!PREV_IMAGE_ENV_NAME} to $CURRENT_IMAGE"
 
-        is_default=false
-        for default_image in "${DEFAULT_INIT_IMAGES[@]}"; do
-            if [[ "$CURRENT_IMAGE" == "$default_image" ]]; then
-                echo "Image changed back to default, skipping using PR to promote image"
-                is_default=true
-                break
-            fi
-        done
-
-        if ! "$is_default"; then
+        if ! isDefaultImage "${CURRENT_IMAGE}"; then
             bash $SCRIPTDIR/rhtap-promote --repo $REPO
         fi
 
@@ -67,7 +68,7 @@ function pushIfUpdated() {
 
     if [[ "${!PREV_IMAGE_ENV_NAME}" != "$CURRENT_IMAGE" ]]; then
         echo "$REPO dev changes, from ${!PREV_IMAGE_ENV_NAME} to $CURRENT_IMAGE"
-        if [[ "$CURRENT_IMAGE" == "$DEFAULT_INIT_IMAGE" ]]; then
+        if isDefaultImage "${CURRENT_IMAGE}"; then
             echo "Image changed, skipping reset for default base image"
         else
             # jenkins update the gitops repo with a push and then run the job
