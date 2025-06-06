@@ -8,6 +8,7 @@ JENKINS_REPO=https://github.com/$MY_GITHUB_USER/tssc-dev-gitops-jenkins
 DEFAULT_INIT_IMAGES=(
     'quay.io/redhat-appstudio/dance-bootstrap-app'
     'registry.access.redhat.com/rhtap-task-runner/rhtap-task-runner-rhel9'
+    'quay.io/redhat-appstudio/rhtap-task-runner'
 )
 
 WORK=$(mktemp -d)
