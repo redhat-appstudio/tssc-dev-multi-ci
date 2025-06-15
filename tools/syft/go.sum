@@ -102,8 +102,8 @@ github.com/anchore/clio v0.0.0-20250408180537-ec8fa27f0d9f h1:jTeN+fKTXz1VFo3Zj7
 github.com/anchore/clio v0.0.0-20250408180537-ec8fa27f0d9f/go.mod h1:jQ+jv7v9RQnc5oA+Z0rAyXsQfaCAZHwY/CJZiLVggQ4=
 github.com/anchore/fangs v0.0.0-20250319155437-a26984174d7d h1:ubASeOMeChuiZPOaf1LyXuf/k2bUmxgxyb1ZPWXZ6sk=
 github.com/anchore/fangs v0.0.0-20250319155437-a26984174d7d/go.mod h1:XUbUECwVKuD3qYRUj+QZIOHjyyXua2gFmVjKA40iHXA=
-github.com/anchore/go-collections v0.0.0-20240216171411-9321230ce537 h1:GjNGuwK5jWjJMyVppBjYS54eOiiSNv4Ba869k4wh72Q=
-github.com/anchore/go-collections v0.0.0-20240216171411-9321230ce537/go.mod h1:1aiktV46ATCkuVg0O573ZrH56BUawTECPETbZyBcqT8=
+github.com/anchore/go-collections v0.0.0-20241211140901-567f400e9a46 h1:huvprHsfzhrIIkk7kja1Fm5Wn3mnwPv4CeHrGlGD3ds=
+github.com/anchore/go-collections v0.0.0-20241211140901-567f400e9a46/go.mod h1:1aiktV46ATCkuVg0O573ZrH56BUawTECPETbZyBcqT8=
 github.com/anchore/go-homedir v0.0.0-20250319154043-c29668562e4d h1:gT69osH9AsdpOfqxbRwtxcNnSZ1zg4aKy2BevO3ZBdc=
 github.com/anchore/go-homedir v0.0.0-20250319154043-c29668562e4d/go.mod h1:PhSnuFYknwPZkOWKB1jXBNToChBA+l0FjwOxtViIc50=
 github.com/anchore/go-logger v0.0.0-20250318195838-07ae343dd722 h1:2SqmFgE7h+Ql4VyBzhjLkRF/3gDrcpUBj8LjvvO6OOM=
