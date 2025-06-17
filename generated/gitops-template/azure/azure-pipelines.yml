@@ -3,6 +3,8 @@
 pr:
   - main
 
+trigger: none
+
 # Using self-hosted 'Default' agent pool by default
 # Change accordingly when using a different agent pool
 # Can be deleted if self-hosted agents are not being used
