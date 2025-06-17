@@ -179,21 +179,20 @@ for sbom_path in "${sboms_to_upload[@]}"; do
     token_type="$(jq -r .token_type <<< "$token_response")"
     expires_in="$(jq -r ".expires_in // empty" <<< "$token_response")"
 
-    retry_max_time=0 # no limit
+    retry_max_time=600 # 10 minutes as the default value
     if [[ -n "$expires_in" ]]; then
-        retry_max_time="$expires_in"
+        retry_max_time="$expires_in" # Adjust timeout to match token expiration
     fi
 
     # This sbom_id is the one created in the gather-sboms step - sha256:${checksum}
     sbom_id="$(basename -s .json "$sbom_path")"
     supported_version_of_sbom="${sbom_path}.supported_version"
 
-    echo "Uploading SBOM to $bombastic_api_url (with id=$sbom_id)"
+    echo "Uploading SBOM to $bombastic_api_url (with id=$sbom_id) [retry_max_time=$retry_max_time]"
     # https://docs.trustification.dev/trustification/user/bombastic.html#publishing-an-sbom-doc
     curl "${curl_opts[@]}" \
         --retry-max-time "$retry_max_time" \
         -H "authorization: $token_type $access_token" \
-        -H "transfer-encoding: chunked" \
         -H "content-type: application/json" \
         --data "@$supported_version_of_sbom" \
         "$bombastic_api_url/api/v2/sbom?id=$sbom_id"
