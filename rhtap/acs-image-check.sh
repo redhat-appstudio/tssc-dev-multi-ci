@@ -64,7 +64,7 @@ function rox-image-check() {
     )
 
     # If roxctl image check exited with non-zero code and it is not because of policy violations, report error
-    if [ "$severe_violations" -eq 0 ]; then
+    if [[ "$severe_violations" -eq 0 ]]; then
         exit "$ROXCTL_CHECK_STATUS"
     fi
 }
