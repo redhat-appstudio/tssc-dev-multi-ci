@@ -65,7 +65,10 @@ function rox-image-check() {
 
     # If roxctl image check exited with non-zero code and it is not because of policy violations, report error
     if [[ "$severe_violations" -eq 0 ]]; then
+        echo "Error occurred during roxctl image check, please check the logs of rox-image-check step."
         exit "$ROXCTL_CHECK_STATUS"
+    else
+        echo "Note: Violations are reported for informational purposes only and do not cause the task to fail."
     fi
 }
 
