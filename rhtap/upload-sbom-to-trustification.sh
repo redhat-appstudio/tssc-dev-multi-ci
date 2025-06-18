@@ -39,6 +39,13 @@ source "$SCRIPTDIR"/common.sh
 : "${TRUSTIFICATION_OIDC_CLIENT_SECRET=}"
 : "${TRUSTIFICATION_SUPPORTED_CYCLONEDX_VERSION=}"
 
+# Import custom certificate if set.
+if [ ! -z "$CUSTOM_ROOT_CA" ]; then
+    echo "Using provided CA bundle"
+    echo "$CUSTOM_ROOT_CA" > /etc/pki/ca-trust/source/anchors/ca-bundle.crt
+    update-ca-trust
+fi
+
 # Set script-local variables
 WORKDIR=$(mktemp -d --tmpdir "upload-sbom-workdir.XXXXXX")
 trap 'rm -r "$WORKDIR"' EXIT
