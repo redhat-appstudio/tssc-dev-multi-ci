@@ -71,6 +71,10 @@ build_variables:
     commented_out: true
     comment: Used to verify the image signature and attestation
 
+  - name: CUSTOM_ROOT_CA
+    comment: Custom Root CA to be used in scripts as trusted
+    optional: true
+
 build_secrets:
   - name: ROX_API_TOKEN
 
