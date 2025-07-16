@@ -2,7 +2,7 @@
 # Base image for use as a step runner for RHTAP pipelines
 #
 
-FROM registry.access.redhat.com/ubi9/ubi-minimal:9.5@sha256:ac61c96b93894b9169221e87718733354dd3765dd4a62b275893c7ff0d876869
+FROM registry.access.redhat.com/ubi9/ubi-minimal:9.6-1752587672@sha256:6d5a6576c83816edcc0da7ed62ba69df8f6ad3cbe659adde2891bfbec4dbf187
 
 # Todo:
 # - Pin all the versions (maybe)
