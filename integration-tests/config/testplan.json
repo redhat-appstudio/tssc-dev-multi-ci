@@ -1,5 +1,5 @@
 {
-    "templates": ["dotnet-basic"],
+    "templates": ["nodejs"],
     "tssc": [{
       "git": "github",
       "ci": "githubactions",
