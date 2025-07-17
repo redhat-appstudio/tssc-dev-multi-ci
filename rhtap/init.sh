@@ -49,6 +49,7 @@ function init() {
     echo "DEMO $TASK_NAME:init"
     timestamp > $RESULTS/START_TIME
     #!/bin/bash
+    echo "Testing INIT..."
     echo "Build Initialize: $IMAGE_URL"
     echo "Determine if Image Already Exists"
     # Build the image when rebuild is set to true or image does not exist
