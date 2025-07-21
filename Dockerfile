@@ -28,6 +28,10 @@ RUN \
   cd splashy && \
   go install -trimpath --mod=readonly github.com/redhat-appstudio/tssc-dev-multi-ci/tools/splashy
 
+RUN \
+  cd git-init && \
+  go install -trimpath --mod=readonly github.com/tektoncd-catalog/git-clone/git-init
+
 FROM registry.access.redhat.com/ubi9/ubi-minimal:9.6@sha256:92b1d5747a93608b6adb64dfd54515c3c5a360802db4706765ff3d8470df6290
 
 # required per https://github.com/release-engineering/rhtap-ec-policy/blob/main/data/rule_data.yml
@@ -54,6 +58,11 @@ COPY --from=ec /usr/local/bin/reduce-snapshot.sh /usr/bin/reduce-snapshot.sh
 COPY --from=go-builder /usr/local/bin/yq /usr/bin/yq
 COPY --from=go-builder /usr/local/bin/syft /usr/bin/syft
 COPY --from=go-builder /usr/local/bin/splashy /usr/bin/splashy
+COPY --from=go-builder /usr/local/bin/git-init /usr/bin/git-init
+
+# The git-clone Task expects the `git-init` binary to be available at a specific location, instead
+# of relying on $PATH.
+RUN mkdir -p /ko-app && ln -s /usr/bin/git-init /ko-app/git-init
 
 WORKDIR /work
 
