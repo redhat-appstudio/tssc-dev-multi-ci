@@ -48,6 +48,7 @@ RUN \
 
 COPY --from=cosign /usr/local/bin/cosign /usr/bin/cosign
 COPY --from=ec /usr/local/bin/ec /usr/bin/ec
+COPY --from=ec /usr/local/bin/reduce-snapshot.sh /usr/bin/reduce-snapshot.sh
 COPY --from=go-builder /usr/local/bin/yq /usr/bin/yq
 COPY --from=go-builder /usr/local/bin/syft /usr/bin/syft
 COPY --from=go-builder /usr/local/bin/splashy /usr/bin/splashy
