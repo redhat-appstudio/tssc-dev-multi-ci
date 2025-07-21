@@ -2,7 +2,9 @@ FROM registry.redhat.io/rhtas/cosign-rhel9:1.2.0@sha256:cb53dcc3bc912dd7f12147f3
 
 FROM registry.redhat.io/rhtas/ec-rhel9:0.6@sha256:34a7be862ef23c44526ed84bb4f228ffc6c87e15d3e09803546c46bb9cd22d97 as ec
 
-FROM registry.redhat.io/ubi10/go-toolset:1.23@sha256:6429b805280b5c99c5441981d2bfe947f9ffe1fdf105da905a60fbbb095d6ed6 as go-builder
+# Ideally, use the official image from Red Hat, e.g. registry.access.redhat.com/ubi10/go-toolset,
+# but a 1.24 release does not yet exist.
+FROM brew.registry.redhat.io/rh-osbs/openshift-golang-builder:v1.24@sha256:beed4519c775d6123c11351048be29e6f93ab0adaea2c7d55977b445966f5b27 as go-builder
 
 WORKDIR /build
 
