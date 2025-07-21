@@ -2,6 +2,8 @@ FROM registry.redhat.io/rhtas/cosign-rhel9:1.2.0@sha256:cb53dcc3bc912dd7f12147f3
 
 FROM registry.redhat.io/rhtas/ec-rhel9:0.6@sha256:34a7be862ef23c44526ed84bb4f228ffc6c87e15d3e09803546c46bb9cd22d97 as ec
 
+FROM registry.redhat.io/openshift4/ose-cli:latest@sha256:1f3a18b91df18f4a5e27218127495b03e44a670cf04329de98bcb367f4422985 as oc
+
 # Ideally, use the official image from Red Hat, e.g. registry.access.redhat.com/ubi10/go-toolset,
 # but a 1.24 release does not yet exist.
 FROM brew.registry.redhat.io/rh-osbs/openshift-golang-builder:v1.24@sha256:beed4519c775d6123c11351048be29e6f93ab0adaea2c7d55977b445966f5b27 as go-builder
@@ -51,6 +53,7 @@ RUN \
 COPY --from=cosign /usr/local/bin/cosign /usr/bin/cosign
 COPY --from=ec /usr/local/bin/ec /usr/bin/ec
 COPY --from=ec /usr/local/bin/reduce-snapshot.sh /usr/bin/reduce-snapshot.sh
+COPY --from=oc /usr/bin/oc /usr/bin/oc
 COPY --from=go-builder /usr/local/bin/yq /usr/bin/yq
 COPY --from=go-builder /usr/local/bin/syft /usr/bin/syft
 COPY --from=go-builder /usr/local/bin/splashy /usr/bin/splashy
