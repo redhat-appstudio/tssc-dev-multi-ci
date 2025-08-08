@@ -20,7 +20,7 @@ RUN \
   go install -trimpath --mod=readonly github.com/anchore/syft/cmd/syft && \
   syft version
 
-FROM registry.access.redhat.com/ubi9/ubi-minimal:9.5-1742914212@sha256:ac61c96b93894b9169221e87718733354dd3765dd4a62b275893c7ff0d876869
+FROM registry.access.redhat.com/ubi9/ubi-minimal:9.6-1754584681@sha256:8d905a93f1392d4a8f7fb906bd49bf540290674b28d82de3536bb4d0898bf9d7
 
 # required per https://github.com/release-engineering/rhtap-ec-policy/blob/main/data/rule_data.yml
 LABEL com.redhat.component="rhtap-task-runner"
