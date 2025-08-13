@@ -1,6 +1,8 @@
 {%- include "do-not-edit.njk" -%}
 
-image: quay.io/redhat-appstudio/rhtap-task-runner:latest
+image:
+  name: quay.io/redhat-appstudio/rhtap-task-runner:latest
+  pull_policy: always
 
 variables:
   CI_TYPE: gitlab
