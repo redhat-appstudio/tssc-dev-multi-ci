@@ -40,7 +40,7 @@ require (
 	github.com/anchore/fangs v0.0.0-20250716230140-94c22408c232 // indirect
 	github.com/anchore/go-collections v0.0.0-20250717130425-e4a173a279ef // indirect
 	github.com/anchore/go-homedir v0.0.0-20250319154043-c29668562e4d // indirect
-	github.com/anchore/go-logger v0.0.0-20250717130432-dc069d97ae43 // indirect
+	github.com/anchore/go-logger v0.0.0-20250813181427-74728f89a619 // indirect
 	github.com/anchore/go-lzo v0.1.0 // indirect
 	github.com/anchore/go-macholibre v0.0.0-20250320151634-807da7ad2331 // indirect
 	github.com/anchore/go-rpmdb v0.0.0-20250516171929-f77691e1faec // indirect
