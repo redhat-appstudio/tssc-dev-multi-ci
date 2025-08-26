@@ -7,14 +7,14 @@ metadata:
     build.appstudio.redhat.com/target_branch: '{{target_branch}}'
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-cel-expression: event == "push" && target_branch
-      == "main" && ( ".tekton/rhtap-task-runner-push.yaml".pathChanged() || "Dockerfile".pathChanged()
+      == "release-v1.7.x" && ( ".tekton/tssc-task-runner-push.yaml".pathChanged() || "Dockerfile".pathChanged()
       || "rhtap/***".pathChanged() || "tools/***".pathChanged() )
   creationTimestamp: null
   labels:
-    appstudio.openshift.io/application: rhtap-task-runner
-    appstudio.openshift.io/component: rhtap-task-runner
+    appstudio.openshift.io/application: tssc-task-runner-1-7
+    appstudio.openshift.io/component: tssc-task-runner-1-7
     pipelines.appstudio.openshift.io/type: build
-  name: rhtap-task-runner-on-push
+  name: tssc-task-runner-1-7-on-push
   namespace: rhtap-shared-team-tenant
 spec:
   params:
@@ -23,7 +23,7 @@ spec:
   - name: revision
     value: '{{revision}}'
   - name: output-image
-    value: quay.io/redhat-user-workloads/rhtap-shared-team-tenant/rhtap-task-runner:{{revision}}
+    value: quay.io/redhat-user-workloads/rhtap-shared-team-tenant/tssc-task-runner-1-7:{{revision}}
   - name: dockerfile
     value: Dockerfile
   - name: path-context
@@ -539,7 +539,7 @@ spec:
     - name: netrc
       optional: true
   taskRunTemplate:
-    serviceAccountName: build-pipeline-rhtap-task-runner
+    serviceAccountName: build-pipeline-tssc-task-runner-1-7
   workspaces:
   - name: git-auth
     secret:
