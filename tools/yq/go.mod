@@ -4,7 +4,7 @@ go 1.24
 
 toolchain go1.24.1
 
-require github.com/mikefarah/yq/v4 v4.46.1
+require github.com/mikefarah/yq/v4 v4.47.1
 
 require (
 	github.com/a8m/envsubst v1.4.3 // indirect
@@ -29,5 +29,4 @@ require (
 	golang.org/x/sys v0.34.0 // indirect
 	golang.org/x/text v0.27.0 // indirect
 	gopkg.in/op/go-logging.v1 v1.0.0-20160211212156-b2cb9fa56473 // indirect
-	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
