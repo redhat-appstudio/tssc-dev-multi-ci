@@ -686,8 +686,8 @@ github.com/anchore/bubbly v0.0.0-20250717181826-8a411f9d8cbf h1:UY7SQkfVVaeGUpPZ
 github.com/anchore/bubbly v0.0.0-20250717181826-8a411f9d8cbf/go.mod h1:w8Br1ZKk1Nk82YRSh10pcD7LO7avPyFmNnaY1TRPgs0=
 github.com/anchore/clio v0.0.0-20250715152405-a0fa658e5084 h1:7DUAXEdAxoANPlDgxYiaSRKnWnTygvdrrWhnmvEjNLg=
 github.com/anchore/clio v0.0.0-20250715152405-a0fa658e5084/go.mod h1:42dWox8z4//b898OIELsQnSdYq9q1aCXkwp5fKF+BEU=
-github.com/anchore/fangs v0.0.0-20250716230140-94c22408c232 h1:aVC6r9h5wGNh8BYTW3CXxOdPoZzY/bBRWne1NvSTlO8=
-github.com/anchore/fangs v0.0.0-20250716230140-94c22408c232/go.mod h1:Zees1AEKNpXIRgdVAMYWITncarLFiPOtEQ7rl45V/h0=
+github.com/anchore/fangs v0.0.0-20250828023617-677c0acbddf5 h1:YdYySCJ1VebRvQLF52IPHhKq5l8hI/rSc1yCMMJFd50=
+github.com/anchore/fangs v0.0.0-20250828023617-677c0acbddf5/go.mod h1:hpArM8EFqh6uTqWhauAZNq7yzgi8VXtC9PwgnzqPHx0=
 github.com/anchore/go-collections v0.0.0-20250717130425-e4a173a279ef h1:XzwHR9N3SoIqH2aP7Gm90FyH6hhV3BkxNDJwBxkoOUI=
 github.com/anchore/go-collections v0.0.0-20250717130425-e4a173a279ef/go.mod h1:1aiktV46ATCkuVg0O573ZrH56BUawTECPETbZyBcqT8=
 github.com/anchore/go-homedir v0.0.0-20250319154043-c29668562e4d h1:gT69osH9AsdpOfqxbRwtxcNnSZ1zg4aKy2BevO3ZBdc=
@@ -1529,8 +1529,8 @@ github.com/stretchr/testify v1.8.1/go.mod h1:w2LPCIKwWwSfY2zedu0+kehJoqGctiVI29o
 github.com/stretchr/testify v1.8.3/go.mod h1:sz/lmYIOXD/1dqDmKjjqLyZ2RngseejIcXlSw2iwfAo=
 github.com/stretchr/testify v1.8.4/go.mod h1:sz/lmYIOXD/1dqDmKjjqLyZ2RngseejIcXlSw2iwfAo=
 github.com/stretchr/testify v1.9.0/go.mod h1:r2ic/lqez/lEtzL7wO/rwa5dbSLXVDPFyf8C91i36aY=
-github.com/stretchr/testify v1.10.0 h1:Xv5erBjTwe/5IxqUQTdXv5kgmIvbHo3QQyRwhJsOfJA=
-github.com/stretchr/testify v1.10.0/go.mod h1:r2ic/lqez/lEtzL7wO/rwa5dbSLXVDPFyf8C91i36aY=
+github.com/stretchr/testify v1.11.1 h1:7s2iGBzp5EwR7/aIZr8ao5+dra3wiQyKjjFuvgVKu7U=
+github.com/stretchr/testify v1.11.1/go.mod h1:wZwfW3scLgRK+23gO65QZefKpKQRnfz6sD981Nm4B6U=
 github.com/subosito/gotenv v1.2.0/go.mod h1:N0PQaV/YGNqwC0u51sEeR/aUtSLEXKX9iv69rRypqCw=
 github.com/subosito/gotenv v1.6.0 h1:9NlTDc1FTs4qu0DDq7AEtTPNw6SVm7uBMsUCUjABIf8=
 github.com/subosito/gotenv v1.6.0/go.mod h1:Dk4QP5c2W3ibzajGcXpNraDfq2IrhjMIvMSWPKKo0FU=
