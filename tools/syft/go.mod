@@ -37,7 +37,7 @@ require (
 	github.com/anchore/archiver/v3 v3.5.3-0.20241210171143-5b1d8d1c7c51 // indirect
 	github.com/anchore/bubbly v0.0.0-20250717181826-8a411f9d8cbf // indirect
 	github.com/anchore/clio v0.0.0-20250715152405-a0fa658e5084 // indirect
-	github.com/anchore/fangs v0.0.0-20250716230140-94c22408c232 // indirect
+	github.com/anchore/fangs v0.0.0-20250903142254-2910c2198ec7 // indirect
 	github.com/anchore/go-collections v0.0.0-20250717130425-e4a173a279ef // indirect
 	github.com/anchore/go-homedir v0.0.0-20250319154043-c29668562e4d // indirect
 	github.com/anchore/go-logger v0.0.0-20250717130432-dc069d97ae43 // indirect
@@ -213,8 +213,8 @@ require (
 	github.com/spdx/tools-golang v0.5.5 // indirect
 	github.com/spf13/afero v1.14.0 // indirect
 	github.com/spf13/cast v1.9.2 // indirect
-	github.com/spf13/cobra v1.9.1 // indirect
-	github.com/spf13/pflag v1.0.7 // indirect
+	github.com/spf13/cobra v1.10.1 // indirect
+	github.com/spf13/pflag v1.0.10 // indirect
 	github.com/spf13/viper v1.20.1 // indirect
 	github.com/spiffe/go-spiffe/v2 v2.5.0 // indirect
 	github.com/subosito/gotenv v1.6.0 // indirect
