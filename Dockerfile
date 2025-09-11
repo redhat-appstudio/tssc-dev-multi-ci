@@ -26,7 +26,8 @@ FROM registry.access.redhat.com/ubi9/ubi-minimal:9.6@sha256:8d905a93f1392d4a8f7f
 
 # required per https://github.com/release-engineering/rhtap-ec-policy/blob/main/data/rule_data.yml
 LABEL com.redhat.component="rhtap-task-runner"
-LABEL name="rhtap-task-runner"
+LABEL name="rhtap-task-runner/rhtap-task-runner-rhel9"
+LABEL cpe="cpe:/a:redhat:trusted_application_pipeline:1.6::el9"
 LABEL version="1.6.0"
 LABEL release="1"
 LABEL summary="RHTAP Task Runner"
