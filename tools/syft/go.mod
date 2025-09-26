@@ -36,7 +36,7 @@ require (
 	github.com/agext/levenshtein v1.2.3 // indirect
 	github.com/anchore/archiver/v3 v3.5.3-0.20241210171143-5b1d8d1c7c51 // indirect
 	github.com/anchore/bubbly v0.0.0-20250717181826-8a411f9d8cbf // indirect
-	github.com/anchore/clio v0.0.0-20250715152405-a0fa658e5084 // indirect
+	github.com/anchore/clio v0.0.0-20250926015255-f418e0b4892c // indirect
 	github.com/anchore/fangs v0.0.0-20250716230140-94c22408c232 // indirect
 	github.com/anchore/go-collections v0.0.0-20250717130425-e4a173a279ef // indirect
 	github.com/anchore/go-homedir v0.0.0-20250319154043-c29668562e4d // indirect
@@ -214,7 +214,7 @@ require (
 	github.com/spf13/afero v1.14.0 // indirect
 	github.com/spf13/cast v1.9.2 // indirect
 	github.com/spf13/cobra v1.9.1 // indirect
-	github.com/spf13/pflag v1.0.7 // indirect
+	github.com/spf13/pflag v1.0.9 // indirect
 	github.com/spf13/viper v1.20.1 // indirect
 	github.com/spiffe/go-spiffe/v2 v2.5.0 // indirect
 	github.com/subosito/gotenv v1.6.0 // indirect
@@ -251,8 +251,8 @@ require (
 	golang.org/x/net v0.42.0 // indirect
 	golang.org/x/oauth2 v0.30.0 // indirect
 	golang.org/x/sync v0.16.0 // indirect
-	golang.org/x/sys v0.34.0 // indirect
-	golang.org/x/term v0.33.0 // indirect
+	golang.org/x/sys v0.35.0 // indirect
+	golang.org/x/term v0.34.0 // indirect
 	golang.org/x/text v0.27.0 // indirect
 	golang.org/x/time v0.12.0 // indirect
 	golang.org/x/tools v0.35.0 // indirect
