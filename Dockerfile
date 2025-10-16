@@ -6,7 +6,7 @@ FROM registry.redhat.io/openshift4/ose-cli:latest@sha256:1f3a18b91df18f4a5e27218
 
 # Ideally, use the official image from Red Hat, e.g. registry.access.redhat.com/ubi10/go-toolset,
 # but a 1.24 release does not yet exist.
-FROM brew.registry.redhat.io/rh-osbs/openshift-golang-builder:v1.24@sha256:beed4519c775d6123c11351048be29e6f93ab0adaea2c7d55977b445966f5b27 as go-builder
+FROM brew.registry.redhat.io/rh-osbs/openshift-golang-builder:v1.24@sha256:c52f52b73cc121327416b3fe8d64d682eb48b2c86298a4d645d7169251700cd5 as go-builder
 
 WORKDIR /build
 
