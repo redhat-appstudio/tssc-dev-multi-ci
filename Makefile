@@ -168,3 +168,7 @@ build-image:
 .PHONY: run-image
 run-image:
 	podman run --rm -i -t $(floating-tag)
+
+.PHONY: test
+test:
+	test/bats/bin/bats test/test.bats
