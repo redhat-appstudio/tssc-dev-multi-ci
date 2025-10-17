@@ -1,0 +1,3 @@
+[submodule "tools/git-clone"]
+	path = tools/git-clone
+	url = https://github.com/tektoncd-catalog/git-clone.git
