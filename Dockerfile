@@ -2,6 +2,8 @@ FROM registry.redhat.io/rhtas/cosign-rhel9:1.2.0@sha256:cb53dcc3bc912dd7f12147f3
 
 FROM registry.redhat.io/rhtas/ec-rhel9:0.6@sha256:34a7be862ef23c44526ed84bb4f228ffc6c87e15d3e09803546c46bb9cd22d97 as ec
 
+FROM quay.io/konflux-ci/buildah-task:latest@sha256:27400eaf836985bcc35182d62d727629f061538f61603c05b85d5d99bfa7da2d AS buildah-task-image
+
 FROM registry.redhat.io/openshift4/ose-cli:latest@sha256:1f3a18b91df18f4a5e27218127495b03e44a670cf04329de98bcb367f4422985 as oc
 
 # Ideally, use the official image from Red Hat, e.g. registry.access.redhat.com/ubi10/go-toolset,
@@ -62,6 +64,7 @@ COPY --from=go-builder /usr/local/bin/yq /usr/bin/yq
 COPY --from=go-builder /usr/local/bin/syft /usr/bin/syft
 COPY --from=go-builder /usr/local/bin/splashy /usr/bin/splashy
 COPY --from=go-builder /usr/local/bin/git-init /usr/bin/git-init
+COPY --from=buildah-task-image /usr/bin/retry /usr/bin/
 
 # The git-clone Task expects the `git-init` binary to be available at a specific location, instead
 # of relying on $PATH.
