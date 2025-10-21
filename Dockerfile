@@ -73,4 +73,6 @@ COPY ./rhtap ./rhtap/
 
 COPY ./entrypoint.sh /usr/local/bin/
 
+COPY ./tools/buildah-container/scripts/utils/retry-func.sh /usr/bin/retry
+
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

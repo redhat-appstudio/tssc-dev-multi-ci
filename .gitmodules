@@ -1,3 +1,6 @@
 [submodule "tools/git-clone"]
 	path = tools/git-clone
 	url = https://github.com/tektoncd-catalog/git-clone.git
+[submodule "tools/buildah-container"]
+	path = tools/buildah-container
+	url = https://github.com/konflux-ci/buildah-container.git
