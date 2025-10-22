@@ -31,8 +31,8 @@ RUN \
   go install -trimpath --mod=readonly github.com/redhat-appstudio/tssc-dev-multi-ci/tools/splashy
 
 RUN \
-  cd git-init && \
-  go install -trimpath --mod=readonly github.com/tektoncd-catalog/git-clone/git-init
+  cd git-clone/image/git-init && \
+  go build -trimpath -o /usr/local/bin/git-init
 
 FROM registry.access.redhat.com/ubi9/ubi-minimal:9.6@sha256:34880b64c07f28f64d95737f82f891516de9a3b43583f39970f7bf8e4cfa48b7
 
@@ -72,5 +72,7 @@ WORKDIR /work
 COPY ./rhtap ./rhtap/
 
 COPY ./entrypoint.sh /usr/local/bin/
+
+COPY ./tools/buildah-container/scripts/utils/retry-func.sh /usr/bin/retry
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
