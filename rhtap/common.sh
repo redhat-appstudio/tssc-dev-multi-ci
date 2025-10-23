@@ -49,10 +49,12 @@ prepare-registry-user-pass() {
 }
 
 function addRootCert() {
-    if [ ! -z "$CUSTOM_ROOT_CA" ]; then
+    if [ -n "${CUSTOM_ROOT_CA:-}" ]; then
         echo "Using provided CA bundle"
         echo "$CUSTOM_ROOT_CA" > /etc/pki/ca-trust/source/anchors/ca-bundle.crt
         update-ca-trust
+    else
+        echo "Custom root CA variable is not set. Make sure CA trust is established"
     fi
 }
 
