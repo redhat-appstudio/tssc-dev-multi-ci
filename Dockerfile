@@ -2,7 +2,7 @@ FROM registry.redhat.io/rhtas/cosign-rhel9:1.2.0@sha256:cb53dcc3bc912dd7f12147f3
 
 FROM registry.redhat.io/rhtas/ec-rhel9:0.6@sha256:059e3283c8f2fe1a9594180afe17c2a7b167899e622e48377e84eb8fbcf15f05 as ec
 
-FROM registry.redhat.io/openshift4/ose-cli:latest@sha256:1f3a18b91df18f4a5e27218127495b03e44a670cf04329de98bcb367f4422985 as oc
+FROM registry.redhat.io/openshift4/ose-cli:latest@sha256:ef83967297f619f45075e7fd1428a1eb981622a6c174c46fb53b158ed24bed85 as oc
 
 # Ideally, use the official image from Red Hat, e.g. registry.access.redhat.com/ubi10/go-toolset,
 # but a 1.24 release does not yet exist.
