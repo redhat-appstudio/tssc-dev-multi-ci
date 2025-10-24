@@ -1,8 +1,8 @@
 FROM registry.redhat.io/rhtas/cosign-rhel9:1.3.0@sha256:fc31f6169831d6dc2102bb6c21df224f19955551245c7476ed61e4ca439a2e43 as cosign
 
-FROM registry.redhat.io/rhtas/ec-rhel9:0.6@sha256:34a7be862ef23c44526ed84bb4f228ffc6c87e15d3e09803546c46bb9cd22d97 as ec
+FROM registry.redhat.io/rhtas/ec-rhel9:0.6@sha256:059e3283c8f2fe1a9594180afe17c2a7b167899e622e48377e84eb8fbcf15f05 as ec
 
-FROM registry.redhat.io/openshift4/ose-cli:latest@sha256:1f3a18b91df18f4a5e27218127495b03e44a670cf04329de98bcb367f4422985 as oc
+FROM registry.redhat.io/openshift4/ose-cli:latest@sha256:ef83967297f619f45075e7fd1428a1eb981622a6c174c46fb53b158ed24bed85 as oc
 
 # Ideally, use the official image from Red Hat, e.g. registry.access.redhat.com/ubi10/go-toolset,
 # but a 1.24 release does not yet exist.
@@ -31,10 +31,10 @@ RUN \
   go install -trimpath --mod=readonly github.com/redhat-appstudio/tssc-dev-multi-ci/tools/splashy
 
 RUN \
-  cd git-init && \
-  go install -trimpath --mod=readonly github.com/tektoncd-catalog/git-clone/git-init
+  cd git-clone/image/git-init && \
+  go build -trimpath -o /usr/local/bin/git-init
 
-FROM registry.access.redhat.com/ubi9/ubi-minimal:9.6@sha256:92b1d5747a93608b6adb64dfd54515c3c5a360802db4706765ff3d8470df6290
+FROM registry.access.redhat.com/ubi9/ubi-minimal:9.6-1760515502@sha256:34880b64c07f28f64d95737f82f891516de9a3b43583f39970f7bf8e4cfa48b7
 
 # required per https://github.com/release-engineering/rhtap-ec-policy/blob/main/data/rule_data.yml
 LABEL com.redhat.component="rhtap-task-runner"
@@ -72,5 +72,7 @@ WORKDIR /work
 COPY ./rhtap ./rhtap/
 
 COPY ./entrypoint.sh /usr/local/bin/
+
+COPY ./tools/buildah-container/scripts/utils/retry-func.sh /usr/bin/retry
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
