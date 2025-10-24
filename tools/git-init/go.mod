@@ -81,4 +81,4 @@ require (
 	sigs.k8s.io/yaml v1.4.0 // indirect
 )
 
-replace github.com/tektoncd-catalog/git-clone/git-init => github.com/tektoncd-catalog/git-clone/image/git-init v0.0.0-20250721094534-2e91df3a9c52
+replace github.com/tektoncd-catalog/git-clone/git-init => github.com/tektoncd-catalog/git-clone/image/git-init v0.0.0-20251024133612-0a0862efcb2b
