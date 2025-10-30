@@ -1,6 +1,6 @@
 FROM registry.redhat.io/rhtas/cosign-rhel9:1.3.0@sha256:fc31f6169831d6dc2102bb6c21df224f19955551245c7476ed61e4ca439a2e43 as cosign
 
-FROM registry.redhat.io/rhtas/ec-rhel9:0.6@sha256:059e3283c8f2fe1a9594180afe17c2a7b167899e622e48377e84eb8fbcf15f05 as ec
+FROM registry.redhat.io/rhtas/ec-rhel9:0.7@sha256:30f7a2eeed605f23ba68bc41f29363acc5305ff4cf9302c37ee7ac7408cfa38d as ec
 
 FROM registry.redhat.io/openshift4/ose-cli:latest@sha256:ef83967297f619f45075e7fd1428a1eb981622a6c174c46fb53b158ed24bed85 as oc
 
