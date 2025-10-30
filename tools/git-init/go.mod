@@ -1,6 +1,8 @@
 module github.com/redhat-appstudio/tssc-dev-multi-ci/tools/git-int
 
-go 1.23.6
+go 1.24.0
+
+toolchain go1.24.6
 
 require github.com/tektoncd-catalog/git-clone/git-init v0.0.0
 
@@ -59,7 +61,7 @@ require (
 	golang.org/x/sys v0.31.0 // indirect
 	golang.org/x/term v0.30.0 // indirect
 	golang.org/x/text v0.23.0 // indirect
-	golang.org/x/time v0.9.0 // indirect
+	golang.org/x/time v0.14.0 // indirect
 	gomodules.xyz/jsonpatch/v2 v2.4.0 // indirect
 	google.golang.org/api v0.217.0 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20250115164207-1a7da9e5054f // indirect
