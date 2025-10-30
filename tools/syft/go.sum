@@ -684,8 +684,8 @@ github.com/anchore/archiver/v3 v3.5.3-0.20241210171143-5b1d8d1c7c51 h1:yhk+P8lF3
 github.com/anchore/archiver/v3 v3.5.3-0.20241210171143-5b1d8d1c7c51/go.mod h1:nwuGSd7aZp0rtYt79YggCGafz1RYsclE7pi3fhLwvuw=
 github.com/anchore/bubbly v0.0.0-20250717181826-8a411f9d8cbf h1:UY7SQkfVVaeGUpPZrJxqmTc8M0ZSWc5ChiKF6I6aL3I=
 github.com/anchore/bubbly v0.0.0-20250717181826-8a411f9d8cbf/go.mod h1:w8Br1ZKk1Nk82YRSh10pcD7LO7avPyFmNnaY1TRPgs0=
-github.com/anchore/clio v0.0.0-20251024203158-862dbc618a64 h1:7Mb5+/E6U/9DqKSMK//ZVJJCmj1IOudDNnM2Khqj/qg=
-github.com/anchore/clio v0.0.0-20251024203158-862dbc618a64/go.mod h1:Qps+CdrdcMx1k7GhKaJ1ZkKYZvRaIfbNmW6B8/5ONPs=
+github.com/anchore/clio v0.0.0-20251028140840-721eea5390a4 h1:ou5Co2rLHT5mqVdVmVE7QukGe2cCFTryAaaVzEEDnb0=
+github.com/anchore/clio v0.0.0-20251028140840-721eea5390a4/go.mod h1:Qps+CdrdcMx1k7GhKaJ1ZkKYZvRaIfbNmW6B8/5ONPs=
 github.com/anchore/fangs v0.0.0-20250716230140-94c22408c232 h1:aVC6r9h5wGNh8BYTW3CXxOdPoZzY/bBRWne1NvSTlO8=
 github.com/anchore/fangs v0.0.0-20250716230140-94c22408c232/go.mod h1:Zees1AEKNpXIRgdVAMYWITncarLFiPOtEQ7rl45V/h0=
 github.com/anchore/go-collections v0.0.0-20251016125210-a3c352120e8c h1:eoJXyC0n7DZ4YvySG/ETdYkTar2Due7eH+UmLK6FbrA=
