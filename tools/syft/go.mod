@@ -26,7 +26,7 @@ require (
 	github.com/anchore/bubbly v0.0.0-20231115134915-def0aba654a9 // indirect
 	github.com/anchore/clio v0.0.0-20250814004327-79c57fd06805 // indirect
 	github.com/anchore/fangs v0.0.0-20250924221602-895877cb39ec // indirect
-	github.com/anchore/go-collections v0.0.0-20240216171411-9321230ce537 // indirect
+	github.com/anchore/go-collections v0.0.0-20251016125210-a3c352120e8c // indirect
 	github.com/anchore/go-homedir v0.0.0-20250319154043-c29668562e4d // indirect
 	github.com/anchore/go-logger v0.0.0-20250813181427-74728f89a619 // indirect
 	github.com/anchore/go-macholibre v0.0.0-20220308212642-53e6d0aaf6fb // indirect
