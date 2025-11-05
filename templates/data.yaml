@@ -131,7 +131,9 @@ gitops_steps:
 gitops_variables:
   - name: ROX_CENTRAL_ENDPOINT
     if: 'isJenkins'
-
+  - name: CUSTOM_ROOT_CA
+    comment: Custom Root CA to be used in scripts as trusted
+    optional: true
   - name: COSIGN_PUBLIC_KEY
     if: 'isGitHub || isAzure || isJenkins'
     comment: Used to verify the image signature and attestation
