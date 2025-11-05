@@ -39,20 +39,20 @@ arches:
     name: containers-common-extra
     evr: 2:1-117.el9_6
     sourcerpm: containers-common-1-117.el9_6.src.rpm
-  - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/x86_64/appstream/os/Packages/c/criu-3.19-1.el9.x86_64.rpm
+  - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/x86_64/appstream/os/Packages/c/criu-3.19-1.2.el9_6.x86_64.rpm
     repoid: ubi-9-for-x86_64-appstream-rpms
-    size: 576009
-    checksum: sha256:823ac6aab1745521039d5aa4db2e843cb632854449d5b06420eb52825a985b59
+    size: 570685
+    checksum: sha256:fcc3972770f19de2ed8030983b30a624aa7a4f93f1f5b70238118ab980375456
     name: criu
-    evr: 3.19-1.el9
-    sourcerpm: criu-3.19-1.el9.src.rpm
-  - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/x86_64/appstream/os/Packages/c/criu-libs-3.19-1.el9.x86_64.rpm
+    evr: 3.19-1.2.el9_6
+    sourcerpm: criu-3.19-1.2.el9_6.src.rpm
+  - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/x86_64/appstream/os/Packages/c/criu-libs-3.19-1.2.el9_6.x86_64.rpm
     repoid: ubi-9-for-x86_64-appstream-rpms
-    size: 33643
-    checksum: sha256:bb821ddf9bd0321e0750d2fc5cadd5f531e67cafacf6d92512e714b31133a64d
+    size: 31924
+    checksum: sha256:98a67d3218d5961abaea63a4f7bdfc30ec461ec65bca2347e4d9ea067d7ce4e6
     name: criu-libs
-    evr: 3.19-1.el9
-    sourcerpm: criu-3.19-1.el9.src.rpm
+    evr: 3.19-1.2.el9_6
+    sourcerpm: criu-3.19-1.2.el9_6.src.rpm
   - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/x86_64/appstream/os/Packages/c/crun-1.23.1-2.el9_6.x86_64.rpm
     repoid: ubi-9-for-x86_64-appstream-rpms
     size: 249255
@@ -137,13 +137,13 @@ arches:
     name: oniguruma
     evr: 6.9.6-1.el9.5
     sourcerpm: oniguruma-6.9.6-1.el9.5.src.rpm
-  - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/x86_64/appstream/os/Packages/p/passt-0^20250217.ga1e48a0-10.el9_6.x86_64.rpm
+  - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/x86_64/appstream/os/Packages/p/passt-0^20250217.ga1e48a0-13.el9_6.x86_64.rpm
     repoid: ubi-9-for-x86_64-appstream-rpms
-    size: 268131
-    checksum: sha256:d6ee97b3fd5226ecf3ee057aebbf395b5615a27d0f594b3fd1c1295d9cacdbb6
+    size: 267466
+    checksum: sha256:634a3bb5739d55b05f21490e70a6dfdfd9c44b1900652120df717a552f8dd7a3
     name: passt
-    evr: 0^20250217.ga1e48a0-10.el9_6
-    sourcerpm: passt-0^20250217.ga1e48a0-10.el9_6.src.rpm
+    evr: 0^20250217.ga1e48a0-13.el9_6
+    sourcerpm: passt-0^20250217.ga1e48a0-13.el9_6.src.rpm
   - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/x86_64/appstream/os/Packages/p/podman-5.4.0-13.el9_6.x86_64.rpm
     repoid: ubi-9-for-x86_64-appstream-rpms
     size: 17803252
@@ -382,13 +382,13 @@ arches:
     name: libutempter
     evr: 1.2.1-6.el9
     sourcerpm: libutempter-1.2.1-6.el9.src.rpm
-  - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/x86_64/baseos/os/Packages/n/nftables-1.0.9-3.el9.x86_64.rpm
+  - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/x86_64/baseos/os/Packages/n/nftables-1.0.9-4.el9_6.x86_64.rpm
     repoid: ubi-9-for-x86_64-baseos-rpms
-    size: 437243
-    checksum: sha256:1e02a3396ca514706f1a0814e3e7a03f15cff6fb7af1d5b1bf49d3d991f0d927
+    size: 430295
+    checksum: sha256:7651bcd08023157395e306eee7bdb5dc3a55d278e8dbfff4720d98275885f649
     name: nftables
-    evr: 1:1.0.9-3.el9
-    sourcerpm: nftables-1.0.9-3.el9.src.rpm
+    evr: 1:1.0.9-4.el9_6
+    sourcerpm: nftables-1.0.9-4.el9_6.src.rpm
   - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/x86_64/baseos/os/Packages/o/openssh-8.7p1-45.el9.x86_64.rpm
     repoid: ubi-9-for-x86_64-baseos-rpms
     size: 474534
@@ -484,12 +484,12 @@ arches:
     checksum: sha256:3ae3f5c20849053dcd2d8dfc378f1687f63c19280045df9af39071d83d329834
     name: containers-common
     evr: 2:1-117.el9_6
-  - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/x86_64/appstream/source/SRPMS/Packages/c/criu-3.19-1.el9.src.rpm
+  - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/x86_64/appstream/source/SRPMS/Packages/c/criu-3.19-1.2.el9_6.src.rpm
     repoid: ubi-9-for-x86_64-appstream-source-rpms
-    size: 1397103
-    checksum: sha256:e9d46b1c6c4ffa968a235504c57a721185ebc89bbc59e700589c908d0c1872f6
+    size: 1397633
+    checksum: sha256:b055915dd2fd04c16c79a36775e1647f7c4f020cd341e94cda3a59898c3d6502
     name: criu
-    evr: 3.19-1.el9
+    evr: 3.19-1.2.el9_6
   - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/x86_64/appstream/source/SRPMS/Packages/c/crun-1.23.1-2.el9_6.src.rpm
     repoid: ubi-9-for-x86_64-appstream-source-rpms
     size: 845345
@@ -544,12 +544,12 @@ arches:
     checksum: sha256:cba17754ccaffd886995aec7f152aadbc5d9932a2a2cdf1d983291c7b2838404
     name: oniguruma
     evr: 6.9.6-1.el9.5
-  - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/x86_64/appstream/source/SRPMS/Packages/p/passt-0^20250217.ga1e48a0-10.el9_6.src.rpm
+  - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/x86_64/appstream/source/SRPMS/Packages/p/passt-0^20250217.ga1e48a0-13.el9_6.src.rpm
     repoid: ubi-9-for-x86_64-appstream-source-rpms
-    size: 307122
-    checksum: sha256:87c7e342a579a0707c3ab950857d3bb52833828ebb5cadfbda529e01b3136072
+    size: 309419
+    checksum: sha256:217942d1342547a0b3bc52250fc6cce0e0ebc68b59df22d0fb4a98e5a8a69cb5
     name: passt
-    evr: 0^20250217.ga1e48a0-10.el9_6
+    evr: 0^20250217.ga1e48a0-13.el9_6
   - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/x86_64/appstream/source/SRPMS/Packages/p/podman-5.4.0-13.el9_6.src.rpm
     repoid: ubi-9-for-x86_64-appstream-source-rpms
     size: 27554069
@@ -736,12 +736,12 @@ arches:
     checksum: sha256:d18f72eb41ecd0370e2e47f1dc5774be54e9ff3b4dd333578017666c7c488f40
     name: libxcrypt
     evr: 4.4.18-3.el9
-  - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/x86_64/baseos/source/SRPMS/Packages/n/nftables-1.0.9-3.el9.src.rpm
+  - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/x86_64/baseos/source/SRPMS/Packages/n/nftables-1.0.9-4.el9_6.src.rpm
     repoid: ubi-9-for-x86_64-baseos-source-rpms
-    size: 1009094
-    checksum: sha256:13ce4d036cdfb75fd7a919a22aa73714aa6bf08d0a566f8f16efa5f179e22c29
+    size: 1007310
+    checksum: sha256:ccd559f2ed9a9f3b7c828e5b2eaddb5cbb5442298ca60240c5f1c2ebb46004e3
     name: nftables
-    evr: 1:1.0.9-3.el9
+    evr: 1:1.0.9-4.el9_6
   - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/x86_64/baseos/source/SRPMS/Packages/o/openssh-8.7p1-45.el9.src.rpm
     repoid: ubi-9-for-x86_64-baseos-source-rpms
     size: 2415807
