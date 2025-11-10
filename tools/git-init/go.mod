@@ -6,7 +6,7 @@ require github.com/tektoncd-catalog/git-clone/git-init v0.0.0
 
 require (
 	cel.dev/expr v0.19.1 // indirect
-	contrib.go.opencensus.io/exporter/ocagent v0.7.1-0.20200907061046-05415f1de66d // indirect
+	contrib.go.opencensus.io/exporter/ocagent v0.7.1-0.20230502190836-7399e0f8ee5e // indirect
 	contrib.go.opencensus.io/exporter/prometheus v0.4.2 // indirect
 	github.com/antlr4-go/antlr/v4 v4.13.0 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
@@ -81,4 +81,4 @@ require (
 	sigs.k8s.io/yaml v1.4.0 // indirect
 )
 
-replace github.com/tektoncd-catalog/git-clone/git-init => github.com/tektoncd-catalog/git-clone/image/git-init v0.0.0-20250721094534-2e91df3a9c52
+replace github.com/tektoncd-catalog/git-clone/git-init => github.com/tektoncd-catalog/git-clone/image/git-init v0.0.0-20251024133612-0a0862efcb2b
