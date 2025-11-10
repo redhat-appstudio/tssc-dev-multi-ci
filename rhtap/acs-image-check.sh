@@ -50,7 +50,7 @@ function rox-image-check() {
         ROXCTL_CHECK_STATUS=$?
 
     if [ "$ROXCTL_CHECK_STATUS" -eq 0 ]; then
-        exit
+        return
     fi
 
     # Number of policy violations with Critical and High severity parsed from the report
