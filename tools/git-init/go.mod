@@ -1,12 +1,14 @@
 module github.com/redhat-appstudio/tssc-dev-multi-ci/tools/git-int
 
-go 1.23.6
+go 1.24.0
+
+toolchain go1.24.6
 
 require github.com/tektoncd-catalog/git-clone/git-init v0.0.0
 
 require (
 	cel.dev/expr v0.19.1 // indirect
-	contrib.go.opencensus.io/exporter/ocagent v0.7.1-0.20200907061046-05415f1de66d // indirect
+	contrib.go.opencensus.io/exporter/ocagent v0.7.1-0.20230502190836-7399e0f8ee5e // indirect
 	contrib.go.opencensus.io/exporter/prometheus v0.4.2 // indirect
 	github.com/antlr4-go/antlr/v4 v4.13.0 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
@@ -52,10 +54,10 @@ require (
 	go.opencensus.io v0.24.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	go.uber.org/zap v1.27.0 // indirect
-	golang.org/x/exp v0.0.0-20240808152545-0cdaa3abc0fa // indirect
+	golang.org/x/exp v0.0.0-20251023183803-a4bb9ffd2546 // indirect
 	golang.org/x/net v0.38.0 // indirect
 	golang.org/x/oauth2 v0.27.0 // indirect
-	golang.org/x/sync v0.12.0 // indirect
+	golang.org/x/sync v0.17.0 // indirect
 	golang.org/x/sys v0.31.0 // indirect
 	golang.org/x/term v0.30.0 // indirect
 	golang.org/x/text v0.23.0 // indirect
@@ -81,4 +83,4 @@ require (
 	sigs.k8s.io/yaml v1.4.0 // indirect
 )
 
-replace github.com/tektoncd-catalog/git-clone/git-init => github.com/tektoncd-catalog/git-clone/image/git-init v0.0.0-20250721094534-2e91df3a9c52
+replace github.com/tektoncd-catalog/git-clone/git-init => github.com/tektoncd-catalog/git-clone/image/git-init v0.0.0-20251024133612-0a0862efcb2b
