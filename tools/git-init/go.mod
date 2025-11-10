@@ -2,7 +2,7 @@ module github.com/redhat-appstudio/tssc-dev-multi-ci/tools/git-int
 
 go 1.24.0
 
-toolchain go1.24.6
+toolchain go1.25.4
 
 require github.com/tektoncd-catalog/git-clone/git-init v0.0.0
 
