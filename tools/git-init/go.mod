@@ -4,7 +4,7 @@ go 1.24.0
 
 toolchain go1.24.6
 
-require github.com/tektoncd-catalog/git-clone/git-init v0.0.0
+require github.com/tektoncd-catalog/git-clone/git-init v1.2.0
 
 require (
 	cel.dev/expr v0.19.1 // indirect
