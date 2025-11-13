@@ -1,6 +1,6 @@
 FROM registry.redhat.io/rhtas/cosign-rhel9:1.2.0@sha256:cb53dcc3bc912dd7f12147f33af1b435eae5ff4ab83b85c0277b4004b20a0248 as cosign
 
-FROM registry.redhat.io/rhtas/ec-rhel9:0.6@sha256:c18452e9884d5f7f7e51adfb3dd5bf1c5b842f6bc28543cb4d084bb3ab02d88b as ec
+FROM registry.redhat.io/rhtas/ec-rhel9:0.6@sha256:b3701b0932c8c2637d1c83710b585ef96ce0723fc9212b1b83f28b73d7f7a846 as ec
 
 FROM registry.redhat.io/ubi10/go-toolset:1.24@sha256:ae999ee0d65142c795be37c511454cfc0990592bf8e40b821566f81abf7d2592 as go-builder
 
