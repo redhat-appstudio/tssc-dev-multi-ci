@@ -1,10 +1,12 @@
 stage('{{ step.name }}') {
             steps {
-                script {
-                    {%- for substep in step.substeps %}
-                    rhtap.info('{{ substep | replace("-", "_") }}')
-                    rhtap.{{ substep | replace("-", "_") }}()
-                    {%- endfor %}
+                container('runner') {
+                    sh '''
+                        {%- for substep in step.substeps %}
+                        echo "running {{ substep }}"
+                        ./rhtap/{{ substep }}.sh
+                        {%- endfor %}
+                    '''
                 }
             }
         }
