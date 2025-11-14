@@ -90,7 +90,7 @@ require (
 	github.com/deitch/magic v0.0.0-20240306090643-c67ab88f10cb // indirect
 	github.com/diskfs/go-diskfs v1.6.1-0.20250601133945-2af1c7ece24c // indirect
 	github.com/distribution/reference v0.6.0 // indirect
-	github.com/docker/cli v28.5.1+incompatible // indirect
+	github.com/docker/cli v28.5.2+incompatible // indirect
 	github.com/docker/distribution v2.8.3+incompatible // indirect
 	github.com/docker/docker v28.5.1+incompatible // indirect
 	github.com/docker/docker-credential-helpers v0.9.3 // indirect
