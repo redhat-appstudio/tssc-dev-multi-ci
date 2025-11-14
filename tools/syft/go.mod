@@ -1,6 +1,8 @@
 module github.com/redhat-appstudio/tssc-dev-multi-ci/tools/syft
 
-go 1.23.6
+go 1.24.0
+
+toolchain go1.24.6
 
 require github.com/anchore/syft v1.19.0
 
@@ -95,7 +97,7 @@ require (
 	github.com/google/go-cmp v0.7.0 // indirect
 	github.com/google/go-containerregistry v0.20.3 // indirect
 	github.com/google/licensecheck v0.3.1 // indirect
-	github.com/google/pprof v0.0.0-20240409012703-83162a5b38cd // indirect
+	github.com/google/pprof v0.0.0-20251114195745-4902fdda35c8 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/gookit/color v1.5.4 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
