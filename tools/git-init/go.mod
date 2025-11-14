@@ -83,7 +83,7 @@ require (
 	sigs.k8s.io/json v0.0.0-20221116044647-bc3834ca7abd // indirect
 	sigs.k8s.io/randfill v1.0.0 // indirect
 	sigs.k8s.io/structured-merge-diff/v4 v4.4.1 // indirect
-	sigs.k8s.io/yaml v1.4.0 // indirect
+	sigs.k8s.io/yaml v1.6.0 // indirect
 )
 
 replace github.com/tektoncd-catalog/git-clone/git-init => github.com/tektoncd-catalog/git-clone/image/git-init v0.0.0-20251024133612-0a0862efcb2b
