@@ -696,8 +696,8 @@ github.com/anchore/go-logger v0.0.0-20250717130432-dc069d97ae43 h1:vcoKMXg4qlxE3
 github.com/anchore/go-logger v0.0.0-20250717130432-dc069d97ae43/go.mod h1:oFuE8YuTCM+spgMXhePGzk3asS94yO9biUfDzVTFqNw=
 github.com/anchore/go-lzo v0.1.0 h1:NgAacnzqPeGH49Ky19QKLBZEuFRqtTG9cdaucc3Vncs=
 github.com/anchore/go-lzo v0.1.0/go.mod h1:3kLx0bve2oN1iDwgM1U5zGku1Tfbdb0No5qp1eL1fIk=
-github.com/anchore/go-macholibre v0.0.0-20250320151634-807da7ad2331 h1:fWPHXkH3FQGVCyPkFMqNvMjQvdNMfkylBTsDqZC4lE4=
-github.com/anchore/go-macholibre v0.0.0-20250320151634-807da7ad2331/go.mod h1:DYvTRnWrlJ//6YOR83SiewmJiNFDEMRaOTnrzgco9FA=
+github.com/anchore/go-macholibre v0.0.0-20250826193721-3cd206ca93aa h1:KPEP8f3enFJeus3Wo51I+riVuCvlf4OEYl2B4IfycbQ=
+github.com/anchore/go-macholibre v0.0.0-20250826193721-3cd206ca93aa/go.mod h1:7YJA6tAfRm4SzIF93b32pR4xnbf8g2nJIeQnp+2vzzI=
 github.com/anchore/go-rpmdb v0.0.0-20250516171929-f77691e1faec h1:SjjPMOXTzpuU1ZME4XeoHyek+dry3/C7I8gzaCo02eg=
 github.com/anchore/go-rpmdb v0.0.0-20250516171929-f77691e1faec/go.mod h1:eQVa6QFGzKy0qMcnW2pez0XBczvgwSjw9vA23qifEyU=
 github.com/anchore/go-struct-converter v0.0.0-20221118182256-c68fdcfa2092/go.mod h1:rYqSE9HbjzpHTI74vwPvae4ZVYZd1lue2ta6xHPdblA=
