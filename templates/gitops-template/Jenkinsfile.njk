@@ -1,13 +1,23 @@
 {%- include "do-not-edit.njk" -%}
 
-{%- include "jenkins-library-source.njk" -%}
-
 pipeline {
-    agent any
+    agent {
+        kubernetes {
+            yaml """
+              apiVersion: v1
+              kind: Pod
+              spec:
+                containers:
+                - name: 'runner'
+                  image: '{{ runner_image }}'
+                  securityContext:
+                    privileged: true
+            """
+        }
+    }
     environment {
-        /* Not used but init.sh will fail if they're missing */
-        COSIGN_SECRET_PASSWORD = 'dummy'
-        COSIGN_SECRET_KEY = 'dummy'
+        HOME = "${WORKSPACE}"
+        DOCKER_CONFIG = "${WORKSPACE}/.docker"
         {%- for secret in gitops_variables -%}
         {%- include "jenkins-secret.njk" -%}
         {%- endfor %}
@@ -16,6 +26,20 @@ pipeline {
         {%- endfor %}
     }
     stages {
+        stage('init') {
+            steps {
+                container('runner') {
+                    sh '''
+                        cp -R /work/* .
+                        env
+                        git config --global --add safe.directory $WORKSPACE
+                        chmod +x ./rhtap/gather-images-to-upload-sbom.sh
+                        echo "running init"
+                        ./rhtap/init.sh
+                    '''
+                }
+            }
+        }
         {%- for step in gitops_steps %}
         {% include "jenkins-step.njk" %}
         {%- endfor %}
