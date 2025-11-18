@@ -1,11 +1,24 @@
 {%- include "do-not-edit.njk" -%}
 
-{%- include "jenkins-library-source.njk" -%}
-
 pipeline {
-    agent any
+    agent {
+        kubernetes {
+            yaml """
+              apiVersion: v1
+              kind: Pod
+              spec:
+                containers:
+                - name: 'runner'
+                  image: '{{ runner_image }}'
+                  securityContext:
+                    privileged: true
+            """
+        }
+    }
     environment {
-        {%- for secret in build_vars -%}
+        HOME = "${WORKSPACE}"
+        DOCKER_CONFIG = "${WORKSPACE}/.docker"
+        {%- for secret in build_variables -%}
         {%- include "jenkins-secret.njk" -%}
         {%- endfor %}
         {%- for secret in build_secrets -%}
@@ -13,6 +26,18 @@ pipeline {
         {%- endfor %}
     }
     stages {
+        stage('pre-init') {
+            steps {
+                container('runner') {
+                    sh '''
+                        cp -R /work/* .
+                        env
+                        git config --global --add safe.directory $WORKSPACE
+                    '''
+                }
+            }
+        }
+
         {%- for step in build_steps %}
         {% include "jenkins-step.njk" %}
         {%- endfor %}
