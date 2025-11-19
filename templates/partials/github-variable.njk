@@ -2,5 +2,5 @@
 {%- if var.comment %}
   # {{ var.comment }}
 {%- endif %}
-{% if var.commented_out -%}{{ '  # ' }}{% else %}{{ '  ' }}{% endif -%}{{- var.name -}}: ${{- ("vars." + var.name) | inCurlies -}}
+{% if var.commented_out -%}{{ '  # ' }}{% else %}{{ '  ' }}{% endif -%}{{- var.name -}}: ${{- ("'${{' }} vars." + var.name) | inCurlies -}}
 {%- endif -%}

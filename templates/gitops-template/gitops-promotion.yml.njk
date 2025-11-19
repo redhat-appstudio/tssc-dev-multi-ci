@@ -12,7 +12,7 @@ env:
 
   # 🖊️ EDIT to change the image registry settings.
   # Registries such as GHCR, Quay.io, and Docker Hub are supported.
-  IMAGE_REGISTRY: ${{ "secrets.IMAGE_REGISTRY" | inCurlies }}
+  IMAGE_REGISTRY: ${{ "'${{' }} secrets.IMAGE_REGISTRY" | inCurlies }}
 {{ '' }}{# Ensure new line for better readability #}
 {%- for var in gitops_variables -%}
 {% include "github-variable.njk" %}
@@ -48,13 +48,13 @@ jobs:
               Perhaps this could use the bash var/secret checker too for consistency
             #}
             const vars = {
-              IMAGE_REGISTRY: `${{ "vars.IMAGE_REGISTRY" | inCurlies }}`,
+              IMAGE_REGISTRY: `${{ "'${{' }} vars.IMAGE_REGISTRY" | inCurlies }}`,
 {% for var in gitops_variables %}
 {%- if var | eval_if_condition %}
 {%- if var.comment %}
              /* {{ var.comment }} */
 {%- endif %}
-             {% if var.commented_out %}/*{% endif %}{{ var.name }}: `${{ ("vars." + var.name) | inCurlies }}`,{% if var.commented_out %}*/{% endif %}
+             {% if var.commented_out %}/*{% endif %}{{ var.name }}: `${{ ("'${{' }} vars." + var.name) | inCurlies }}`,{% if var.commented_out %}*/{% endif %}
 {%- endif %}
 {%- endfor %}
             };
@@ -74,7 +74,7 @@ jobs:
 {%- if secret.comment %}
               /* {{ secret.comment }} */
 {%- endif %}
-             {% if secret.commented_out %}/*{% endif %}{{ secret.name }}: `${{ ("secrets." + secret.name) | inCurlies }}`,{% if secret.commented_out %}*/{% endif %}
+             {% if secret.commented_out %}/*{% endif %}{{ secret.name }}: `${{ ("'${{' }} secrets." + secret.name) | inCurlies }}`,{% if secret.commented_out %}*/{% endif %}
 {%- endif %}
 {%- endfor %}
             };
@@ -112,7 +112,7 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: '2'
+          fetch-depth: "2"
       - name: Pre-init
         run: |
           buildah --version
