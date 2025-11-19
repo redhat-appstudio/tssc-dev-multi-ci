@@ -1,5 +1,5 @@
 #!/bin/bash
 set -euo pipefail
 # You might want to pipe this to a file to keep it handy
-source rhtap/signing-secret-env.sh
+source tssc/signing-secret-env.sh
 base64 -d <<< "$COSIGN_PUBLIC_KEY"

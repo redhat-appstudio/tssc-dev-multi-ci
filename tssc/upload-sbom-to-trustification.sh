@@ -25,7 +25,7 @@ shopt -s nullglob
 #     `syft convert` to the supported version before uploading.
 
 SCRIPTDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" > /dev/null 2>&1 && pwd)"
-# shellcheck source=rhtap/common.sh
+# shellcheck source=tssc/common.sh
 source "$SCRIPTDIR"/common.sh
 
 # Set defaults for unset optional variables

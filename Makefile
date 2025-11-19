@@ -13,9 +13,8 @@ FILES=\
   generated/gitops-template/gitlabci/.gitlab-ci.yml \
   generated/gitops-template/azure/azure-pipelines.yml \
   \
-  rhtap.groovy \
-  rhtap/build-pipeline-steps.sh \
-  rhtap/promote-pipeline-steps.sh \
+  tssc/build-pipeline-steps.sh \
+  tssc/promote-pipeline-steps.sh \
   \
 
 RENDER=node ./render/render.cjs
@@ -55,11 +54,7 @@ endef
 $(foreach target_dir,$(TARGET_DIRS),$(eval $(call targets_for_ci_type,$(target_dir))))
 
 # For the two pipeline-steps.sh files
-rhtap/%: templates/%.njk templates/data.yaml
-	$(build_recipe)
-
-# For rhtap.groovy
-%: templates/%.njk templates/data.yaml
+tssc/%: templates/%.njk templates/data.yaml
 	$(build_recipe)
 
 # This should produce a non-zero exit code if there are
@@ -97,7 +92,7 @@ install-shfmt: $(SHFMT)
 define all_scripts
 	$$( \
 	  git ls-files *.sh && \
-	  git ls-files rhtap/*.sh | grep -v env.template.sh && \
+	  git ls-files tssc/*.sh | grep -v env.template.sh && \
 	  git grep -l '^#!/bin/bash' hack \
 	)
 endef

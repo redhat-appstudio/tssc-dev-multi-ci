@@ -15,7 +15,7 @@ OPTIONAL_REPO_UPDATE=$TEST_GITOPS_REPO
 
 REQUIRED_ENV="MY_QUAY_USER "
 REQUIRED_BINARY="tree "
-rhtap/verify-deps-exist "$REQUIRED_ENV" "$REQUIRED_BINARY"
+tssc/verify-deps-exist "$REQUIRED_ENV" "$REQUIRED_BINARY"
 ERR=$?
 echo "Dependency Error $1 = $ERR"
 if [ $ERR != 0 ]; then
@@ -29,8 +29,8 @@ fi
 # RHTAP directory for local test
 cp -r rhtap $BUILD/
 # ENV with params
-SETUP_ENV=$BUILD/rhtap/env.sh
-cp rhtap/env.template.sh $SETUP_ENV
+SETUP_ENV=$BUILD/tssc/env.sh
+cp tssc/env.template.sh $SETUP_ENV
 sed -i "s!\${{ values.image }}!$IMAGE_TO_BUILD!g" $SETUP_ENV
 sed -i "s!\${{ values.dockerfile }}!Dockerfile!g" $SETUP_ENV
 sed -i "s!\${{ values.buildContext }}!.!g" $SETUP_ENV
@@ -38,7 +38,7 @@ sed -i "s!\${{ values.repoURL }}!$OPTIONAL_REPO_UPDATE!g" $SETUP_ENV
 
 source $SETUP_ENV
 
-SIGNING_SECRET_ENV=$BUILD/rhtap/signing-secret-env.sh
+SIGNING_SECRET_ENV=$BUILD/tssc/signing-secret-env.sh
 if [ ! -f $SIGNING_SECRET_ENV ]; then
     # If the signing secret file doesn't exist already then generate one
     hack/create-signing-secret > $SIGNING_SECRET_ENV
@@ -82,7 +82,7 @@ function run() {
 rm -rf ./results
 
 # See templates/build-pipeline-steps.sh.njk
-source rhtap/build-pipeline-steps.sh
+source tssc/build-pipeline-steps.sh
 
 # cleanup
 rm -rf roxctl

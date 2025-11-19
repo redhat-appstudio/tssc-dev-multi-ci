@@ -130,14 +130,14 @@ jobs:
           ec version
           {# So git doesn't throw "dubious ownership" errors -#}
           git config --global --add safe.directory $(pwd)
-          cat rhtap/env.sh
+          cat tssc/env.sh
 
 {%- for step in build_steps %}
       - name: {{ step.name | title }}
         run: |
 {%- for substep in step.substeps %}
           echo "• {{ substep }}"
-          bash /work/rhtap/{{ substep }}.sh
+          bash /work/tssc/{{ substep }}.sh
 {%- endfor -%}
 {%- endfor %}
       - name: Done

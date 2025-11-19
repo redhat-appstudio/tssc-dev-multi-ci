@@ -2,7 +2,7 @@
 SCRIPTDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" > /dev/null 2>&1 && pwd)"
 
 ENV="MY_JENKINS_SERVER MY_JENKINS_USER MY_JENKINS_BUILD_TOKEN MY_JENKINS_TOKEN"
-source $SCRIPTDIR/../rhtap/verify-deps-exist "$ENV" "curl "
+source $SCRIPTDIR/../tssc/verify-deps-exist "$ENV" "curl "
 
 PNAME=$1
 if [ -z $PNAME ]; then

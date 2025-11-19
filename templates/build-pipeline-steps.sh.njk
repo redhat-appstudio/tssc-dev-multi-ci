@@ -2,6 +2,6 @@
 
 {%- for step in build_steps -%}
 {%- for substep in step.substeps -%}
-run rhtap/{{ substep }}.sh
+run tssc/{{ substep }}.sh
 {% endfor -%}
 {%- endfor -%}

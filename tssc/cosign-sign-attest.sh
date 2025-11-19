@@ -11,8 +11,8 @@ base64d() {
 }
 
 function full-image-ref() {
-    local url=$(cat $BASE_RESULTS/buildah-rhtap/IMAGE_URL)
-    local digest=$(cat $BASE_RESULTS/buildah-rhtap/IMAGE_DIGEST)
+    local url=$(cat $BASE_RESULTS/buildah-tssc/IMAGE_URL)
+    local digest=$(cat $BASE_RESULTS/buildah-tssc/IMAGE_DIGEST)
     echo "$url@$digest"
 }
 
@@ -60,7 +60,7 @@ function create-att-predicate() {
 # Login to registry using cosign.
 function login() {
     echo "Running $TASK_NAME:login"
-    local url=$(cat $BASE_RESULTS/buildah-rhtap/IMAGE_URL)
+    local url=$(cat $BASE_RESULTS/buildah-tssc/IMAGE_URL)
     registry-login "${url}"
 }
 

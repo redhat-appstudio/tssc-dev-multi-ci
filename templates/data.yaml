@@ -5,7 +5,7 @@ build_steps:
   - name: init
     substeps: [init]
   - name: build
-    substeps: [buildah-rhtap, cosign-sign-attest]
+    substeps: [buildah-tssc, cosign-sign-attest]
   - name: deploy
     substeps: [update-deployment]
   - name: scan
@@ -123,8 +123,8 @@ build_secrets:
   - name: COSIGN_SECRET_KEY
 
 gitops_steps:
-  - name: Verify EC
-    substeps: [gather-deploy-images, verify-enterprise-contract]
+  - name: Verify Conforma
+    substeps: [gather-deploy-images, verify-conforma]
   - name: Upload SBOM
     substeps: [gather-images-to-upload-sbom, download-sbom-from-url-in-attestation, upload-sbom-to-trustification]
 

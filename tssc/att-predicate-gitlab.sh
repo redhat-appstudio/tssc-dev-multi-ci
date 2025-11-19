@@ -36,6 +36,6 @@ runDetails:
 
   byproducts:
     - name: SBOM_BLOB
-      uri: "$(cat "$BASE_RESULTS"/buildah-rhtap/SBOM_BLOB_URL)"
+      uri: "$(cat "$BASE_RESULTS"/buildah-tssc/SBOM_BLOB_URL)"
 
 EOT

@@ -89,7 +89,7 @@ echo "Step: $TASK_NAME"
 echo "Results: $RESULTS"
 export PATH=$PATH:/usr/local/bin
 
-# env.sh comes from the users repo in rhtap/env.sh
-source $DIR/rhtap/env.sh
+# env.sh comes from the users repo in tssc/env.sh
+source $DIR/tssc/env.sh
 
 addRootCert

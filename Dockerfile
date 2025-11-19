@@ -69,7 +69,7 @@ RUN mkdir -p /ko-app && ln -s /usr/bin/git-init /ko-app/git-init
 
 WORKDIR /work
 
-COPY ./rhtap ./rhtap/
+COPY ./tssc ./tssc/
 
 COPY ./entrypoint.sh /usr/local/bin/
 

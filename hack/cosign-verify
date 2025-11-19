@@ -2,8 +2,8 @@
 set -euo pipefail
 
 # This works when you're testing locally with bash
-if [ -f results/buildah-rhtap/IMAGE_URL ]; then
-    LOCAL_IMAGE="$(cat results/buildah-rhtap/IMAGE_URL)@$(cat results/buildah-rhtap/IMAGE_DIGEST)"
+if [ -f results/buildah-tssc/IMAGE_URL ]; then
+    LOCAL_IMAGE="$(cat results/buildah-tssc/IMAGE_URL)@$(cat results/buildah-tssc/IMAGE_DIGEST)"
     LOCAL_KEY="results/cosign-sign-attest/cosign.pub"
     LOCAL_REKOR_HOST="$(cat results/cosign-sign-attest/REKOR_URL)"
 fi
