@@ -19,10 +19,10 @@ build_variables:
   - name: ROX_CENTRAL_ENDPOINT
 
   - name: GITOPS_AUTH_USERNAME
-    if: '!isGitLab && !isJenkins'
+    if: '!isGitLab'
     commented_out: true
   - name: GITOPS_AUTH_USERNAME
-    if: 'isGitLab || isJenkins'
+    if: 'isGitLab'
   - name: GITOPS_AUTH_USERNAME
     if: 'isAzure'
     commented_out: true
