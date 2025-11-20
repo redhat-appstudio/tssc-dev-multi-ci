@@ -7,7 +7,7 @@ toolchain go1.24.6
 require github.com/tektoncd-catalog/git-clone/git-init v0.0.0
 
 require (
-	cel.dev/expr v0.19.1 // indirect
+	cel.dev/expr v0.25.1 // indirect
 	contrib.go.opencensus.io/exporter/ocagent v0.7.1-0.20230502190836-7399e0f8ee5e // indirect
 	contrib.go.opencensus.io/exporter/prometheus v0.4.2 // indirect
 	github.com/antlr4-go/antlr/v4 v4.13.1 // indirect
