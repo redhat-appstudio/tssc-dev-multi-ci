@@ -1,7 +1,7 @@
 #!/bin/bash
 SCRIPTDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" > /dev/null 2>&1 && pwd)"
 
-# verify-enterprise-contract
+# verify-conforma
 source $SCRIPTDIR/common.sh
 
 function version() {

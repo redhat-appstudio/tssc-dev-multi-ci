@@ -56,9 +56,9 @@ function updateGitAndQuayRefs() {
 function updateBuild() {
     REPO=$1
     GITOPS_REPO_UPDATE=$2
-    mkdir -p "$REPO/rhtap"
-    SETUP_ENV=$REPO/rhtap/env.sh
-    cp rhtap/env.template.sh "$SETUP_ENV"
+    mkdir -p "$REPO/tssc"
+    SETUP_ENV=$REPO/tssc/env.sh
+    cp tssc/env.template.sh "$SETUP_ENV"
     SED_CMD "s!\${{ values.image }}!$IMAGE_TO_BUILD!g" "$SETUP_ENV"
     SED_CMD "s!\${{ values.dockerfile }}!Dockerfile!g" "$SETUP_ENV"
     SED_CMD "s!\${{ values.buildContext }}!.!g" "$SETUP_ENV"
@@ -100,9 +100,6 @@ function updateRepos() {
 function test_jenkins() {
     echo "Testing Jenkins..."
     echo
-
-    # update the jenkins library in the dev branch
-    bash hack/update-jenkins-library
 
     # source repos are updated with the name of the corresponding GITOPS REPO for update-deployment
     updateBuild "$JENKINS_BUILD" "$TEST_GITOPS_JENKINS_REPO"

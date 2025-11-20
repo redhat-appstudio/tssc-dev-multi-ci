@@ -1,25 +1,18 @@
 #!/bin/bash
 
-# Assumes local copies of the repos
+# Assumes local copy of the repo
 # https://github.com/redhat-appstudio/tssc-sample-templates or user fork in ../
-# https://github.com/redhat-appstudio/tssc-sample-jenkins or user fork in ../
 # This will not commit to user or redhat-appstudio, that step is manual.
 # release process is to create a branch in your fork, or in the redhat-appstudio directly
 # and copy the files into the relevant locations for that CI
 
 TEMPLATES=../tssc-sample-templates
-JENKINS_SHARED_LIB=../tssc-sample-jenkins
+
 echo
 if [ -d $TEMPLATES ]; then
     echo "Updating Software Templates $TEMPLATES"
 else
     echo "$TEMPLATES missing, clone or fork  https://github.com/redhat-appstudio/tssc-sample-templates into $TEMPLATES"
-    exit 0
-fi
-if [ -d $JENKINS_SHARED_LIB ]; then
-    echo "Updating Jenkins Library $JENKINS_SHARED_LIB"
-else
-    echo "$JENKINS_SHARED_LIB missing, clone or fork  https://github.com/redhat-appstudio/tssc-sample-jenkins into $JENKINS_SHARED_LIB"
     exit 0
 fi
 
@@ -45,8 +38,8 @@ function update-tssc-templates() {
 
     echo "Updating $DEST_FOLDER from $SRC_FOLDER"
     rm -rf $DEST_FOLDER
-    mkdir -p $DEST_FOLDER/rhtap
-    cp $RHTAP_ENV $DEST_FOLDER/rhtap/env.sh
+    mkdir -p $DEST_FOLDER/tssc
+    cp $RHTAP_ENV $DEST_FOLDER/tssc/env.sh
     cp -r $SRC_FOLDER/. $DEST_FOLDER
 }
 
@@ -55,23 +48,10 @@ CI_ROOT_GITOPS=$TEMPLATES/skeleton/ci/gitops-template
 GEN_SRC=generated/source-repo
 GEN_GITOPS=generated/gitops-template
 
-# Jenkins
-# shared lib for Jenkins
-# copy scripts and groovy files in to proper locations
-# delete extra files - We should move these outside of ./rhtap
-# so we don't copy extra files by mistake
-cp rhtap/* $JENKINS_SHARED_LIB/resources
-cp rhtap.groovy $JENKINS_SHARED_LIB/vars
-# skip the env.template.sh files, they are not for the library
-# we should consider copying the Jenkins files for gitops and src into a jenkinsfile-samples
-# so the lates Jenkinsfile is up to date in the library
-rm -rf $JENKINS_SHARED_LIB/resources/env.template.sh
-rm -rf $JENKINS_SHARED_LIB/resources/signing-secret-env.sh
-
 # templates are copied 1-1
 for ciType in jenkins gitlabci githubactions azure; do
-    update-tssc-templates $CI_ROOT_SRC $ciType rhtap/env.template.sh $GEN_SRC
-    update-tssc-templates $CI_ROOT_GITOPS $ciType rhtap/env.template.sh $GEN_GITOPS
+    update-tssc-templates $CI_ROOT_SRC $ciType tssc/env.template.sh $GEN_SRC
+    update-tssc-templates $CI_ROOT_GITOPS $ciType tssc/env.template.sh $GEN_GITOPS
 done
 
 echo "You will have to manually commit any changes to template or jenkins files"
@@ -84,9 +64,3 @@ echo "Checking git status in $TEMPLATES"
     git status
 )
 echo
-echo "Checking git status in $JENKINS_SHARED_LIB"
-(
-    cd $JENKINS_SHARED_LIB
-    echo "Repo: $(git config --get remote.origin.url)"
-    git status
-)

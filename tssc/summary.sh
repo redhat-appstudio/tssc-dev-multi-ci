@@ -11,7 +11,7 @@ function appstudio-summary() {
     echo "Build Summary:"
     echo
     echo "Build repository: $GIT_URL"
-    BUILD_TASK_STATUS=$(cat $BASE_RESULTS/buildah-rhtap/STATUS)
+    BUILD_TASK_STATUS=$(cat $BASE_RESULTS/buildah-tssc/STATUS)
     if [ "$BUILD_TASK_STATUS" == "Succeeded" ]; then
         echo "Generated Image is in : $IMAGE_URL"
     fi

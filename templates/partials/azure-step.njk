@@ -2,7 +2,7 @@
 {%- filter indent(2) -%}
 {%- for substep in step.substeps %}
   echo "• {{ substep }}"
-  bash /work/rhtap/{{ substep }}.sh
+  bash /work/tssc/{{ substep }}.sh
 {%- endfor %}
 name: {{ step.name | replace(" ", "_") }}
 env:

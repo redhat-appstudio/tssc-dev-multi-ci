@@ -7,7 +7,7 @@ source setup-local-dev-repos.sh
 
 REQUIRED_ENV="MY_QUAY_USER "
 REQUIRED_BINARY="tree "
-rhtap/verify-deps-exist "$REQUIRED_ENV" "$REQUIRED_BINARY"
+tssc/verify-deps-exist "$REQUIRED_ENV" "$REQUIRED_BINARY"
 ERR=$?
 echo "Dependency Error $1 = $ERR"
 if [ $ERR != 0 ]; then
@@ -16,9 +16,9 @@ if [ $ERR != 0 ]; then
 fi
 
 # RHTAP gitops directory for local test
-cp -r rhtap $GITOPS/rhtap
-SETUP_ENV=$GITOPS/rhtap/env.sh
-cp rhtap/env.template.sh $SETUP_ENV
+cp -r tssc $GITOPS/tssc
+SETUP_ENV=$GITOPS/tssc/env.sh
+cp tssc/env.template.sh $SETUP_ENV
 sed -i "s!\${{ values.image }}!$IMAGE_TO_BUILD!g" $SETUP_ENV
 sed -i "s!\${{ values.dockerfile }}!Dockerfile!g" $SETUP_ENV
 sed -i "s!\${{ values.buildContext }}!.!g" $SETUP_ENV
@@ -29,7 +29,7 @@ cat $SETUP_ENV
 # When running in Jenkins the secret values will be read from credentials
 # Todo: We need to restrict access to the signing secret. Here we need only
 # the public key, the rest of the secret should not be visible at all.
-SIGNING_SECRET_ENV=$GITOPS/rhtap/signing-secret-env.sh
+SIGNING_SECRET_ENV=$GITOPS/tssc/signing-secret-env.sh
 source $SIGNING_SECRET_ENV
 
 # switch to working gitops repo
@@ -66,9 +66,9 @@ function run() {
 rm -rf ./results
 
 # Do we need this?
-run "rhtap/init.sh"
+run "tssc/init.sh"
 
 # See templates/promote-pipeline-steps.sh.njk
-source rhtap/promote-pipeline-steps.sh
+source tssc/promote-pipeline-steps.sh
 
 tree ./results

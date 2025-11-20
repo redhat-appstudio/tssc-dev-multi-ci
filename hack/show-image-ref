@@ -5,6 +5,6 @@ set -euo pipefail
 #  $ export MY_IMAGES_TO_VERIFY=$(hack/show-image-ref.sh)
 #  $ bash promote-pipeline.sh
 
-IMAGE_URL=$(cat tmp/build/results/buildah-rhtap/IMAGE_URL)
-IMAGE_DIGEST=$(cat tmp/build/results/buildah-rhtap/IMAGE_DIGEST)
+IMAGE_URL=$(cat tmp/build/results/buildah-tssc/IMAGE_URL)
+IMAGE_DIGEST=$(cat tmp/build/results/buildah-tssc/IMAGE_DIGEST)
 echo "${IMAGE_URL%:*}@${IMAGE_DIGEST}"
