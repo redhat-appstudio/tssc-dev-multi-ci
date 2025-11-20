@@ -62,14 +62,6 @@ for future deployments.
 
 In order to run in RHTAP via software templates, you need to release to a fork of templates https://github.com/redhat-appstudio/tssc-sample-templates and install these into RHTAP. When validated in a fork, send a pull request to the release templates repo. 
 
-In order to run the Jenkinsfile you must push to the Jenkins library https://github.com/redhat-appstudio/tssc-sample-jenkins
-If you want to use a fork you must update your jenkinsfile to reference your fork repository in the jenkins file. 
-
-```
-library identifier: 'RHTAP_Jenkins@main', retriever: modernSCM(
-  [$class: 'GitSCMSource',
-   remote: 'https://github.com/redhat-appstudio/tssc-sample-jenkins.git'])
-```
 
 To update forks, in preparation for sending pull requests to the official library locations, you can run ` bash hack/copy-to-tssc-templates` to update your local forked repos and then manually check and push to your branch. 
 
