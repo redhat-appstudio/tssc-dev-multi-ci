@@ -1,6 +1,6 @@
 module github.com/redhat-appstudio/tssc-dev-multi-ci/tools/yq
 
-go 1.24
+go 1.24.0
 
 toolchain go1.25.4
 
@@ -27,6 +27,6 @@ require (
 	go.yaml.in/yaml/v3 v3.0.4 // indirect
 	golang.org/x/net v0.42.0 // indirect
 	golang.org/x/sys v0.34.0 // indirect
-	golang.org/x/text v0.27.0 // indirect
+	golang.org/x/text v0.31.0 // indirect
 	gopkg.in/op/go-logging.v1 v1.0.0-20160211212156-b2cb9fa56473 // indirect
 )
