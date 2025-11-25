@@ -100,8 +100,8 @@ github.com/anchore/bubbly v0.0.0-20231115134915-def0aba654a9 h1:p0ZIe0htYOX284Y4
 github.com/anchore/bubbly v0.0.0-20231115134915-def0aba654a9/go.mod h1:3ZsFB9tzW3vl4gEiUeuSOMDnwroWxIxJelOOHUp8dSw=
 github.com/anchore/clio v0.0.0-20250814004327-79c57fd06805 h1:7xsy88YyEzuP0ZHr30y+ArdDekuQF7u5EXM9ksrHg9k=
 github.com/anchore/clio v0.0.0-20250814004327-79c57fd06805/go.mod h1:42dWox8z4//b898OIELsQnSdYq9q1aCXkwp5fKF+BEU=
-github.com/anchore/fangs v0.0.0-20250924221602-895877cb39ec h1:6R1lEYjwSkH1GmRUpg56CfeLu4xzZS+dtDk8nHvMW20=
-github.com/anchore/fangs v0.0.0-20250924221602-895877cb39ec/go.mod h1:RmTGtCeeZT3Uz1Kb3iRNUBFNLkpa1wAXXAs3ya3ELCM=
+github.com/anchore/fangs v0.0.0-20251124222014-a2d06a727954 h1:JFRTHVkxdMTEgOs1ZQC0+fD1Obm+XIS0ZlpnoQN723k=
+github.com/anchore/fangs v0.0.0-20251124222014-a2d06a727954/go.mod h1:RmTGtCeeZT3Uz1Kb3iRNUBFNLkpa1wAXXAs3ya3ELCM=
 github.com/anchore/go-collections v0.0.0-20240216171411-9321230ce537 h1:GjNGuwK5jWjJMyVppBjYS54eOiiSNv4Ba869k4wh72Q=
 github.com/anchore/go-collections v0.0.0-20240216171411-9321230ce537/go.mod h1:1aiktV46ATCkuVg0O573ZrH56BUawTECPETbZyBcqT8=
 github.com/anchore/go-homedir v0.0.0-20250319154043-c29668562e4d h1:gT69osH9AsdpOfqxbRwtxcNnSZ1zg4aKy2BevO3ZBdc=
