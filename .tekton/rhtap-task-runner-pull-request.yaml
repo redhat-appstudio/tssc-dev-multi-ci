@@ -34,7 +34,6 @@ spec:
   - name: prefetch-input
     value: |
       [
-        {"type": "gomod", "path": "tools/syft"},
         {"type": "gomod", "path": "tools/yq"},
         {"type": "gomod", "path": "tools/splashy"},
         {"type": "gomod", "path": "tools/git-clone/image/git-init"},
