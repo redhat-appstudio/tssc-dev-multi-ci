@@ -4,6 +4,9 @@ FROM registry.redhat.io/rhtas/ec-rhel9:0.6@sha256:b3701b0932c8c2637d1c83710b585e
 
 FROM registry.redhat.io/openshift4/ose-cli:latest@sha256:ef83967297f619f45075e7fd1428a1eb981622a6c174c46fb53b158ed24bed85 as oc
 
+# Since this is a tech preview image we should double check with TPA team this on next release cycle
+FROM registry.redhat.io/rh-syft-tech-preview/syft-rhel9:1.29.0-1756223792@sha256:15ed82f0b5311a570ccb8ea02135d9776c6d61e545c51b256b3fc5b5db20ba67 as syft
+
 # Ideally, use the official image from Red Hat, e.g. registry.access.redhat.com/ubi10/go-toolset,
 # but a 1.24 release does not yet exist.
 FROM brew.registry.redhat.io/rh-osbs/openshift-golang-builder:v1.24@sha256:c52f52b73cc121327416b3fe8d64d682eb48b2c86298a4d645d7169251700cd5 as go-builder
@@ -20,11 +23,6 @@ RUN \
   cd yq && \
   go install -trimpath --mod=readonly github.com/mikefarah/yq/v4 && \
   yq --version
-
-RUN \
-  cd syft && \
-  go install -trimpath --mod=readonly github.com/anchore/syft/cmd/syft && \
-  syft version
 
 RUN \
   cd splashy && \
@@ -58,8 +56,8 @@ COPY --from=cosign /usr/local/bin/cosign /usr/bin/cosign
 COPY --from=ec /usr/local/bin/ec /usr/bin/ec
 COPY --from=ec /usr/local/bin/reduce-snapshot.sh /usr/bin/reduce-snapshot.sh
 COPY --from=oc /usr/bin/oc /usr/bin/oc
+COPY --from=syft /usr/local/bin/syft /usr/bin/syft
 COPY --from=go-builder /usr/local/bin/yq /usr/bin/yq
-COPY --from=go-builder /usr/local/bin/syft /usr/bin/syft
 COPY --from=go-builder /usr/local/bin/splashy /usr/bin/splashy
 COPY --from=go-builder /usr/local/bin/git-init /usr/bin/git-init
 
