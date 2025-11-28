@@ -41,7 +41,7 @@ require (
 	github.com/aquasecurity/go-version v0.0.1 // indirect
 	github.com/aymanbagabas/go-osc52/v2 v2.0.1 // indirect
 	github.com/becheran/wildmatch-go v1.0.0 // indirect
-	github.com/bmatcuk/doublestar/v4 v4.8.0 // indirect
+	github.com/bmatcuk/doublestar/v4 v4.9.1 // indirect
 	github.com/charmbracelet/bubbles v0.20.0 // indirect
 	github.com/charmbracelet/bubbletea v1.2.4 // indirect
 	github.com/charmbracelet/harmonica v0.2.0 // indirect
