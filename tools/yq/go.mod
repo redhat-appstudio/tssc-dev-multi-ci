@@ -10,7 +10,7 @@ require (
 	github.com/a8m/envsubst v1.4.3 // indirect
 	github.com/alecthomas/participle/v2 v2.1.4 // indirect
 	github.com/dimchansky/utfbom v1.1.1 // indirect
-	github.com/elliotchance/orderedmap v1.8.0 // indirect
+	github.com/elliotchance/orderedmap/v3 v3.1.0 // indirect
 	github.com/fatih/color v1.18.0 // indirect
 	github.com/go-ini/ini v1.67.0 // indirect
 	github.com/goccy/go-json v0.10.5 // indirect
