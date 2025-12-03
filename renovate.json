@@ -1,3 +1,5 @@
 {
-  "baseBranches": ["main"]
+  "baseBranchPatterns": [
+    "main"
+  ]
 }
