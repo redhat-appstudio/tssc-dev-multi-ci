@@ -4,7 +4,7 @@ FROM registry.redhat.io/rhtas/ec-rhel9:0.7@sha256:e77363f2c25d77aa82bccaab68ad3a
 
 FROM registry.redhat.io/openshift4/ose-cli:latest@sha256:ef83967297f619f45075e7fd1428a1eb981622a6c174c46fb53b158ed24bed85 as oc
 
-# Since this is a tech preview image we should double check with TPA team this on next release cycle
+# Since this is a tech preview image we should double check with TPA team on next release cycle
 FROM registry.redhat.io/rh-syft-tech-preview/syft-rhel9:1.29.0-1756223792@sha256:15ed82f0b5311a570ccb8ea02135d9776c6d61e545c51b256b3fc5b5db20ba67 as syft
 
 # Ideally, use the official image from Red Hat, e.g. registry.access.redhat.com/ubi10/go-toolset,
