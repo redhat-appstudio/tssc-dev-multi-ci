@@ -69,16 +69,15 @@ build_variables:
     commented_out: true
     comment: Used to verify the image signature and attestation
 
+  # CUSTOM_ROOT_CA must be commented out in jenkins and GH actions. It would otherwise fail if user wouldn't provide the secret/variable.
   - name: CUSTOM_ROOT_CA
-    if: 'isJenkins'
+    if: 'isGitHub || isJenkins'
     comment: Custom Root CA to be used in scripts as trusted
-    optional: true
     commented_out: true
 
   - name: CUSTOM_ROOT_CA
-    if: '!isJenkins'
+    if: '!isJenkins && !isGitHub'
     comment: Custom Root CA to be used in scripts as trusted
-    optional: true
 
 build_secrets:
   - name: ROX_API_TOKEN
@@ -131,9 +130,14 @@ gitops_steps:
 gitops_variables:
   - name: ROX_CENTRAL_ENDPOINT
     if: 'isJenkins'
+  # CUSTOM_ROOT_CA must be commented out in jenkins and GH actions. It would otherwise fail if user wouldn't provide the secret/variable.
   - name: CUSTOM_ROOT_CA
+    if: 'isGitHub || isJenkins'
     comment: Custom Root CA to be used in scripts as trusted
-    optional: true
+    commented_out: true
+  - name: CUSTOM_ROOT_CA
+    if: '!isJenkins && !isGitHub'
+    comment: Custom Root CA to be used in scripts as trusted
   - name: COSIGN_PUBLIC_KEY
     if: 'isGitHub || isAzure || isJenkins'
     comment: Used to verify the image signature and attestation

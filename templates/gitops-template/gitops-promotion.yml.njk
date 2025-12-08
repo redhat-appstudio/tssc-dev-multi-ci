@@ -51,12 +51,10 @@ jobs:
               IMAGE_REGISTRY: `${{ "'${{' }} vars.IMAGE_REGISTRY" | inCurlies }}`,
 {% for var in gitops_variables %}
   {%- if var | eval_if_condition %}
-    {%- if not var.optional %}
-      {%- if var.comment %}
+    {%- if var.comment %}
              /* {{ var.comment }} */
-      {%- endif %}
-             {% if var.commented_out %}/*{% endif %}{{ var.name }}: `${{ ("'${{' }} vars." + var.name) | inCurlies }}`,{% if var.commented_out %}*/{% endif %}
     {%- endif %}
+             {% if var.commented_out %}/*{% endif %}{{ var.name }}: `${{ ("'${{' }} vars." + var.name) | inCurlies }}`,{% if var.commented_out %}*/{% endif %}
   {%- endif %}
 {%- endfor %}
             };
