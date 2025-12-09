@@ -50,12 +50,12 @@ jobs:
             const vars = {
               IMAGE_REGISTRY: `${{ "'${{' }} vars.IMAGE_REGISTRY" | inCurlies }}`,
 {% for var in gitops_variables %}
-{%- if var | eval_if_condition %}
-{%- if var.comment %}
+  {%- if var | eval_if_condition %}
+    {%- if var.comment %}
              /* {{ var.comment }} */
-{%- endif %}
+    {%- endif %}
              {% if var.commented_out %}/*{% endif %}{{ var.name }}: `${{ ("'${{' }} vars." + var.name) | inCurlies }}`,{% if var.commented_out %}*/{% endif %}
-{%- endif %}
+  {%- endif %}
 {%- endfor %}
             };
 
