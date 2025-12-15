@@ -1,0 +1,56 @@
+# Generated from templates/gitops-template/azure-pipelines.yml.njk. Do not edit directly.
+
+pr:
+  - main
+
+trigger: none
+
+# Using self-hosted 'Default' agent pool by default
+# Change accordingly when using a different agent pool
+# Can be deleted if self-hosted agents are not being used
+# See https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/agents
+pool:
+  name: Default
+
+container:
+  image: quay.io/redhat-appstudio/rhtap-task-runner:latest
+  options: --privileged
+
+# Using 'tssc' variable group by default
+# Change accordingly when using a different variable group
+# Can be deleted if the variables are set differently
+# See https://learn.microsoft.com/en-us/azure/devops/pipelines/process/variables
+variables:
+  - group: tssc
+  - name: CI_TYPE
+    value: azure
+
+steps:
+  - bash: |
+      echo "• gather-deploy-images"
+      bash /work/tssc/gather-deploy-images.sh
+      echo "• verify-conforma"
+      bash /work/tssc/verify-conforma.sh
+    name: Verify_Conforma
+    env:
+      TRUSTIFICATION_OIDC_CLIENT_SECRET: $(TRUSTIFICATION_OIDC_CLIENT_SECRET)
+      # Set this password for your specific registry
+      IMAGE_REGISTRY_PASSWORD: $(IMAGE_REGISTRY_PASSWORD)
+      # QUAY_IO_CREDS_PSW: $(QUAY_IO_CREDS_PSW)
+      # ARTIFACTORY_IO_CREDS_PSW: $(ARTIFACTORY_IO_CREDS_PSW)
+      # NEXUS_IO_CREDS_PSW: $(NEXUS_IO_CREDS_PSW)
+  - bash: |
+      echo "• gather-images-to-upload-sbom"
+      bash /work/tssc/gather-images-to-upload-sbom.sh
+      echo "• download-sbom-from-url-in-attestation"
+      bash /work/tssc/download-sbom-from-url-in-attestation.sh
+      echo "• upload-sbom-to-trustification"
+      bash /work/tssc/upload-sbom-to-trustification.sh
+    name: Upload_SBOM
+    env:
+      TRUSTIFICATION_OIDC_CLIENT_SECRET: $(TRUSTIFICATION_OIDC_CLIENT_SECRET)
+      # Set this password for your specific registry
+      IMAGE_REGISTRY_PASSWORD: $(IMAGE_REGISTRY_PASSWORD)
+      # QUAY_IO_CREDS_PSW: $(QUAY_IO_CREDS_PSW)
+      # ARTIFACTORY_IO_CREDS_PSW: $(ARTIFACTORY_IO_CREDS_PSW)
+      # NEXUS_IO_CREDS_PSW: $(NEXUS_IO_CREDS_PSW)

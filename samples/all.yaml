@@ -1,0 +1,14 @@
+apiVersion: backstage.io/v1alpha1
+kind: Location
+metadata:
+  name: tssc-all
+  description: TSSC Application Samples
+spec:
+  targets:
+    - ./templates/dotnet/template.yaml
+    - ./templates/generic-import-from-repo/template.yaml
+    - ./templates/go/template.yaml
+    - ./templates/java-quarkus/template.yaml
+    - ./templates/java-springboot/template.yaml
+    - ./templates/nodejs/template.yaml
+    - ./templates/python/template.yaml
