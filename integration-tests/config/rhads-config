@@ -1,7 +1,0 @@
-OCP="4.19"
-ACS="remote"
-REGISTRY="quay,artifactory,nexus"
-TPA="remote"
-SCM="github,gitlab,bitbucket"
-PIPELINE="tekton,actions,gitlabci"
-AUTH_CONFIG="github"
