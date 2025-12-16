@@ -1,0 +1,25 @@
+SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )" 
+ 
+pipeline="${1:-$SCRIPTDIR/../pac/pipelines/docker-build-rhtap.yaml}" 
+
+function showimports() {  
+    COUNTER=0
+    TASKS=$(yq .spec.tasks.[].taskRef.name $1)  
+    FINALLY=$(yq .spec.finally.[].taskRef.name $1)   
+
+    for task in $TASKS $FINALLY
+    do 
+    if [ -f $SCRIPTDIR/../pac/tasks/$task.yaml ]; then
+        printf "    %s\n" "pipelinesascode.tekton.dev/task-$COUNTER: \"{{values.rawUrl}}/pac/tasks/$task.yaml\""
+        let COUNTER++
+    else  
+        echo "# MISSING $task "
+        echo "# Searched $SCRIPTDIR/../pac/tasks/$task.yaml "
+    fi 
+    done
+    echo 
+} 
+pipe=$(basename $pipeline)
+printf "    %s\n" "pipelinesascode.tekton.dev/pipeline: \"{{values.rawUrl}}/pac/pipelines/$pipe\""
+showimports $pipeline
+ 

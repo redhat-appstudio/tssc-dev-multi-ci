@@ -1,0 +1,22 @@
+SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+patches_dir=$SCRIPTDIR/patches
+
+# find tasks and pipelines and see if any need post import patches
+# patches are local changes for workarounds to upstream tasks or pipelines
+# patches have the name of the task or pipeline (not the file, even though they often match)
+for definition_type in tasks pipelines; do
+  definition_dir=$SCRIPTDIR/../pac/$definition_type
+  for definition in $definition_dir/*; do
+     echo $definition
+     name=$(yq ".metadata.name" $definition)
+     # if a directory exists with same name, patch it
+     if [ -d $patches_dir/$definition_type/$name ]; then
+        echo "Patch found for $name in $definition_type"
+        workdir=$(mktemp -d)
+        cp -r $patches_dir/$definition_type/$name/* $workdir
+        cp $definition $workdir
+        # rebuild the task with patches and replace
+        kustomize build $workdir > $definition
+     fi
+  done
+done
