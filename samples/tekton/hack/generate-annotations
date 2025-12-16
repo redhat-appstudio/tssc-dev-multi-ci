@@ -10,7 +10,7 @@ function showimports() {
     for task in $TASKS $FINALLY
     do 
     if [ -f $SCRIPTDIR/../pac/tasks/$task.yaml ]; then
-        printf "    %s\n" "pipelinesascode.tekton.dev/task-$COUNTER: \"{{values.rawUrl}}/pac/tasks/$task.yaml\""
+        printf "    %s\n" "pipelinesascode.tekton.dev/task-$COUNTER: \"{{values.rawUrl}}/samples/tekton/pac/tasks/$task.yaml\""
         let COUNTER++
     else  
         echo "# MISSING $task "
