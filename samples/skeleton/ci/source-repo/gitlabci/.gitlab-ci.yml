@@ -1,0 +1,99 @@
+# Generated from templates/source-repo/.gitlab-ci.yml.njk. Do not edit directly.
+
+image:
+  name: quay.io/redhat-appstudio/rhtap-task-runner:latest
+  pull_policy: always
+
+variables:
+  CI_TYPE: gitlab
+
+stages:
+  - init
+  - build
+  - deploy
+  - scan
+  - summary
+
+init:
+  stage: init
+  script:
+    - echo "• init"
+    - bash /work/tssc/init.sh
+  artifacts:
+    paths:
+      - results/
+
+buildah-tssc:
+  stage: build
+  script:
+    - echo "• buildah-tssc"
+    - bash /work/tssc/buildah-tssc.sh
+  artifacts:
+    paths:
+      - results/
+
+cosign-sign-attest:
+  stage: build
+  needs: [buildah-tssc]
+  script:
+    - echo "• cosign-sign-attest"
+    - bash /work/tssc/cosign-sign-attest.sh
+  artifacts:
+    paths:
+      - results/
+
+update-deployment:
+  stage: deploy
+  script:
+    - echo "• update-deployment"
+    - bash /work/tssc/update-deployment.sh
+  artifacts:
+    paths:
+      - results/
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+acs-deploy-check:
+  stage: scan
+  script:
+    - echo "• acs-deploy-check"
+    - bash /work/tssc/acs-deploy-check.sh
+  artifacts:
+    paths:
+      - results/
+
+acs-image-check:
+  stage: scan
+  script:
+    - echo "• acs-image-check"
+    - bash /work/tssc/acs-image-check.sh
+  artifacts:
+    paths:
+      - results/
+
+acs-image-scan:
+  stage: scan
+  script:
+    - echo "• acs-image-scan"
+    - bash /work/tssc/acs-image-scan.sh
+  artifacts:
+    paths:
+      - results/
+
+show-sbom-rhdh:
+  stage: summary
+  script:
+    - echo "• show-sbom-rhdh"
+    - bash /work/tssc/show-sbom-rhdh.sh
+  artifacts:
+    paths:
+      - results/
+
+summary:
+  stage: summary
+  script:
+    - echo "• summary"
+    - bash /work/tssc/summary.sh
+  artifacts:
+    paths:
+      - results/
