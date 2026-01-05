@@ -1,0 +1,70 @@
+# Generated from templates/gitops-template/.gitlab-ci.yml.njk. Do not edit directly.
+
+image:
+  name: quay.io/redhat-appstudio/rhtap-task-runner:latest
+  pull_policy: always
+
+variables:
+  CI_TYPE: gitlab
+
+stages:
+  - Verify Conforma
+  - Upload SBOM
+
+gather-deploy-images:
+  stage: Verify Conforma
+  script:
+    - echo "• gather-deploy-images"
+    - bash /work/tssc/gather-deploy-images.sh
+  artifacts:
+    paths:
+      - results/
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+
+verify-conforma:
+  stage: Verify Conforma
+  needs: [gather-deploy-images]
+  script:
+    - echo "• verify-conforma"
+    - bash /work/tssc/verify-conforma.sh
+  artifacts:
+    paths:
+      - results/
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+
+gather-images-to-upload-sbom:
+  stage: Upload SBOM
+  script:
+    - echo "• gather-images-to-upload-sbom"
+    - bash /work/tssc/gather-images-to-upload-sbom.sh
+  artifacts:
+    paths:
+      - results/
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+
+download-sbom-from-url-in-attestation:
+  stage: Upload SBOM
+  needs: [gather-images-to-upload-sbom]
+  script:
+    - echo "• download-sbom-from-url-in-attestation"
+    - bash /work/tssc/download-sbom-from-url-in-attestation.sh
+  artifacts:
+    paths:
+      - results/
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+
+upload-sbom-to-trustification:
+  stage: Upload SBOM
+  needs: [download-sbom-from-url-in-attestation]
+  script:
+    - echo "• upload-sbom-to-trustification"
+    - bash /work/tssc/upload-sbom-to-trustification.sh
+  artifacts:
+    paths:
+      - results/
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"

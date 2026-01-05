@@ -1,0 +1,81 @@
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: gather-deploy-images
+  labels:
+    app.kubernetes.io/version: "0.1"
+spec:
+  description: Extract images from deployment YAML to pass to EC for validation
+  workspaces:
+    - description: Should contain a cloned gitops repo at the ./source subpath
+      name: source
+  params:
+    - name: TARGET_BRANCH
+      description: |
+        If specified, will gather only the images that changed between the current revision and the target branch. Useful for pull requests. Note that the repository cloned on the source workspace must already contain the origin/$TARGET_BRANCH reference.
+      type: string
+      default: ""
+    - name: ENVIRONMENTS
+      description: Gather images from the manifest files for the specified environments
+      type: array
+      default:
+        - development
+        - stage
+        - prod
+  results:
+    - name: IMAGES_TO_VERIFY
+      description: |
+        The images to be verified, in a format compatible with https://github.com/konflux-ci/build-definitions/tree/main/task/verify-enterprise-contract/0.1. When there are no images to verify, this is an empty string.
+  steps:
+    - name: get-images-per-env
+      image: quay.io/redhat-appstudio/rhtap-task-runner:latest
+      workingDir: $(workspaces.source.path)/source
+      env:
+        - name: TARGET_BRANCH
+          value: $(params.TARGET_BRANCH)
+      args:
+        - $(params.ENVIRONMENTS[*])
+      script: |
+        #!/bin/bash
+        set -euo pipefail
+
+        IMAGE_PATH='.spec.template.spec.containers[0].image'
+        IMAGES_FILE='/tmp/all-images.txt'
+        component_name=$(yq .metadata.name application.yaml)
+
+        for env in "$@"; do
+          yaml_path=components/${component_name}/overlays/${env}/deployment-patch.yaml
+          image=$(yq "$IMAGE_PATH" "$yaml_path")
+
+          if [ -n "$TARGET_BRANCH" ]; then
+            git fetch origin $TARGET_BRANCH
+            prev_image=$(git show "FETCH_HEAD:$yaml_path" | yq "$IMAGE_PATH")
+            if [ "$prev_image" = "$image" ]; then
+              # don't check images that didn't change between the current revision and the target branch
+              continue
+            fi
+          fi
+
+          printf "%s\n" "$image"
+        done | sort -u > $IMAGES_FILE
+
+        if [ ! -s $IMAGES_FILE ]; then
+          echo "No images to verify"
+          touch $(results.IMAGES_TO_VERIFY.path)
+          exit 0
+        fi
+
+        # TODO: each component needs a {"source": {"git": {"url": "...", "revision": "..."}}}
+        #       will that be too large for Tekton results?
+
+        jq --compact-output --raw-input --slurp < $IMAGES_FILE '
+          # split input file
+          split("\n") |
+          # drop empty lines
+          map(select(length > 0)) |
+          # convert into EC-compatible format
+          {
+            "components": map({"containerImage": .})
+          }
+        ' | tee $(results.IMAGES_TO_VERIFY.path)
+      imagePullPolicy: Always

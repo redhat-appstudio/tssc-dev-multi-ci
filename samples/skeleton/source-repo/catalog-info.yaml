@@ -1,0 +1,44 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: ${{ values.name }} 
+  description: ${{ values.description}}   
+  links:
+    - url: https://www.redhat.com/en/solutions/trusted-software-supply-chain
+      title: Trusted Secure Supply Chain 
+      icon: dashboard
+      type: admin-dashboard
+  annotations:
+    # ArgoCD apps from this template used tssc-gitops as the grouping
+    argocd/app-selector: tssc/gitops=${{  values.name  }}
+    backstage.io/kubernetes-id: ${{ values.name }} 
+    backstage.io/techdocs-ref: dir:.  
+  {%- if values.ciType == 'githubactions' %} 
+    github.com/project-slug: ${{ values.gitRepoOwner }}/${{ values.gitRepoName }} 
+  {%- endif %} 
+  {%- if values.ciType == 'gitlabci' %} 
+    gitlab.com/project-slug: '${{ values.gitRepoOwner }}/${{ values.gitRepoName }}'
+  {%- endif %}    
+  {%- if values.ciType == 'azure' %}
+    dev.azure.com/project: ${{ values.azureProject }}
+    dev.azure.com/build-definition: ${{ values.gitRepoName }}
+  {%- endif %}
+  {%- if values.ciType == 'tekton' %} 
+    janus-idp.io/tekton: ${{ values.name }} 
+  {%- endif %} 
+  {%- if values.ciType == 'jenkins' %} 
+    jenkins.io/job-full-name: ${{ values.name }} 
+  {%- endif %}
+  {%- if "quay" in values.image %}
+    quay.io/repository-slug: ${{ values.repoSlug }}
+  {%- elif "jfrog" in values.image or "artifactory" in values.image %}
+    jfrog-artifactory/image-name: ${{ values.imageName }}
+  {%- elif "nexus" in values.image %}
+    nexus-repository-manager/docker.image-name: ${{ values.repoSlug }}
+  {%- endif %}
+  tags: ${{ values.tags }} 
+spec:
+  type: service
+  owner: ${{ values.owner }} 
+  lifecycle: experimental
+ 

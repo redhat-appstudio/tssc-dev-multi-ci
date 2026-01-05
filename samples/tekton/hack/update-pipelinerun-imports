@@ -1,0 +1,39 @@
+SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )" 
+  
+PATCH=$(mktemp)
+TEMPFILE=$(mktemp)
+
+PAC_DIRS="source-repo gitops-repo"  
+
+PNAME_TO_FILE=$(mktemp -d) 
+# do a map in case pipeline name is not in the file with same name + .yaml
+for pipeline in $SCRIPTDIR/../pac/pipelines/*.yaml;do
+    PNAME=$(yq .metadata.name $pipeline) 
+    FNAME=$(basename $pipeline)
+    echo $FNAME > $PNAME_TO_FILE/$PNAME 
+    if [ "$FNAME" != "$PNAME.yaml" ]; then
+        echo "Warning, the pipeline named $PNAME is in a file called $FNAME"
+    fi 
+done   
+
+for pac_dirs in $PAC_DIRS;do   
+    PAC_RUNNERS="$SCRIPTDIR/../pac/$pac_dirs" 
+    for pipelineruns in $PAC_RUNNERS/*.yaml;do    
+        pipelineRef=$(grep -v "{{" $pipelineruns | yq .spec.pipelineRef.name)
+        pipelineFile=$(cat $PNAME_TO_FILE/$pipelineRef)
+        echo "$pipelineRef in $pipelineFile" 
+        bash $SCRIPTDIR/generate-annotations $SCRIPTDIR/../pac/pipelines/$pipelineFile > $PATCH
+        
+        sed  's!pipelinesascode.tekton.dev/pipeline.*!SAVE_FOR_PATCH!' $pipelineruns \
+        | sed 's!pipelinesascode.tekton.dev/task.*!!' \
+        | sed  "/SAVE_FOR_PATCH/r $PATCH" \
+        | grep -v "SAVE_FOR_PATCH" \
+        | grep "\S" >  $TEMPFILE   
+
+        cp $TEMPFILE $pipelineruns 
+    done 
+done 
+# temp for backwards compat with old names
+rm -rf $SCRIPTDIR/../pac/docker-build-rhtap
+cp -r $SCRIPTDIR/../pac/source-repo/ $SCRIPTDIR/../pac/docker-build-rhtap
+echo "deprecated, see ../source-repo" > $SCRIPTDIR/../pac/docker-build-rhtap/deprecated.notice
