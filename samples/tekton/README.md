@@ -23,10 +23,10 @@ Depending on the use case there are two ways of consuming of the RHTAP pipeline:
 
 ## Consuming unmodified pipelines
 
-For this scenario, the RHTAP [pipeline definition](https://github.com/redhat-appstudio/tssc-sample-pipelines/blob/main/pac/pipelines/docker-build-rhtap.yaml) can be directly referenced from the [official](https://github.com/redhat-appstudio/tssc-sample-pipelines) repository.
+For this scenario, the RHTAP [pipeline definition](https://github.com/redhat-appstudio/tssc-dev-multi-ci/blob/main/samples/tekton/pac/pipelines/docker-build-rhtap.yaml) can be directly referenced from the [official](https://github.com/redhat-appstudio/tssc-dev-multi-ci) repository.
 In such case, all the updates and security pathes provided will be available immediately to the consuming pipelines. No actions required from the consumer side.
 
-In the pipelines as code runners, you can find the reference to these pipelines in the following format. See a full pipeline runner example [here](https://github.com/redhat-appstudio/tssc-sample-pipelines/blob/main/pac/source-repo/docker-push.yaml) 
+In the pipelines as code runners, you can find the reference to these pipelines in the following format. See a full pipeline runner example [here](https://github.com/redhat-appstudio/tssc-dev-multi-ci/blob/main/samples/tekton/pac/source-repo/docker-push.yaml)
 
 ```
     pipelinesascode.tekton.dev/pipeline: "raw-url-with-branch/pac/pipelines/docker-build-rhtap.yaml"
@@ -34,22 +34,21 @@ In the pipelines as code runners, you can find the reference to these pipelines 
 ```
 
 The placeholder `raw-url-with-branch` would have a reference to the original pipelines repository or a forked versions in raw reference format, or blob format for github enterprise.  
+`https://raw.githubusercontent.com/redhat-appstudio/tssc-dev-multi-ci/release-v1.9.x/samples/tekton`
 
- `https://raw.githubusercontent.com/redhat-appstudio/tssc-sample-pipelines/v1.2.x`
-
-To track the latest pipelines (1.2.x or 1.3.x) you can use the `x` branches in the following form. The `x` versions will match the latest 1.minor release. For example if  1.2.0, 1.2.1, 1.2.2 exist 1.2.x will match the 1.2.2. To pin your usage to an older release choose the specific version you would like. 
+To pin your usage to an older release choose the specific version you would like. 
 
 
 ## Consuming customized pipelines
 
-If any customization to the default RHTAP [pipeline definition](https://github.com/redhat-appstudio/tssc-sample-pipelines/blob/main/pac/pipelines/docker-build-rhtap.yaml) is needed or immediate updates are not desired, workflow described in this section should be taken.
+If any customization to the default RHTAP [pipeline definition](https://github.com/redhat-appstudio/tssc-dev-multi-ci/blob/main/samples/tekton/pac/pipelines/docker-build-rhtap.yaml) is needed or immediate updates are not desired, workflow described in this section should be taken.
 
 Fork this repository and modify the default RHTAP pipeline definition according to your needs.
 Reference the modified version of the pipeline.
 
-Replace `raw-url-with-branch` would have a reference to the original pipelines repository or a forked versions in raw reference format, or blob format for github enterprise. The tssc-sample-templates consumer of this will do this automatically when regenerating the templates with updated piplines.
+Replace `raw-url-with-branch` would have a reference to the original pipelines repository or a forked versions in raw reference format, or blob format for github enterprise.
 
- `https://raw.githubusercontent.com/MY_ORG/tssc-sample-pipelines/v1.3.x`
+ `https://raw.githubusercontent.com/MY_ORG/tssc-dev-multi-ci/release-v1.9.x/samples/tekton`
 
 To consume CVE fixes and pipeline updates in the upstream, one should rebase changes in the fork on top of the new RHTAP pipeline version. You can validate these in a branch before rolling out to your internal users. 
 

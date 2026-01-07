@@ -56,26 +56,6 @@ Once you have a cluster ready:
 Note: once you've set up your `.env` for the first time, most of the variables will be re-usable
 for future deployments.
 
-## Releasing to Templates and Jenkins Library 
-
-### Jenkins 
-
-In order to run in RHTAP via software templates, you need to release to a fork of templates https://github.com/redhat-appstudio/tssc-sample-templates and install these into RHTAP. When validated in a fork, send a pull request to the release templates repo. 
-
-In order to run the Jenkinsfile you must push to the Jenkins library https://github.com/redhat-appstudio/tssc-sample-jenkins
-If you want to use a fork you must update your jenkinsfile to reference your fork repository in the jenkins file. 
-
-```
-library identifier: 'RHTAP_Jenkins@main', retriever: modernSCM(
-  [$class: 'GitSCMSource',
-   remote: 'https://github.com/redhat-appstudio/tssc-sample-jenkins.git'])
-```
-
-To update forks, in preparation for sending pull requests to the official library locations, you can run ` bash hack/copy-to-tssc-templates` to update your local forked repos and then manually check and push to your branch. 
-
-
-### TODO - update to include gitlab and gihub 
-
 
 ## Creating a cosign signing secret
 
@@ -171,7 +151,7 @@ The script will perform the following
 1. Reset the build and gitops repositories for each of the CI systems to a base source and application sample, these repos are  typically called `tssc-dev-source-{ci-name}` and `tssc-dev-gitops-{ci-name} `. Note github Actions may have a different name due to history.  The ci-test.sh script will print the names of the repos used as well as any manual steps on creating repos (gitlab)
 2. Copy the CI pipelines and env setup for the ci tests into the build and gitops repos. The script can be run with RHTAP connected or not installed.  If running without an RHTAP (usefull for testing build, sbom, ec) the scripts will detect that there is no cluster and will disable ACS, REKOR and TRUSTIFICATION. If you have a running cluster, this can also be accomplished with `oc logout ` for simpler testing.'
 3. Kick off a build on each CI if manually required. 
-4. To get automated pull requests, run `bash hack/wait-for-gitops-update.sh` in a separate window before running the ci-test.sh. It will watch the three gitops repos for updates from build and automatically send a PR to update stage from dev. This can be used to validate a full build/promotion cycle before releasing into the tssc-sample-templates.
+4. To get automated pull requests, run `bash hack/wait-for-gitops-update.sh` in a separate window before running the ci-test.sh. It will watch the three gitops repos for updates from build and automatically send a PR to update stage from dev. This can be used to validate a full build/promotion cycle.
 5. You can also run `hack/rhtap-promote --repo repo-url` to trigger a PR for an individual repo. 
 
 ### Gitlab CI, Github Action, Jenkins Configuration 
