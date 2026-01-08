@@ -20,6 +20,6 @@ function showimports() {
     echo 
 } 
 pipe=$(basename $pipeline)
-printf "    %s\n" "pipelinesascode.tekton.dev/pipeline: \"{{values.rawUrl}}/pac/pipelines/$pipe\""
+printf "    %s\n" "pipelinesascode.tekton.dev/pipeline: \"{{values.rawUrl}}/samples/tekton/pac/pipelines/$pipe\""
 showimports $pipeline
  

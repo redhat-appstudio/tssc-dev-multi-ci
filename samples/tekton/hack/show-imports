@@ -22,6 +22,6 @@ function showimports() {
 for pipeline in $PIPELINES/*;do 
     echo "Imports for $pipeline:"
     pipe=$(basename $pipeline)
-    printf "\t\t%s\n" "pipelinesascode.tekton.dev/pipeline: \"{{values.rawUrl}}/pac/pipelines/$pipe\""
+    printf "\t\t%s\n" "pipelinesascode.tekton.dev/pipeline: \"{{values.rawUrl}}/samples/tekton/pac/pipelines/$pipe\""
     showimports $pipeline
 done 
