@@ -16,7 +16,7 @@ metadata:
   projectType: springboot
   language: Java
   provider: Red Hat
-  supportUrl: https://github.com/redhat-appstudio/tssc-sample-templates
+  supportUrl: https://github.com/redhat-appstudio/tssc-dev-multi-ci
 parent:
   id: java-springboot
   registryUrl: 'https://registry.devfile.io'

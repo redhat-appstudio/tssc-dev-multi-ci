@@ -1,20 +1,12 @@
 #!/bin/bash
 
-# Assumes local copy of the repo
-# https://github.com/redhat-appstudio/tssc-sample-templates or user fork in ../
 # This will not commit to user or redhat-appstudio, that step is manual.
 # release process is to create a branch in your fork, or in the redhat-appstudio directly
 # and copy the files into the relevant locations for that CI
 
-TEMPLATES=../tssc-sample-templates
+TEMPLATES=./samples
 
-echo
-if [ -d $TEMPLATES ]; then
-    echo "Updating Software Templates $TEMPLATES"
-else
-    echo "$TEMPLATES missing, clone or fork  https://github.com/redhat-appstudio/tssc-sample-templates into $TEMPLATES"
-    exit 0
-fi
+echo "Updating Software Templates $TEMPLATES"
 
 # Function that can update the tssc-templates folder for Multi-CI
 # Templates use the ciType to copy the correct CI to the generated repos from the folder
@@ -54,13 +46,4 @@ for ciType in jenkins gitlabci githubactions azure; do
     update-tssc-templates $CI_ROOT_GITOPS $ciType tssc/env.template.sh $GEN_GITOPS
 done
 
-echo "You will have to manually commit any changes to template or jenkins files"
-echo "Validate the changes, and create a PR to update the templates and library files"
-echo
-echo "Checking git status in $TEMPLATES"
-(
-    cd $TEMPLATES
-    echo "Repo: $(git config --get remote.origin.url)"
-    git status
-)
 echo

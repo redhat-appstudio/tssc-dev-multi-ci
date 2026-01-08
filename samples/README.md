@@ -14,7 +14,7 @@ To import these templates, register a component in on the golden path template p
 
 ![Screenshot](register.png)
 
-Import `https://github.com/redhat-appstudio/tssc-sample-templates/blob/main/all.yaml`
+Import `https://github.com/redhat-appstudio/tssc-dev-multi-ci/blob/main/samples/all.yaml`
 
 ![Screenshot](register2.png)
 
@@ -24,7 +24,7 @@ Add the following to your `app-config.yaml` file in your backstage configuration
 
 ```yaml
     - type: url
-      target:  https://github.com/redhat-appstudio/tssc-sample-templates/blob/main/all.yaml
+      target:  https://github.com/redhat-appstudio/tssc-dev-multi-ci/blob/main/samples/all.yaml
       rules:
         - allow: [Location, Template]
 ```
