@@ -166,3 +166,72 @@ hack/jenkins-set-secrets
 ```
 
 [rhtap-docs]: https://docs.redhat.com/en/documentation/red_hat_trusted_application_pipeline
+
+
+# Release Process
+
+This section outlines the simplified process for the **v1.9+** release cycle, designed for transparency and ease of automation.
+
+## Before You Start (Initial Environment Setup)
+
+If you haven't already set up your development environment, follow these steps to ensure your remotes are configured correctly for the release script:
+
+1. **Fork the Repository:** Navigate to the `redhat-appstudio/tssc-dev-multi-ci` repository on GitHub and click the **Fork** button to create a copy in your own namespace.
+2. **Clone Your Fork:**
+
+   ```bash
+   git clone git@github.com:<your-github-username>/tssc-dev-multi-ci.git
+   cd tssc-dev-multi-ci
+   ```
+
+3. **Add Upstream Remote:**
+
+   ```bash
+   git remote add upstream git@github.com:redhat-appstudio/tssc-dev-multi-ci.git
+   ```
+
+4. **Verify Remotes: Ensure your remotes contain both origin (your fork) and upstream (the main repo):**
+
+   ```bash
+   git remote -v
+   ```
+
+## Process Templates
+
+Decide on the next minor version and initialize the environment:
+
+```bash
+export NEW_VERSION='1.9'
+```
+
+### Phase A: Github Release
+
+* [ ] **Merge Pending [PRs](https://github.com/redhat-appstudio/tssc-dev-multi-ci/pulls):** Ensure all approved pull requests are merged into `main`.
+* [ ] **Run Automation Script:** 
+   * Make sure the following are installed on your client before running script:
+      * yq
+      * npm
+      * For mac clients gnu-sed is needed:
+         * brew install gnu-sed
+         * PATH="/opt/homebrew/opt/gnu-sed/libexec/gnubin:$PATH"
+
+   ```bash
+   ./hack/release.sh
+   ```
+* [ ] **Merge PR generated if everything looks correct**
+   * CI will fail, this is expected cause Task Runner Image is not built yet
+* [ ] **Create GitHub Release:** Target the new release branch (`release-v${NEW_VERSION}.x`).
+   * **Tag & Name Format:** `v${NEW_VERSION}.0`
+
+
+### Phase B: Task Runner Image Build
+
+*Must be performed after the GitHub Release is finalized.*
+
+* [ ] **Trigger Image Build:** Follow the pattern in [Konflux Release Data MR #12268](https://gitlab.cee.redhat.com/releng/konflux-release-data/-/merge_requests/12268).
+
+
+
+### Phase C: Miscellaneous
+
+* [ ] **Announce Release:** Notify stakeholders of the new version availability.
