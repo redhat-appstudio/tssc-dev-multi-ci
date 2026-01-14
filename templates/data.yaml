@@ -1,5 +1,5 @@
 ---
-runner_image: quay.io/redhat-appstudio/rhtap-task-runner:latest
+runner_image: quay.io/redhat-tssc/task-runner:davp1.2
 
 build_steps:
   - name: init

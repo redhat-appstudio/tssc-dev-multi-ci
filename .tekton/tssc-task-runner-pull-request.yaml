@@ -7,13 +7,13 @@ metadata:
     build.appstudio.redhat.com/pull_request_number: '{{pull_request_number}}'
     build.appstudio.redhat.com/target_branch: '{{target_branch}}'
     pipelinesascode.tekton.dev/max-keep-runs: "3"
-    pipelinesascode.tekton.dev/on-cel-expression: event == "pull_request" && target_branch == "main" && ( ".tekton/rhtap-task-runner-pull-request.yaml".pathChanged() || "Dockerfile".pathChanged() || "tssc/***".pathChanged() || "tools/***".pathChanged() || "samples/***".pathChanged()  )
+    pipelinesascode.tekton.dev/on-cel-expression: event == "pull_request" && target_branch == "release-vdavp1.2.x" && ( ".tekton/tssc-task-runner-pull-request.yaml".pathChanged() || "Dockerfile".pathChanged() || "tssc/***".pathChanged() || "tools/***".pathChanged() || "samples/***".pathChanged()  )
   creationTimestamp:
   labels:
-    appstudio.openshift.io/application: rhtap-task-runner
-    appstudio.openshift.io/component: rhtap-task-runner
+    appstudio.openshift.io/application: tssc-task-runner-davp1-2
+    appstudio.openshift.io/component: tssc-task-runner-davp1-2
     pipelines.appstudio.openshift.io/type: build
-  name: rhtap-task-runner-on-pull-request
+  name: tssc-task-runner-davp1-2-on-pull-request
   namespace: rhtap-shared-team-tenant
 spec:
   params:
@@ -22,7 +22,7 @@ spec:
   - name: revision
     value: '{{revision}}'
   - name: output-image
-    value: quay.io/redhat-user-workloads/rhtap-shared-team-tenant/rhtap-task-runner:on-pr-{{revision}}
+    value: quay.io/redhat-user-workloads/rhtap-shared-team-tenant/tssc-task-runner-davp1-2:on-pr-{{revision}}
   - name: image-expires-after
     value: 5d
   - name: dockerfile
@@ -554,7 +554,7 @@ spec:
     - name: netrc
       optional: true
   taskRunTemplate:
-    serviceAccountName: build-pipeline-rhtap-task-runner
+    serviceAccountName: build-pipeline-tssc-task-runner-davp1-2
   workspaces:
   - name: git-auth
     secret:
