@@ -193,7 +193,7 @@ spec:
           value: $(workspaces.basic-auth.bound)
         - name: WORKSPACE_BASIC_AUTH_DIRECTORY_PATH
           value: $(workspaces.basic-auth.path)
-      image: quay.io/redhat-appstudio/rhtap-task-runner:latest
+      image: quay.io/redhat-tssc/task-runner:davp1.0
       computeResources: {}
       securityContext:
         runAsUser: 0
@@ -377,7 +377,7 @@ spec:
         fi
       imagePullPolicy: Always
     - name: symlink-check
-      image: quay.io/redhat-appstudio/rhtap-task-runner:latest
+      image: quay.io/redhat-tssc/task-runner:davp1.0
       # per https://kubernetes.io/docs/concepts/containers/images/#imagepullpolicy-defaulting
       # the cluster will set imagePullPolicy to IfNotPresent
       env:

@@ -13,7 +13,7 @@ export QUAY__DEFAULT__ORG=""
 
 # PE can replace these values with own pipeline fork
 export PIPELINE__REPO__URL=https://github.com/redhat-appstudio/tssc-dev-multi-ci
-export PIPELINE__REPO__BRANCH=main
+export PIPELINE__REPO__BRANCH=release-vdavp1.0.x
 
 export DEFAULT__DEPLOYMENT__NAMESPACE__PREFIX=tssc-app
 

@@ -30,7 +30,7 @@ spec:
       description: NO_PROXY value for cache proxy (when enable-cache-proxy is true)
   steps:
     - name: init
-      image: quay.io/redhat-appstudio/rhtap-task-runner:latest
+      image: quay.io/redhat-tssc/task-runner:davp1.0
       computeResources:
         limits:
           memory: 256Mi

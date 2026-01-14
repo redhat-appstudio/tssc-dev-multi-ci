@@ -120,7 +120,7 @@ spec:
             secretKeyRef:
               name: tas-secret
               key: tuf_url
-      image: quay.io/redhat-appstudio/rhtap-task-runner:latest
+      image: quay.io/redhat-tssc/task-runner:davp1.0
       imagePullPolicy: Always
       name: initialize-tuf
       script: |-
@@ -147,7 +147,7 @@ spec:
           value: $(params.SINGLE_COMPONENT_CUSTOM_RESOURCE_NS)
         - name: SNAPSHOT_PATH
           value: $(params.HOMEDIR)/snapshot.json
-      image: quay.io/redhat-appstudio/rhtap-task-runner:latest
+      image: quay.io/redhat-tssc/task-runner:davp1.0
       imagePullPolicy: Always
       name: reduce
       onError: continue
@@ -167,7 +167,7 @@ spec:
             secretKeyRef:
               name: tas-secret
               key: rekor_url
-      image: quay.io/redhat-appstudio/rhtap-task-runner:latest
+      image: quay.io/redhat-tssc/task-runner:davp1.0
       imagePullPolicy: Always
       name: validate
       onError: continue
@@ -202,7 +202,7 @@ spec:
         - $(params.HOMEDIR)/report-json.json
       command:
         - cat
-      image: quay.io/redhat-appstudio/rhtap-task-runner:latest
+      image: quay.io/redhat-tssc/task-runner:davp1.0
       imagePullPolicy: Always
       name: report-json
       onError: continue
@@ -211,7 +211,7 @@ spec:
         - $(results.TEST_OUTPUT.path)
       command:
         - jq
-      image: quay.io/redhat-appstudio/rhtap-task-runner:latest
+      image: quay.io/redhat-tssc/task-runner:davp1.0
       imagePullPolicy: Always
       name: summary
       onError: continue
@@ -220,21 +220,21 @@ spec:
           ----- DEBUG OUTPUT -----
       command:
         - printf
-      image: quay.io/redhat-appstudio/rhtap-task-runner:latest
+      image: quay.io/redhat-tssc/task-runner:davp1.0
       imagePullPolicy: Always
       name: info
     - args:
         - version
       command:
         - ec
-      image: quay.io/redhat-appstudio/rhtap-task-runner:latest
+      image: quay.io/redhat-tssc/task-runner:davp1.0
       imagePullPolicy: Always
       name: version
     - args:
         - $(params.HOMEDIR)/debug.log
       command:
         - cat
-      image: quay.io/redhat-appstudio/rhtap-task-runner:latest
+      image: quay.io/redhat-tssc/task-runner:davp1.0
       imagePullPolicy: Always
       name: debug-log
     - args:
@@ -247,7 +247,7 @@ spec:
         - $(results.TEST_OUTPUT.path)
       command:
         - jq
-      image: quay.io/redhat-appstudio/rhtap-task-runner:latest
+      image: quay.io/redhat-tssc/task-runner:davp1.0
       imagePullPolicy: Always
       name: assert
     - image: registry.redhat.io/openshift4/ose-cli:4.13@sha256:73df37794ffff7de1101016c23dc623e4990810390ebdabcbbfa065214352c7c
