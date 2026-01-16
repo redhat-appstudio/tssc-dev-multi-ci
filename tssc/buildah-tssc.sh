@@ -39,6 +39,7 @@ function build() {
         "${BUILDAH_ARGS[@]}" \
         --tls-verify=$TLSVERIFY \
         --ulimit nofile=4096:4096 \
+        --security-opt unmask=/proc/interrupts \
         -f "$dockerfile_path" -t $IMAGE $SOURCE_CODE_DIR/$CONTEXT
 
     # Push the image
