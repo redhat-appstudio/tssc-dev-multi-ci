@@ -39,7 +39,7 @@ export SOURCE_BUILD_RESULT_FILE=${SOURCE_BUILD_RESULT_FILE-""}
 
 export TARGET_BRANCH=${TARGET_BRANCH-""}
 # conforma
-export POLICY_CONFIGURATION=${POLICY_CONFIGURATION-"github.com/conforma/config//rhtap-v0.6"}
+export POLICY_CONFIGURATION=${POLICY_CONFIGURATION-"github.com/conforma/config//rhtap-v0.7"}
 #internal, assumes jenkins is local openshift
 export REKOR_HOST=${REKOR_HOST-http://rekor-server.tssc-tas.svc}
 export IGNORE_REKOR=${IGNORE_REKOR-false}
