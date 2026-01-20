@@ -1,0 +1,21 @@
+#
+# To use this policy with the ec command line:
+#   ec validate image \
+#     --image $IMAGE \
+#     --public-key key.pub \
+#     --policy github.com/redhat-appstudio/tssc-dev-multi-ci//samples/conforma/policies/tssc-v0.7
+#
+name: TSSC (v0.7)
+description: >-
+  Includes rules suitable for use with the attestations created by RHADS TSSC. For use with ec version v0.7.
+
+sources:
+  - name: Default
+    policy:
+      - github.com/conforma/policy//policy/lib?ref=release-v0.7
+      - github.com/conforma/policy//policy/release?ref=release-v0.7
+    data: []
+    config:
+      include:
+        - '@rhtap-multi-ci'
+      exclude: []

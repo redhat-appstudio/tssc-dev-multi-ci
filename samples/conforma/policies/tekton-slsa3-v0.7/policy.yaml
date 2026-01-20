@@ -1,0 +1,22 @@
+#
+# To use this policy with the ec command line:
+#   ec validate image \
+#     --image $IMAGE \
+#     --public-key key.pub \
+#     --policy github.com/redhat-appstudio/tssc-dev-multi-ci//samples/conforma/policies/tekton-slsa3-v0.7
+#
+name: Tekton SLSA3 (v0.7)
+description: >-
+  Includes rules for levels 1, 2 & 3 of SLSA v0.1. For use with ec version v0.7
+
+sources:
+  - name: Default
+    policy:
+      - github.com/conforma/policy//policy/lib?ref=release-v0.7
+      - github.com/conforma/policy//policy/release?ref=release-v0.7
+    data: []
+    config:
+      include:
+        - '@slsa3'
+      exclude:
+        - slsa_source_correlated
