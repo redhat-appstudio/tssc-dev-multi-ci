@@ -11,6 +11,13 @@
         "acs": "remote"
       },
       {
+        "git": "github",
+        "ci": "azure",
+        "registry": "quay",
+        "tpa": "remote",
+        "acs": "remote"
+      },
+      {
         "git": "gitlab",
         "ci": "gitlabci",
         "registry": "artifactory",
