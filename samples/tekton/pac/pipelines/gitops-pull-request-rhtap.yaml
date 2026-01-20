@@ -15,7 +15,7 @@ spec:
       description: The target branch for the pull request
       name: target-branch
       type: string
-    - default: github.com/conforma/config//tekton-slsa3-v0.7
+    - default: github.com/redhat-appstudio/tssc-dev-multi-ci//samples/conforma/policies/tekton-slsa3-v0.7
       description: Enterprise Contract policy to validate against
       name: ec-policy-configuration
       type: string
