@@ -31,4 +31,17 @@ steps:
 {%- for step in build_steps %}
 {% include "azure-step.njk" %}
 {%- endfor -%}
-{%- endfilter -%}
+{%- endfilter %}
+  - bash: |
+      echo "• cleanup agent storage"
+      echo "Disk usage before cleanup:"
+      df -h
+      echo "Cleaning directory: $(Agent.WorkFolder)"
+      cd $(Agent.HomeDirectory)
+      rm -rf $(Agent.WorkFolder)/*
+      echo "Running Docker prune targeting images older than 12h"
+      docker system prune -af --filter "until=12h"
+      echo "Disk usage after cleanup:"
+      df -h
+    name: cleanup
+    condition: always()

@@ -114,3 +114,16 @@ steps:
       # NEXUS_IO_CREDS_PSW: $(NEXUS_IO_CREDS_PSW)
       COSIGN_SECRET_PASSWORD: $(COSIGN_SECRET_PASSWORD)
       COSIGN_SECRET_KEY: $(COSIGN_SECRET_KEY)
+  - bash: |
+      echo "• cleanup agent storage"
+      echo "Disk usage before cleanup:"
+      df -h
+      echo "Cleaning directory: $(Agent.WorkFolder)"
+      cd $(Agent.HomeDirectory)
+      rm -rf $(Agent.WorkFolder)/*
+      echo "Running Docker prune targeting images older than 12h"
+      docker system prune -af --filter "until=12h"
+      echo "Disk usage after cleanup:"
+      df -h
+    name: cleanup
+    condition: always()
