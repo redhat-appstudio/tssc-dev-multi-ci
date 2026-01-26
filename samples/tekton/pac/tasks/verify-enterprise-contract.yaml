@@ -189,7 +189,7 @@ spec:
         --show-successes \
         --effective-time=$(params.EFFECTIVE_TIME) \
         --extra-rule-data=$(params.EXTRA_RULE_DATA) \
-        --output text?show-successes=false \
+        --output text=$(params.HOMEDIR)/text-report.txt?show-successes=false \
         --output appstudio=$(results.TEST_OUTPUT.path) \
         --output json=$(params.HOMEDIR)/report-json.json \
         --logfile=$(params.HOMEDIR)/debug.log
@@ -199,9 +199,14 @@ spec:
           readOnly: true
           subPath: ca-bundle.crt
     - args:
-        - $(params.HOMEDIR)/report-json.json
-      command:
-        - cat
+        # Format the JSON output to wrap lines at 8000 characters per line.
+        # The report can get very large, so add some line breaks
+        # rather than print it as a single line. This makes it easier to render
+        # in the UI, easier to copy/paste, and less likely to cause problems
+        # with logging systems or other consumers of the data (assuming they
+        # correctly parse the full output).
+        - "jq . $(params.HOMEDIR)/report-json.json | awk '{gsub(/^ +/, \"\"); acc += length; if (acc >= 8000) { printf \"\\n\"; acc=length } printf $0 }'"
+      command: [sh, -c]
       image: quay.io/redhat-appstudio/rhtap-task-runner:latest
       imagePullPolicy: Always
       name: report-json
@@ -216,14 +221,6 @@ spec:
       name: summary
       onError: continue
     - args:
-        - |
-          ----- DEBUG OUTPUT -----
-      command:
-        - printf
-      image: quay.io/redhat-appstudio/rhtap-task-runner:latest
-      imagePullPolicy: Always
-      name: info
-    - args:
         - version
       command:
         - ec
@@ -231,20 +228,27 @@ spec:
       imagePullPolicy: Always
       name: version
     - args:
-        - $(params.HOMEDIR)/debug.log
-      command:
-        - cat
+        - '{policy: .policy, key: .key, "effective-time": .["effective-time"]}'
+        - "$(params.HOMEDIR)/report-json.json"
+      command: [jq]
       image: quay.io/redhat-appstudio/rhtap-task-runner:latest
       imagePullPolicy: Always
-      name: debug-log
+      name: show-config
+    - name: detailed-report
+      image: quay.io/redhat-appstudio/rhtap-task-runner:latest
+      imagePullPolicy: Always
+      onError: continue
+      command: ["cat"]
+      args:
+        - "$(params.HOMEDIR)/text-report.txt"
     - args:
-        - --argjson
-        - strict
-        - $(params.STRICT)
-        - -e
-        - |
+        - "--argjson"
+        - "strict"
+        - "$(params.STRICT)"
+        - "-e"
+        - >
           .result == "SUCCESS" or .result == "WARNING" or ($strict | not)
-        - $(results.TEST_OUTPUT.path)
+        - "$(results.TEST_OUTPUT.path)"
       command:
         - jq
       image: quay.io/redhat-appstudio/rhtap-task-runner:latest
