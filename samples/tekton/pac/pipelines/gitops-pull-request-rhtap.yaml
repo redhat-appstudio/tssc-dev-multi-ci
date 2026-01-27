@@ -52,6 +52,8 @@ spec:
           value: $(params.revision)
         - name: fetchTags
           value: "true"
+        - name: depth
+          value: "0"
       taskRef:
         name: git-clone
       workspaces:
