@@ -3,7 +3,10 @@
 pr: none
 
 trigger:
-  - main
+  batch: true
+  branches:
+    include:
+      - main
 
 # Using self-hosted 'Default' agent pool by default
 # Change accordingly when using a different agent pool
