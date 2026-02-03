@@ -8,7 +8,7 @@ require github.com/mikefarah/yq/v4 v4.52.2
 
 require (
 	github.com/a8m/envsubst v1.4.3 // indirect
-	github.com/agext/levenshtein v1.2.1 // indirect
+	github.com/agext/levenshtein v1.2.3 // indirect
 	github.com/alecthomas/participle/v2 v2.1.4 // indirect
 	github.com/apparentlymart/go-textseg/v15 v15.0.0 // indirect
 	github.com/dimchansky/utfbom v1.1.1 // indirect
