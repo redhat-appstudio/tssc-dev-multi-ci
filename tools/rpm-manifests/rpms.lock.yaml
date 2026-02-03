@@ -144,13 +144,13 @@ arches:
     name: passt
     evr: 0^20250512.g8ec1341-4.el9_7
     sourcerpm: passt-0^20250512.g8ec1341-4.el9_7.src.rpm
-  - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/x86_64/appstream/os/Packages/p/podman-5.6.0-12.el9_7.x86_64.rpm
+  - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/x86_64/appstream/os/Packages/p/podman-5.6.0-13.el9_7.x86_64.rpm
     repoid: ubi-9-for-x86_64-appstream-rpms
-    size: 16806008
-    checksum: sha256:f3b70e252c62dd0269672a0dc73e75b4d3a6c492042ccb61ffaf0cf011bc9eb9
+    size: 16805806
+    checksum: sha256:384d5500ff4764d98f20bb1c3b5bf882e7362de8585decd75d4e1da95129f86a
     name: podman
-    evr: 6:5.6.0-12.el9_7
-    sourcerpm: podman-5.6.0-12.el9_7.src.rpm
+    evr: 6:5.6.0-13.el9_7
+    sourcerpm: podman-5.6.0-13.el9_7.src.rpm
   - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/x86_64/appstream/os/Packages/p/python3.11-3.11.13-5.el9_7.x86_64.rpm
     repoid: ubi-9-for-x86_64-appstream-rpms
     size: 31725
@@ -557,12 +557,12 @@ arches:
     checksum: sha256:2c9bc781b0b3ad24b031170af12e1af50dc0e8dbc1e21853beadf048bb84c93e
     name: passt
     evr: 0^20250512.g8ec1341-4.el9_7
-  - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/x86_64/appstream/source/SRPMS/Packages/p/podman-5.6.0-12.el9_7.src.rpm
+  - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/x86_64/appstream/source/SRPMS/Packages/p/podman-5.6.0-13.el9_7.src.rpm
     repoid: ubi-9-for-x86_64-appstream-source-rpms
-    size: 23047652
-    checksum: sha256:e2f5d4e1bfc5772ee0e5e32a8c55ab9ef6b1b24874b776bc9d14e5985777a0a7
+    size: 23011076
+    checksum: sha256:22f8333e6d503bf5999ce1c25d2c018b9cc1e51f1518be69c31d281a0025f16d
     name: podman
-    evr: 6:5.6.0-12.el9_7
+    evr: 6:5.6.0-13.el9_7
   - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi9/9/x86_64/appstream/source/SRPMS/Packages/p/python3.11-3.11.13-5.el9_7.src.rpm
     repoid: ubi-9-for-x86_64-appstream-source-rpms
     size: 20198525
