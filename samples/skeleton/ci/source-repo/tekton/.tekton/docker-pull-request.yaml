@@ -16,6 +16,12 @@ metadata:
     pipelinesascode.tekton.dev/task-6: "https://raw.githubusercontent.com/redhat-appstudio/tssc-dev-multi-ci/main/samples/tekton/pac/tasks/update-deployment.yaml"
     pipelinesascode.tekton.dev/task-7: "https://raw.githubusercontent.com/redhat-appstudio/tssc-dev-multi-ci/main/samples/tekton/pac/tasks/show-sbom-rhdh.yaml"
     pipelinesascode.tekton.dev/task-8: "https://raw.githubusercontent.com/redhat-appstudio/tssc-dev-multi-ci/main/samples/tekton/pac/tasks/summary.yaml"
+    pipelinesascode.tekton.dev/task-9: "https://raw.githubusercontent.com/redhat-appstudio/tssc-dev-multi-ci/main/samples/tekton/pac/tasks/build-workload.yaml"
+    pipelinesascode.tekton.dev/task-10: "https://raw.githubusercontent.com/redhat-appstudio/tssc-dev-multi-ci/main/samples/tekton/pac/tasks/deploy-workload.yaml"
+    pipelinesascode.tekton.dev/task-11: "https://raw.githubusercontent.com/redhat-appstudio/tssc-dev-multi-ci/main/samples/tekton/pac/tasks/scan-workload.yaml"
+    pipelinesascode.tekton.dev/task-12: "https://raw.githubusercontent.com/redhat-appstudio/tssc-dev-multi-ci/main/samples/tekton/pac/tasks/summarize-workload.yaml"
+    pipelinesascode.tekton.dev/task-13: "https://raw.githubusercontent.com/redhat-appstudio/tssc-dev-multi-ci/main/samples/tekton/pac/tasks/show-workload-sbom.yaml"
+    pipelinesascode.tekton.dev/task-14: "https://raw.githubusercontent.com/redhat-appstudio/tssc-dev-multi-ci/main/samples/tekton/pac/tasks/deploy-workload-check.yaml"
   labels:
     argocd/app-name: ${{ values.name }}
     janus-idp.io/tekton: ${{ values.name }}

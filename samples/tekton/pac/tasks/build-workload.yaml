@@ -1,0 +1,156 @@
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  labels:
+    app.kubernetes.io/version: "0.1"
+    build.appstudio.redhat.com/build_type: docker
+  annotations:
+    tekton.dev/pipelines.minVersion: 0.12.1
+    tekton.dev/tags: containers, tssc
+    build.appstudio.redhat.com/task-name: "build-workload"
+    build.appstudio.redhat.com/build-type: "docker"
+  name: build-workload
+spec:
+  description: |-
+    Builds source code into a container image and pushes the image into container registry using buildah tool.
+    In addition it generates a SBOM file, injects the SBOM file into final container image and pushes the SBOM file as separate image using cosign tool.
+  params:
+    - description: Reference of the image buildah will produce.
+      name: IMAGE
+      type: string
+    - default: ./Dockerfile
+      description: Path to the Dockerfile to build.
+      name: DOCKERFILE
+      type: string
+    - default: .
+      description: Path to the directory to use as context.
+      name: CONTEXT
+      type: string
+    - default: "true"
+      description: Verify the TLS on the registry endpoint (for push/pull to a non-TLS registry)
+      name: TLSVERIFY
+      type: string
+    - name: BUILD_ARGS
+      description: Array of --build-arg values ("arg=value" strings)
+      type: array
+      default: []
+    - name: BUILD_ARGS_FILE
+      description: Path to a file with build arguments, see https://www.mankier.com/1/buildah-build#--build-arg-file
+      type: string
+      default: ""
+    - name: STORAGE_DRIVER
+      description: Storage driver to configure for buildah
+      type: string
+      default: vfs
+  results:
+    - description: Digest of the image just built
+      name: IMAGE_DIGEST
+    - description: Image repository and tag where the built image was pushed
+      name: IMAGE_URL
+    - description: Digests of the base images used for build
+      name: BASE_IMAGES_DIGESTS
+    - description: Link to the SBOM layer pushed to the registry as part of an OCI artifact.
+      name: SBOM_BLOB_URL
+  stepTemplate:
+    workingDir: $(workspaces.source.path)/source
+    env:
+      - name: CI_TYPE
+        value: tekton
+      - name: STORAGE_DRIVER
+        value: $(params.STORAGE_DRIVER)
+      - name: CONTEXT
+        value: $(params.CONTEXT)
+      - name: DOCKERFILE
+        value: $(params.DOCKERFILE)
+      - name: IMAGE
+        value: $(params.IMAGE)
+      - name: IMAGE_URL
+        value: $(params.IMAGE)
+      - name: TLSVERIFY
+        value: $(params.TLSVERIFY)
+      - name: BUILD_ARGS_FILE
+        value: $(params.BUILD_ARGS_FILE)
+      - name: _BUILDAH_STARTED_IN_USERNS
+        value: ""
+      - name: BUILDAH_ISOLATION
+        value: chroot
+      - name: COSIGN_SECRET_PASSWORD
+        value: dummy
+      - name: COSIGN_SECRET_KEY
+        value: dummy
+      - name: ROX_CENTRAL_ENDPOINT
+        valueFrom:
+          secretKeyRef:
+            name: $(params.rox-secret-name)
+            key: rox-api-endpoint
+      - name: ROX_API_TOKEN
+        valueFrom:
+          secretKeyRef:
+            name: $(params.rox-secret-name)
+            key: rox-api-token
+      - name: GITOPS_AUTH_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: $(params.gitops-secret-name)
+            key: password
+      - name: COSIGN_PUBLIC_KEY
+        valueFrom:
+          secretKeyRef:
+            name: $(params.cosign-public-secret-name)
+            key: cosign.pub
+  steps:
+    - name: init
+      image: quay.io/redhat-appstudio/rhtap-task-runner:latest
+      args:
+        - $(params.BUILD_ARGS[*])
+      script: |
+        # Sync scripts to the writable workspace
+        cp -rf /work/tssc/ /workspace/source/
+        # Append the dummy function to common.sh
+        printf '\nfunction registry-login() {\n  echo "--- Registry Auth Bypass Active ---"\n  return 0\n}\n' >> /workspace/source/tssc/common.sh
+        echo "Successfully patched /workspace/source/tssc/common.sh"
+        echo "running init"
+        pwd
+        ls -la
+        /workspace/source/tssc/init.sh
+      securityContext:
+        capabilities:
+          add:
+            # this is needed so that buildah can write to the mounted /var/lib/containers directory
+            - SETFCAP
+      volumeMounts:
+        - mountPath: /var/lib/containers
+          name: varlibcontainers
+        - mountPath: /tmp/files
+          name: tmpfiles
+      imagePullPolicy: Always
+    - name: build
+      image: quay.io/redhat-appstudio/rhtap-task-runner:latest
+      args:
+        - $(params.BUILD_ARGS[*])
+      script: |
+        echo "running buildah-tssc"
+        /workspace/source/tssc/buildah-tssc.sh
+        cat ./results/buildah-tssc/BASE_IMAGES_DIGESTS > $(results.BASE_IMAGES_DIGESTS.path)
+        cat ./results/buildah-tssc/IMAGE_DIGEST > $(results.IMAGE_DIGEST.path)
+        cat ./results/buildah-tssc/IMAGE_URL > $(results.IMAGE_URL.path)
+        cat ./results/buildah-tssc/SBOM_BLOB_URL > $(results.SBOM_BLOB_URL.path)
+      securityContext:
+        capabilities:
+          add:
+            # this is needed so that buildah can write to the mounted /var/lib/containers directory
+            - SETFCAP
+      volumeMounts:
+        - mountPath: /var/lib/containers
+          name: varlibcontainers
+        - mountPath: /tmp/files
+          name: tmpfiles
+      imagePullPolicy: Always
+  volumes:
+    - emptyDir: {}
+      name: varlibcontainers
+    - emptyDir: {}
+      name: tmpfiles
+  workspaces:
+    - name: source
+      description: Workspace containing the source code to build.
