@@ -7,11 +7,9 @@ FROM registry.redhat.io/openshift4/ose-cli:latest@sha256:ef83967297f619f45075e7f
 # Since this is a tech preview image we should double check with TPA team this on next release cycle
 FROM registry.redhat.io/rh-syft-tech-preview/syft-rhel9:1.29.0-1756223792@sha256:15ed82f0b5311a570ccb8ea02135d9776c6d61e545c51b256b3fc5b5db20ba67 as syft
 
-# Ideally, use the official image from Red Hat, e.g. registry.access.redhat.com/ubi10/go-toolset,
-# but a 1.24 release does not yet exist.
-FROM brew.registry.redhat.io/rh-osbs/openshift-golang-builder:v1.24@sha256:c52f52b73cc121327416b3fe8d64d682eb48b2c86298a4d645d7169251700cd5 as go-builder
+FROM registry.access.redhat.com/ubi10/go-toolset:1.25.5@sha256:8cdd71fd1a240e6dcc82b8013dee7fe17830340837b9b6d5c3814cfc764e6032 as go-builder
 
-WORKDIR /build
+WORKDIR /opt/app-root/src
 
 COPY ./tools .
 
