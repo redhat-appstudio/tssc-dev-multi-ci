@@ -1,0 +1,51 @@
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: download-gitops-sbom
+  labels:
+    app.kubernetes.io/version: "0.1"
+spec:
+  description: Download SBOM from images
+  workspaces:
+    - description: Should contain a cloned gitops repo at the ./source subpath
+      name: source
+  params:
+    - name: COSIGN_PUBLIC_KEY
+      type: string
+      default: ""
+      description: Public key used to verify signatures. Must be a base64 encoded key.
+    - name: SBOM_IMAGES
+      type: string
+      default: ""
+      description: Images to be considered for SBOM download.
+    - name: TUF_MIRROR
+      type: string
+      default: ""
+      description: The TUF mirror that Conforma should use.
+    - name: REKOR_HOST
+      type: string
+      default: ""
+      description: The Rekor host that Conforma should use to look up transparency logs.
+  stepTemplate:
+    workingDir: $(workspaces.source.path)/source
+    env:
+      - name: CI_TYPE
+        value: tekton
+      - name: COSIGN_PUBLIC_KEY
+        value: $(params.COSIGN_PUBLIC_KEY)
+      - name: IMAGES
+        value: $(params.SBOM_IMAGES)
+      - name: TUF_MIRROR
+        value: $(params.TUF_MIRROR)
+      - name: REKOR_HOST
+        value: $(params.REKOR_HOST)
+    workspaces:
+      - name: source
+        description: Workspace containing the source code to verify.
+  steps:
+    - name: download
+      image: quay.io/redhat-appstudio/rhtap-task-runner:latest
+      script: |
+        echo "running download-sbom-from-url-in-attestation"
+        $(workspaces.source.path)/tssc/download-sbom-from-url-in-attestation.sh
+      imagePullPolicy: Always

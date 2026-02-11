@@ -1,0 +1,55 @@
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: upload-gitops-sbom
+  labels:
+    app.kubernetes.io/version: "0.1"
+spec:
+  description: Upload SBOMs to Trustification
+  workspaces:
+    - description: Should contain a cloned gitops repo at the ./source subpath
+      name: source
+  params:
+    - name: TPA_SECRET
+      type: string
+      description: TPA Secret to obtain Trustification vars from.
+  stepTemplate:
+    workingDir: $(workspaces.source.path)/source
+    env:
+      - name: CI_TYPE
+        value: tekton
+      - name: TRUSTIFICATION_BOMBASTIC_API_URL
+        valueFrom:
+          secretKeyRef:
+            name: $(params.TPA_SECRET)
+            key: bombastic_api_url
+      - name: TRUSTIFICATION_OIDC_CLIENT_ID
+        valueFrom:
+          secretKeyRef:
+            name: $(params.TPA_SECRET)
+            key: oidc_client_id
+      - name: TRUSTIFICATION_OIDC_CLIENT_SECRET
+        valueFrom:
+          secretKeyRef:
+            name: $(params.TPA_SECRET)
+            key: oidc_client_secret
+      - name: TRUSTIFICATION_OIDC_ISSUER_URL
+        valueFrom:
+          secretKeyRef:
+            name: $(params.TPA_SECRET)
+            key: oidc_issuer_url
+      - name: TRUSTIFICATION_SUPPORTED_CYCLONEDX_VERSION
+        valueFrom:
+          secretKeyRef:
+            name: $(params.TPA_SECRET)
+            key: supported_cyclonedx_version
+    workspaces:
+      - name: source
+        description: Workspace containing the source code to verify.
+  steps:
+    - name: upload
+      image: quay.io/redhat-appstudio/rhtap-task-runner:latest
+      script: |
+        echo "running upload-sbom-to-trustification"
+        $(workspaces.source.path)/tssc/upload-sbom-to-trustification.sh
+      imagePullPolicy: Always

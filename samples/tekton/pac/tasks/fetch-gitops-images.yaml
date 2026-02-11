@@ -1,0 +1,80 @@
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: fetch-gitops-images
+  labels:
+    app.kubernetes.io/version: "0.1"
+spec:
+  description: Extract images from deployment YAML to pass to Conforma for validation
+  workspaces:
+    - description: Should contain a cloned gitops repo at the ./source subpath
+      name: source
+  params:
+    - name: PUBLIC_KEY_URL
+      type: string
+      default: ""
+      description: Public key used to verify signatures. Must be a valid k8s cosign reference, e.g. k8s://my-space/my-secret where my-secret contains the expected cosign.pub attribute.
+    - name: TARGET_BRANCH
+      description: |
+        If specified, will gather only the images that changed between the current revision and the target branch. Useful for pull requests. Note that the repository cloned on the source workspace must already contain the origin/$TARGET_BRANCH reference.
+      type: string
+      default: ""
+    - name: ENVIRONMENTS
+      description: Gather images from the manifest files for the specified environments
+      type: array
+      default:
+        - development
+        - stage
+        - prod
+  results:
+    - name: COSIGN_PUBLIC_KEY
+      description: Cosign base64 encoded public key fetched from secrets.
+    - name: SBOM_IMAGES
+      description: |
+        The images with SBOMs to upload to Trustification 
+    - name: CONFORMA_IMAGES
+      description: |
+        The images to be verified, in a format compatible with https://github.com/konflux-ci/build-definitions/tree/main/task/verify-enterprise-contract/0.1. When there are no images to verify, this is an empty string.
+  stepTemplate:
+    workingDir: $(workspaces.source.path)/source
+    env:
+      - name: CI_TYPE
+        value: tekton
+      - name: TARGET_BRANCH
+        value: $(params.TARGET_BRANCH)
+      - name: PUBLIC_KEY_URL
+        value: $(params.PUBLIC_KEY_URL)
+    workspaces:
+      - name: source
+        description: Workspace containing the source code to verify.
+  steps:
+    - name: init
+      image: quay.io/redhat-appstudio/rhtap-task-runner:latest
+      script: |
+        pwd
+        ls -la
+        # Sync scripts to the writable workspace
+        cp -rf /work/tssc/ $(workspaces.source.path)/
+        # Append the dummy function to common.sh
+        printf '\nfunction registry-login() {\n  echo "--- Registry Auth Bypass Active ---"\n  return 0\n}\n' >> $(workspaces.source.path)/tssc/common.sh
+        echo "Successfully patched $(workspaces.source.path)/tssc/common.sh"
+
+        echo "Parsing public key url"
+        CLEAN_URL="${PUBLIC_KEY_URL#k8s://}"
+        NS="${CLEAN_URL%/*}"
+        SECRET="${CLEAN_URL##*/}"
+        COSIGN_PUBLIC_KEY=$(oc get secrets $SECRET -n $NS -o json | jq -r '.data."cosign.pub"')
+        echo $COSIGN_PUBLIC_KEY > $(results.COSIGN_PUBLIC_KEY.path)
+      imagePullPolicy: Always
+    - name: get-images
+      image: quay.io/redhat-appstudio/rhtap-task-runner:latest
+      script: |
+        echo "running gather-images-to-upload-sbom"
+        $(workspaces.source.path)/tssc/gather-images-to-upload-sbom.sh
+        mv ./results/gather-deploy-images ./results/sbom-images 
+        cat ./results/sbom-images/IMAGES_TO_VERIFY > $(results.SBOM_IMAGES.path)
+
+        echo "running gather-deploy-images"
+        $(workspaces.source.path)/tssc/gather-deploy-images.sh
+        cat ./results/gather-deploy-images/IMAGES_TO_VERIFY > $(results.CONFORMA_IMAGES.path)
+      imagePullPolicy: Always
