@@ -46,4 +46,14 @@ for ciType in jenkins gitlabci githubactions azure; do
     update-tssc-templates $CI_ROOT_GITOPS $ciType tssc/env.template.sh $GEN_GITOPS
 done
 
+# only update env.sh for tekton
+echo "Updating tekton env.sh"
+rm -rf $CI_ROOT_SRC/tekton/tssc
+mkdir -p $CI_ROOT_SRC/tekton/tssc
+cp tssc/env.template.sh $CI_ROOT_SRC/tekton/tssc/env.sh
+
+rm -rf $CI_ROOT_GITOPS/tekton/tssc
+mkdir -p $CI_ROOT_GITOPS/tekton/tssc
+cp tssc/env.template.sh $CI_ROOT_GITOPS/tekton/tssc/env.sh
+
 echo

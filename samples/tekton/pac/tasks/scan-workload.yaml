@@ -1,0 +1,76 @@
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  labels:
+    app.kubernetes.io/version: "0.1"
+    build.appstudio.redhat.com/build_type: docker
+  annotations:
+    tekton.dev/pipelines.minVersion: 0.12.1
+    tekton.dev/tags: containers, tssc
+    build.appstudio.redhat.com/task-name: "scan-workload"
+    build.appstudio.redhat.com/build-type: "docker"
+  name: scan-workload
+spec:
+  description: |-
+    Scan image built for vulnerabilities.
+  params:
+    - description: Reference of the image buildah will produce.
+      name: IMAGE
+      type: string
+    - default: .
+      description: Path to the directory to use as context.
+      name: CONTEXT
+      type: string
+    - name: STORAGE_DRIVER
+      description: Storage driver to configure for buildah
+      type: string
+      default: vfs
+  results:
+    - name: SCAN_OUTPUT
+      description: Summary of the roxctl scan
+  stepTemplate:
+    workingDir: $(workspaces.source.path)/source
+    env:
+      - name: CI_TYPE
+        value: tekton
+      - name: STORAGE_DRIVER
+        value: $(params.STORAGE_DRIVER)
+      - name: CONTEXT
+        value: $(params.CONTEXT)
+      - name: IMAGE
+        value: $(params.IMAGE)
+      - name: IMAGE_URL
+        value: $(params.IMAGE)
+      - name: ROX_CENTRAL_ENDPOINT
+        valueFrom:
+          secretKeyRef:
+            name: $(params.rox-secret-name)
+            key: rox-api-endpoint
+      - name: ROX_API_TOKEN
+        valueFrom:
+          secretKeyRef:
+            name: $(params.rox-secret-name)
+            key: rox-api-token
+  steps:
+    - name: scan
+      image: quay.io/redhat-appstudio/rhtap-task-runner:latest
+      script: |
+        echo "running acs-image-check"
+        /workspace/source/tssc/acs-image-check.sh
+        echo "running acs-image-scan"
+        /workspace/source/tssc/acs-image-scan.sh
+        cat ./results/acs-image-scan/SCAN_OUTPUT > $(results.SCAN_OUTPUT.path)
+      volumeMounts:
+        - mountPath: /var/lib/containers
+          name: varlibcontainers
+        - mountPath: /tmp/files
+          name: tmpfiles
+      imagePullPolicy: Always
+  volumes:
+    - emptyDir: {}
+      name: varlibcontainers
+    - emptyDir: {}
+      name: tmpfiles
+  workspaces:
+    - name: source
+      description: Workspace containing the source code to build.
