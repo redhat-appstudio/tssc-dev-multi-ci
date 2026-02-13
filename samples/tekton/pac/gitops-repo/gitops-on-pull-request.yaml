@@ -12,6 +12,10 @@ metadata:
     pipelinesascode.tekton.dev/task-3: "{{values.rawUrl}}/samples/tekton/pac/tasks/gather-deploy-images.yaml"
     pipelinesascode.tekton.dev/task-4: "{{values.rawUrl}}/samples/tekton/pac/tasks/download-sbom-from-url-in-attestation.yaml"
     pipelinesascode.tekton.dev/task-5: "{{values.rawUrl}}/samples/tekton/pac/tasks/upload-sbom-to-trustification.yaml"
+    pipelinesascode.tekton.dev/task-6: "{{values.rawUrl}}/samples/tekton/pac/tasks/fetch-gitops-images.yaml"
+    pipelinesascode.tekton.dev/task-7: "{{values.rawUrl}}/samples/tekton/pac/tasks/verify-gitops-conforma.yaml"
+    pipelinesascode.tekton.dev/task-8: "{{values.rawUrl}}/samples/tekton/pac/tasks/download-gitops-sbom.yaml"
+    pipelinesascode.tekton.dev/task-9: "{{values.rawUrl}}/samples/tekton/pac/tasks/upload-gitops-sbom.yaml"
 spec:
   params:
     - name: git-url

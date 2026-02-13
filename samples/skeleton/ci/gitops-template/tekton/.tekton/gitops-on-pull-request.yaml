@@ -12,6 +12,10 @@ metadata:
     pipelinesascode.tekton.dev/task-3: "https://raw.githubusercontent.com/redhat-appstudio/tssc-dev-multi-ci/main/samples/tekton/pac/tasks/gather-deploy-images.yaml"
     pipelinesascode.tekton.dev/task-4: "https://raw.githubusercontent.com/redhat-appstudio/tssc-dev-multi-ci/main/samples/tekton/pac/tasks/download-sbom-from-url-in-attestation.yaml"
     pipelinesascode.tekton.dev/task-5: "https://raw.githubusercontent.com/redhat-appstudio/tssc-dev-multi-ci/main/samples/tekton/pac/tasks/upload-sbom-to-trustification.yaml"
+    pipelinesascode.tekton.dev/task-6: "https://raw.githubusercontent.com/redhat-appstudio/tssc-dev-multi-ci/main/samples/tekton/pac/tasks/fetch-gitops-images.yaml"
+    pipelinesascode.tekton.dev/task-7: "https://raw.githubusercontent.com/redhat-appstudio/tssc-dev-multi-ci/main/samples/tekton/pac/tasks/verify-gitops-conforma.yaml"
+    pipelinesascode.tekton.dev/task-8: "https://raw.githubusercontent.com/redhat-appstudio/tssc-dev-multi-ci/main/samples/tekton/pac/tasks/download-gitops-sbom.yaml"
+    pipelinesascode.tekton.dev/task-9: "https://raw.githubusercontent.com/redhat-appstudio/tssc-dev-multi-ci/main/samples/tekton/pac/tasks/upload-gitops-sbom.yaml"
   labels:
     argocd/app-name: ${{ values.name }}
     janus-idp.io/tekton: ${{ values.name }}

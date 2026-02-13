@@ -1,0 +1,142 @@
+apiVersion: tekton.dev/v1
+kind: Pipeline
+metadata:
+  name: gitops-pull-request-tssc
+spec:
+  params:
+    - description: Gitops repo url
+      name: git-url
+      type: string
+    - default: ""
+      description: Gitops repo revision
+      name: revision
+      type: string
+    - default: main
+      description: The target branch for the pull request
+      name: target-branch
+      type: string
+    - default: github.com/redhat-appstudio/tssc-dev-multi-ci//samples/conforma/policies/tekton-slsa3-v0.7
+      description: Enterprise Contract policy to validate against
+      name: ec-policy-configuration
+      type: string
+    - default: "true"
+      description: Should EC violations cause the pipeline to fail?
+      name: ec-strict
+      type: string
+    - default: k8s://$(context.pipelineRun.namespace)/cosign-pub
+      description: The public key that EC should use to verify signatures
+      name: ec-public-key
+      type: string
+    - default: http://rekor-server.tssc-tas.svc
+      description: The Rekor host that EC should use to look up transparency logs
+      name: ec-rekor-host
+      type: string
+    - default: http://tuf.tssc-tas.svc
+      description: The TUF mirror that EC should use
+      name: ec-tuf-mirror
+      type: string
+    - default: tpa-secret
+      description: The name of the Secret that contains Trustification (TPA) configuration
+      name: trustification-secret-name
+      type: string
+    - default: "true"
+      description: Should the pipeline fail when there are SBOMs to upload but Trustification is not properly configured (i.e. the secret is missing or doesn't have all the required keys)?
+      name: fail-if-trustification-not-configured
+      type: string
+  tasks:
+    - name: clone-repository
+      params:
+        - name: url
+          value: $(params.git-url)
+        - name: revision
+          value: $(params.revision)
+        - name: fetchTags
+          value: "true"
+        - name: depth
+          value: "0"
+      taskRef:
+        name: git-clone
+      workspaces:
+        - name: output
+          workspace: workspace
+        - name: basic-auth
+          workspace: git-auth
+    - name: get-images
+      params:
+        - name: PUBLIC_KEY_URL
+          value: $(params.ec-public-key)
+        - name: TARGET_BRANCH
+          value: $(params.target-branch)
+      runAfter:
+        - clone-repository
+      taskRef:
+        name: fetch-gitops-images
+      workspaces:
+        - name: source
+          workspace: workspace
+    - name: verify-conforma
+      params:
+        - name: STRICT
+          value: $(params.ec-strict)
+        - name: POLICY_CONFIGURATION
+          value: $(params.ec-policy-configuration)
+        - name: COSIGN_PUBLIC_KEY
+          value: $(tasks.get-images.results.COSIGN_PUBLIC_KEY)
+        - name: TUF_MIRROR
+          value: $(params.ec-tuf-mirror)
+        - name: REKOR_HOST
+          value: $(params.ec-rekor-host)
+      runAfter:
+        - get-images
+      taskRef:
+        name: verify-gitops-conforma
+      when:
+        - input: $(tasks.get-images.results.CONFORMA_IMAGES)
+          operator: notin
+          values:
+            - ""
+      workspaces:
+        - name: source
+          workspace: workspace
+    - name: download-sboms
+      params:
+        - name: COSIGN_PUBLIC_KEY
+          value: $(tasks.get-images.results.COSIGN_PUBLIC_KEY)
+        - name: SBOM_IMAGES
+          value: $(tasks.get-images.results.SBOM_IMAGES)
+        - name: TUF_MIRROR
+          value: $(params.ec-tuf-mirror)
+        - name: REKOR_HOST
+          value: $(params.ec-rekor-host)
+      runAfter:
+        - get-images
+      taskRef:
+        name: download-gitops-sbom
+      when:
+        - input: $(tasks.get-images.results.SBOM_IMAGES)
+          operator: notin
+          values:
+            - ""
+      workspaces:
+        - name: source
+          workspace: workspace
+    - name: upload-sboms
+      params:
+        - name: TPA_SECRET
+          value: $(params.trustification-secret-name)
+      runAfter:
+        - download-sboms
+      taskRef:
+        name: upload-gitops-sbom
+      when:
+        - input: $(tasks.get-images.results.SBOM_IMAGES)
+          operator: notin
+          values:
+            - ""
+      workspaces:
+        - name: source
+          workspace: workspace
+  workspaces:
+    - name: workspace
+    - name: git-auth
+      optional: true

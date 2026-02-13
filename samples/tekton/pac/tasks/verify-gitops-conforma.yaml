@@ -1,0 +1,66 @@
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: verify-gitops-conforma
+  labels:
+    app.kubernetes.io/version: "0.1"
+spec:
+  description: Verify the enterprise contract is met
+  workspaces:
+    - description: Should contain a cloned gitops repo at the ./source subpath
+      name: source
+  params:
+    - name: COSIGN_PUBLIC_KEY
+      type: string
+      default: ""
+      description: Public key used to verify signatures. Must be a base64 encoded key.
+    - name: POLICY_CONFIGURATION
+      type: string
+      default: enterprise-contract-service/default
+      description: |
+        Name of the policy configuration (EnterpriseContractPolicy
+        resource) to use. `namespace/name` or `name` syntax supported. If
+        namespace is omitted the namespace where the task runs is used.
+        You can also specify a policy configuration using a git url, e.g.
+        `github.com/conforma/config//slsa3`.
+    - name: STRICT
+      type: string
+      default: "true"
+      description: Fail the task if policy fails. Set to `"false"` to disable it.
+    - name: TUF_MIRROR
+      type: string
+      default: ""
+      description: The TUF mirror that Conforma should use.
+    - name: REKOR_HOST
+      type: string
+      default: ""
+      description: The Rekor host that Conforma should use to look up transparency logs.
+  results:
+    - description: Short summary of the policy evaluation for each image.
+      name: TEST_OUTPUT
+  stepTemplate:
+    workingDir: $(workspaces.source.path)/source
+    env:
+      - name: CI_TYPE
+        value: tekton
+      - name: STRICT
+        value: $(params.STRICT)
+      - name: POLICY_CONFIGURATION
+        value: $(params.POLICY_CONFIGURATION)
+      - name: TUF_MIRROR
+        value: $(params.TUF_MIRROR)
+      - name: REKOR_HOST
+        value: $(params.REKOR_HOST)
+      - name: COSIGN_PUBLIC_KEY
+        value: $(params.COSIGN_PUBLIC_KEY)
+    workspaces:
+      - name: source
+        description: Workspace containing the source code to verify.
+  steps:
+    - name: verify
+      image: quay.io/redhat-appstudio/rhtap-task-runner:latest
+      script: |
+        echo "running verify-conforma"
+        $(workspaces.source.path)/tssc/verify-conforma.sh
+        cat ./results/verify-conforma/TEST_OUTPUT > $(results.TEST_OUTPUT.path)
+      imagePullPolicy: Always
