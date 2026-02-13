@@ -5,7 +5,7 @@ metadata:
   annotations:
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-target-branch: "[${{ values.defaultBranch }}]"
-    pipelinesascode.tekton.dev/pipeline: "https://raw.githubusercontent.com/redhat-appstudio/tssc-dev-multi-ci/main/samples/tekton/pac/pipelines/gitops-pull-request-rhtap.yaml"
+    pipelinesascode.tekton.dev/pipeline: "https://raw.githubusercontent.com/redhat-appstudio/tssc-dev-multi-ci/main/samples/tekton/pac/pipelines/gitops-pull-request-tssc.yaml"
     pipelinesascode.tekton.dev/task-0: "https://raw.githubusercontent.com/redhat-appstudio/tssc-dev-multi-ci/main/samples/tekton/pac/tasks/git-clone.yaml"
     pipelinesascode.tekton.dev/task-1: "https://raw.githubusercontent.com/redhat-appstudio/tssc-dev-multi-ci/main/samples/tekton/pac/tasks/gather-deploy-images.yaml"
     pipelinesascode.tekton.dev/task-2: "https://raw.githubusercontent.com/redhat-appstudio/tssc-dev-multi-ci/main/samples/tekton/pac/tasks/verify-enterprise-contract.yaml"
@@ -33,7 +33,7 @@ spec:
     - name: fail-if-trustification-not-configured
       value: 'false'
   pipelineRef:
-    name: gitops-pull-request
+    name: gitops-pull-request-tssc
   workspaces:
     - name: git-auth
       secret:
