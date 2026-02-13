@@ -48,12 +48,11 @@ done
 
 # only update env.sh for tekton
 echo "Updating tekton env.sh"
-rm -rf $CI_ROOT_SRC/tekton/tssc
-mkdir -p $CI_ROOT_SRC/tekton/tssc
-cp tssc/env.template.sh $CI_ROOT_SRC/tekton/tssc/env.sh
-
-rm -rf $CI_ROOT_GITOPS/tekton/tssc
-mkdir -p $CI_ROOT_GITOPS/tekton/tssc
-cp tssc/env.template.sh $CI_ROOT_GITOPS/tekton/tssc/env.sh
+for CI_ROOT_PATH in $CI_ROOT_SRC $CI_ROOT_GITOPS; do
+    rm -rf $CI_ROOT_PATH/tekton/tssc
+    mkdir -p $CI_ROOT_PATH/tekton/tssc
+    cp tssc/env.template.sh $CI_ROOT_PATH/tekton/tssc/env.sh
+    sed -i 's/CI_TYPE=${CI_TYPE:-jenkins}/CI_TYPE=${CI_TYPE:-tekton}/g' $CI_ROOT_PATH/tekton/tssc/env.sh
+done
 
 echo
