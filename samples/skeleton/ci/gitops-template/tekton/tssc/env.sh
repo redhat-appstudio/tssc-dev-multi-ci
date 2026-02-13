@@ -2,7 +2,7 @@
 export REBUILD=${REBUILD-true}
 export SKIP_CHECKS=${SKIP_CHECKS-true}
 
-CI_TYPE=${CI_TYPE:-jenkins}
+CI_TYPE=${CI_TYPE:-tekton}
 
 # from buildah-tssc
 TAG=$(git rev-parse HEAD)

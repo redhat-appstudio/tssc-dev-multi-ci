@@ -61,6 +61,10 @@ function addRootCert() {
 # Performs an image registry login. It takes a single parameter which could be either an image
 # registry, e.g. quay.io, or a full image reference, e.g. quay.io/spam/bacon:crispy.
 function registry-login() {
+    if [[ "tekton" == $CI_TYPE ]]; then
+        echo "Skipping registry login for tekton. Authorization will happen via service account"
+        return 0
+    fi
     local image_ref="$1"
     local image_registry="${image_ref/\/*/}"
     prepare-registry-user-pass "${image_registry}"
