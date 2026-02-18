@@ -68,6 +68,8 @@ function generate-sboms() {
 
 function upload-sbom() {
     echo "Running $TASK_NAME:upload-sbom"
+    echo "There is a discussion in sigstore community triggered by https://github.com/sigstore/cosign/issues/3599."
+    echo "It is likely that cosign attach deprecation will be reverted. Please, ignore deprecation warning for now."
     cosign attach sbom --sbom $TEMP_DIR/files/sbom-cyclonedx.json --type cyclonedx "$IMAGE"
 }
 function delim() {
