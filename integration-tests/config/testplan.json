@@ -2,10 +2,10 @@
   "testPlans": [
     {
       "name": "backend-tests",
-      "templates": ["dotnet-basic"],
+      "templates": ["go","python","nodejs","dotnet-basic","java-quarkus", "java-springboot"],
       "tssc": [{
         "git": "github",
-        "ci": "githubactions",
+        "ci": "tekton",
         "registry": "quay",
         "tpa": "remote",
         "acs": "remote"
@@ -14,13 +14,6 @@
         "git": "github",
         "ci": "azure",
         "registry": "quay",
-        "tpa": "remote",
-        "acs": "remote"
-      },
-      {
-        "git": "gitlab",
-        "ci": "gitlabci",
-        "registry": "artifactory",
         "tpa": "remote",
         "acs": "remote"
       }],
