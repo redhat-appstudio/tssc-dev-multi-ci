@@ -51,6 +51,11 @@ spec:
           secretKeyRef:
             name: $(params.rox-secret-name)
             key: rox-api-token
+      - name: GITOPS_AUTH_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: $(params.gitops-secret-name)
+            key: password
   steps:
     - name: deploy-check
       image: quay.io/redhat-appstudio/rhtap-task-runner:latest

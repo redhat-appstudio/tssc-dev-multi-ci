@@ -122,7 +122,8 @@ fi
 
 if [[ -n "${TUF_MIRROR:-}" ]]; then
     echo 'Initializing TUF root...'
-    cosign initialize --mirror "${TUF_MIRROR}" --root "${TUF_MIRROR}/root.json"
+    root_sha256=$(get_remote_sha256 "${TUF_MIRROR}/root.json")
+    cosign initialize --mirror "${TUF_MIRROR}" --root-checksum "$root_sha256" --root "${TUF_MIRROR}/root.json"
 fi
 
 jq -r '.components[].containerImage' <<< "$IMAGES" | while read -r image; do

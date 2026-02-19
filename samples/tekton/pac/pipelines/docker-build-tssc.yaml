@@ -41,6 +41,9 @@ spec:
       description: 'Secret name to enable this pipeline to update the gitops repo with the new image. '
       name: gitops-auth-secret-name
       type: string
+    - default: tpa-secret
+      description: The name of the Secret that contains Trustification (TPA) configuration
+      name: trustification-secret-name
     - default: cosign-pub
       description: 'Secret name to enable verify cosign signature. '
       name: cosign-public-key-secret
@@ -100,6 +103,8 @@ spec:
           value: $(params.gitops-auth-secret-name)
         - name: cosign-public-secret-name
           value: $(params.cosign-public-key-secret)
+        - name: tpa_secret_name
+          value: $(params.trustification-secret-name)
         - name: IMAGE
           value: $(params.output-image)
         - name: DOCKERFILE
@@ -151,6 +156,8 @@ spec:
       params:
         - name: rox-secret-name
           value: $(params.stackrox-secret)
+        - name: gitops-secret-name
+          value: $(params.gitops-auth-secret-name)
         - name: IMAGE
           value: $(params.output-image)
         - name: CONTEXT

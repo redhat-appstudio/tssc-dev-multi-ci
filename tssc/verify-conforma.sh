@@ -17,7 +17,8 @@ function initialize-tuf() {
         echo 'TUF_MIRROR not set or set to "none". Skipping TUF root initialization.'
     else
         echo 'Initializing TUF root...'
-        cosign initialize --mirror "${TUF_MIRROR}" --root "${TUF_MIRROR}/root.json"
+        root_sha256=$(get_remote_sha256 "${TUF_MIRROR}/root.json")
+        cosign initialize --mirror "${TUF_MIRROR}" --root-checksum "$root_sha256" --root "${TUF_MIRROR}/root.json"
         echo 'Done!'
     fi
 }

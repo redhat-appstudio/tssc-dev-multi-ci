@@ -83,6 +83,11 @@ spec:
           secretKeyRef:
             name: $(params.rox-secret-name)
             key: rox-api-endpoint
+      - name: TRUSTIFICATION_SUPPORTED_CYCLONEDX_VERSION
+        valueFrom:
+          secretKeyRef:
+            name: $(params.tpa_secret_name)
+            key: supported_cyclonedx_version
       - name: ROX_API_TOKEN
         valueFrom:
           secretKeyRef:

@@ -61,9 +61,13 @@ function build() {
 
 function generate-sboms() {
     echo "Running $TASK_NAME:generate-sboms"
-    syft dir:. --output cyclonedx-json@1.5=$TEMP_DIR/files/sbom-source.json
-    syft oci-dir:$TEMP_DIR/files/image --output cyclonedx-json@1.5=$TEMP_DIR/files/sbom-image.json \
+    version="${TRUSTIFICATION_SUPPORTED_CYCLONEDX_VERSION:-1.5}"
+    AUTO_NAME=$(basename -s .git $(git config --get remote.origin.url) 2> /dev/null || basename "$PWD" || echo "unknown-app")
+    syft dir:. --output cyclonedx-json@$version=$TEMP_DIR/files/sbom-source.json --source-name "$AUTO_NAME" --source-version "${TAG}"
+    syft oci-dir:$TEMP_DIR/files/image --output cyclonedx-json@$version=$TEMP_DIR/files/sbom-image.json \
         --source-name "${IMAGE}"
+    jq '.metadata.component' $TEMP_DIR/files/sbom-source.json
+    jq '.metadata.component' $TEMP_DIR/files/sbom-image.json
 }
 
 function upload-sbom() {
