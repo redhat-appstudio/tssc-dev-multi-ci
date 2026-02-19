@@ -78,6 +78,23 @@ function registry-login() {
     fi
 }
 
+get_remote_sha256() {
+    local url=$1
+    if [[ -z "$url" ]]; then
+        echo "Usage: get_remote_sha256 <url>"
+        return 1
+    fi
+
+    local hash=$(curl -fsL "$url" | sha256sum | awk '{print $1}')
+
+    if [ -z "$hash" ]; then
+        echo "Error: Could not calculate hash." >&2
+        return 1
+    fi
+
+    echo -n "$hash"
+}
+
 DIR=$(pwd)
 export TASK_NAME=$(basename $0 .sh)
 export BASE_RESULTS=$DIR/results
