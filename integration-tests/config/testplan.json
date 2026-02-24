@@ -2,7 +2,7 @@
   "testPlans": [
     {
       "name": "backend-tests",
-      "templates": ["go","python","nodejs","dotnet-basic","java-quarkus", "java-springboot"],
+      "templates": ["go","python","dotnet-basic","nodejs"],
       "tssc": [{
         "git": "github",
         "ci": "tekton",
