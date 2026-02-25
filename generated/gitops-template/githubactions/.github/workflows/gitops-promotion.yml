@@ -30,16 +30,10 @@ env:
   REKOR_HOST: ${{ '${{' }} vars.REKOR_HOST }}
   # Set this only when using an external TUF instance
   TUF_MIRROR: ${{ '${{' }} vars.TUF_MIRROR }}
-  # QUAY_IO_CREDS_USR: ${{ '${{' }} vars.QUAY_IO_CREDS_USR }}
-  # ARTIFACTORY_IO_CREDS_USR: ${{ '${{' }} vars.ARTIFACTORY_IO_CREDS_USR }}
-  # NEXUS_IO_CREDS_USR: ${{ '${{' }} vars.NEXUS_IO_CREDS_USR }}
   # Secrets
   TRUSTIFICATION_OIDC_CLIENT_SECRET: ${{ '${{' }} secrets.TRUSTIFICATION_OIDC_CLIENT_SECRET }}
   # Set this password for your specific registry
   IMAGE_REGISTRY_PASSWORD: ${{ '${{' }} secrets.IMAGE_REGISTRY_PASSWORD }}
-  # QUAY_IO_CREDS_PSW: ${{ '${{' }} secrets.QUAY_IO_CREDS_PSW }}
-  # ARTIFACTORY_IO_CREDS_PSW: ${{ '${{' }} secrets.ARTIFACTORY_IO_CREDS_PSW }}
-  # NEXUS_IO_CREDS_PSW: ${{ '${{' }} secrets.NEXUS_IO_CREDS_PSW }}
 
   # 🖊️ EDIT to specify custom tags for the container image, or default tags will be generated below.
   IMAGE_TAGS: ""
@@ -82,9 +76,6 @@ jobs:
              REKOR_HOST: `${{ '${{' }} vars.REKOR_HOST }}`,
              /* Set this only when using an external TUF instance */
              TUF_MIRROR: `${{ '${{' }} vars.TUF_MIRROR }}`,
-             /*QUAY_IO_CREDS_USR: `${{ '${{' }} vars.QUAY_IO_CREDS_USR }}`,*/
-             /*ARTIFACTORY_IO_CREDS_USR: `${{ '${{' }} vars.ARTIFACTORY_IO_CREDS_USR }}`,*/
-             /*NEXUS_IO_CREDS_USR: `${{ '${{' }} vars.NEXUS_IO_CREDS_USR }}`,*/
             };
 
             const missingVars = Object.entries(vars).filter(([ name, value ]) => {
@@ -101,9 +92,6 @@ jobs:
              TRUSTIFICATION_OIDC_CLIENT_SECRET: `${{ '${{' }} secrets.TRUSTIFICATION_OIDC_CLIENT_SECRET }}`,
               /* Set this password for your specific registry */
              IMAGE_REGISTRY_PASSWORD: `${{ '${{' }} secrets.IMAGE_REGISTRY_PASSWORD }}`,
-             /*QUAY_IO_CREDS_PSW: `${{ '${{' }} secrets.QUAY_IO_CREDS_PSW }}`,*/
-             /*ARTIFACTORY_IO_CREDS_PSW: `${{ '${{' }} secrets.ARTIFACTORY_IO_CREDS_PSW }}`,*/
-             /*NEXUS_IO_CREDS_PSW: `${{ '${{' }} secrets.NEXUS_IO_CREDS_PSW }}`,*/
             };
 
             const missingSecrets = Object.entries(secrets).filter(([ name, value ]) => {

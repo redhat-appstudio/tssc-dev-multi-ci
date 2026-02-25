@@ -48,19 +48,6 @@ build_variables:
     if: 'isJenkins'
   - name: TUF_MIRROR
     if: 'isJenkins'
-
-  - name: QUAY_IO_CREDS_USR
-    if: '!isJenkins'
-    commented_out: true
-
-  - name: ARTIFACTORY_IO_CREDS_USR
-    if: '!isJenkins'
-    commented_out: true
-
-  - name: NEXUS_IO_CREDS_USR
-    if: '!isJenkins'
-    commented_out: true
-
   - name: COSIGN_PUBLIC_KEY
     if: 'isGitHub || isAzure || isJenkins'
     comment: Used to verify the image signature and attestation
@@ -100,23 +87,6 @@ build_secrets:
   - name: QUAY_IO_CREDS
     if: isJenkins
     comment: "Default registry is set to quay.io"
-  - name: QUAY_IO_CREDS_PSW
-    if: '!isJenkins'
-    commented_out: true
-
-  - name: ARTIFACTORY_IO_CREDS
-    if: isJenkins
-    commented_out: true
-  - name: ARTIFACTORY_IO_CREDS_PSW
-    if: '!isJenkins'
-    commented_out: true
-
-  - name: NEXUS_IO_CREDS
-    if: isJenkins
-    commented_out: true
-  - name: NEXUS_IO_CREDS_PSW
-    if: '!isJenkins'
-    commented_out: true
 
   - name: COSIGN_SECRET_PASSWORD
   - name: COSIGN_SECRET_KEY
@@ -200,17 +170,6 @@ gitops_variables:
     commented_out: true
     comment: "Set this to the user for your specific registry"
 
-  - name: QUAY_IO_CREDS_USR
-    if: '!isJenkins'
-    commented_out: true
-
-  - name: ARTIFACTORY_IO_CREDS_USR
-    if: '!isJenkins'
-    commented_out: true
-
-  - name: NEXUS_IO_CREDS_USR
-    if: '!isJenkins'
-    commented_out: true
 
 gitops_secrets:
   - name: TRUSTIFICATION_OIDC_CLIENT_SECRET
@@ -226,21 +185,6 @@ gitops_secrets:
   # to be documented
   - name: QUAY_IO_CREDS
     if: isJenkins
-  - name: QUAY_IO_CREDS_PSW
-    if: '!isJenkins'
-    commented_out: true
-  - name: ARTIFACTORY_IO_CREDS
-    if: isJenkins
-    commented_out: true
-  - name: ARTIFACTORY_IO_CREDS_PSW
-    if: '!isJenkins'
-    commented_out: true
-  - name: NEXUS_IO_CREDS
-    if: isJenkins
-    commented_out: true
-  - name: NEXUS_IO_CREDS_PSW
-    if: '!isJenkins'
-    commented_out: true
   - name: COSIGN_SECRET_PASSWORD
     if: 'isJenkins'
   - name: COSIGN_SECRET_KEY

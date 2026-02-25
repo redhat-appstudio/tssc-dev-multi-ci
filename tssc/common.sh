@@ -22,27 +22,12 @@ timestamp() {
 prepare-registry-user-pass() {
     local image_registry="$1"
     #
-    # Check if the IMAGE_REGISTRY_USER and IMAGE_REGISTRY_PASSWORD are set and if not
-    # compute the values from the image name (backward compitable with prior naming).
-    #
     # Users should set IMAGE_REGISTRY_USER and IMAGE_REGISTRY_PASSWORD for the registry.
-    # For backwards compatibility use the ARTIFACTORY or NEXUS or QUAY creds in place
-    # and this code will determine which one to use.
+    # Failing if requred registry credentials are not provided.
     #
     if [[ -z "${IMAGE_REGISTRY_USER-""}" || -z "${IMAGE_REGISTRY_PASSWORD-""}" ]]; then
-        # Determine credentials based on the registry
-        echo "Using $image_registry to determine quay, nexus or artifactory"
-        echo "Set IMAGE_REGISTRY_USER and IMAGE_REGISTRY_PASSWORD secrets to override detection"
-        if [[ "$image_registry" == *"artifactory"* || "$image_registry" == *"jfrog"* ]]; then
-            IMAGE_REGISTRY_USER="$ARTIFACTORY_IO_CREDS_USR"
-            IMAGE_REGISTRY_PASSWORD="$ARTIFACTORY_IO_CREDS_PSW"
-        elif [[ "$image_registry" == *"nexus"* ]]; then
-            IMAGE_REGISTRY_USER="$NEXUS_IO_CREDS_USR"
-            IMAGE_REGISTRY_PASSWORD="$NEXUS_IO_CREDS_PSW"
-        else
-            IMAGE_REGISTRY_USER="$QUAY_IO_CREDS_USR"
-            IMAGE_REGISTRY_PASSWORD="$QUAY_IO_CREDS_PSW"
-        fi
+        echo "Variables IMAGE_REGISTRY_USER and IMAGE_REGISTRY_PASSWORD are required for registry login"
+        exit 1
     else
         echo "Using IMAGE_REGISTRY_USER and IMAGE_REGISTRY_PASSWORD secrets for registry auth"
     fi

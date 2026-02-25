@@ -36,9 +36,6 @@ steps:
       TRUSTIFICATION_OIDC_CLIENT_SECRET: $(TRUSTIFICATION_OIDC_CLIENT_SECRET)
       # Set this password for your specific registry
       IMAGE_REGISTRY_PASSWORD: $(IMAGE_REGISTRY_PASSWORD)
-      # QUAY_IO_CREDS_PSW: $(QUAY_IO_CREDS_PSW)
-      # ARTIFACTORY_IO_CREDS_PSW: $(ARTIFACTORY_IO_CREDS_PSW)
-      # NEXUS_IO_CREDS_PSW: $(NEXUS_IO_CREDS_PSW)
   - bash: |
       echo "• gather-images-to-upload-sbom"
       bash /work/tssc/gather-images-to-upload-sbom.sh
@@ -51,6 +48,3 @@ steps:
       TRUSTIFICATION_OIDC_CLIENT_SECRET: $(TRUSTIFICATION_OIDC_CLIENT_SECRET)
       # Set this password for your specific registry
       IMAGE_REGISTRY_PASSWORD: $(IMAGE_REGISTRY_PASSWORD)
-      # QUAY_IO_CREDS_PSW: $(QUAY_IO_CREDS_PSW)
-      # ARTIFACTORY_IO_CREDS_PSW: $(ARTIFACTORY_IO_CREDS_PSW)
-      # NEXUS_IO_CREDS_PSW: $(NEXUS_IO_CREDS_PSW)
