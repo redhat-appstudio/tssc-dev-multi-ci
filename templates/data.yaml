@@ -84,10 +84,6 @@ build_secrets:
     commented_out: true
     comment: "Set this password for your specific registry"
 
-  - name: QUAY_IO_CREDS
-    if: isJenkins
-    comment: "Default registry is set to quay.io"
-
   - name: COSIGN_SECRET_PASSWORD
   - name: COSIGN_SECRET_KEY
 
@@ -183,8 +179,6 @@ gitops_secrets:
   # show all the values options in the jenkins file and other CIs
   # this gives users a way to know what to set. Not perfect but better
   # to be documented
-  - name: QUAY_IO_CREDS
-    if: isJenkins
   - name: COSIGN_SECRET_PASSWORD
     if: 'isJenkins'
   - name: COSIGN_SECRET_KEY
