@@ -16,6 +16,7 @@ metadata:
     # ArgoCD apps from this template used tssc-gitops as the grouping
     argocd/app-selector: tssc/gitops=${{  values.name  }}
     backstage.io/kubernetes-id: ${{ values.name }} 
+    backstage.io/kubernetes-namespace: default-tenant
     backstage.io/techdocs-ref: dir:.  
   {%- if values.ciType == 'githubactions' %} 
     github.com/project-slug: ${{ values.gitRepoOwner }}/${{ values.gitRepoName }} 
