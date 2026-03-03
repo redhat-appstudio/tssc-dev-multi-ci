@@ -16,6 +16,13 @@
         "registry": "quay",
         "tpa": "remote",
         "acs": "remote"
+      },
+      {
+        "git": "gitlab",
+        "ci": "tekton",
+        "registry": "nexus",
+        "tpa": "remote",
+        "acs": "remote"
       }],
       "tests": ["full_workflow.test.ts"]
     }

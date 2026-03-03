@@ -98,11 +98,6 @@ spec:
           secretKeyRef:
             name: $(params.gitops-secret-name)
             key: password
-      - name: GITOPS_AUTH_USERNAME
-        valueFrom:
-          secretKeyRef:
-            name: $(params.gitops-secret-name)
-            key: username
       - name: COSIGN_PUBLIC_KEY
         valueFrom:
           secretKeyRef:
