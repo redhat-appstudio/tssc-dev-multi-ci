@@ -53,7 +53,7 @@ spec:
             key: rox-api-token
   steps:
     - name: scan
-      image: quay.io/redhat-appstudio/rhtap-task-runner:latest
+      image: quay.io/redhat-tssc/task-runner:1.9
       script: |
         echo "running acs-image-check"
         /workspace/source/tssc/acs-image-check.sh

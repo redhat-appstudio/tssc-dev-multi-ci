@@ -40,7 +40,7 @@ spec:
         value: $(params.IMAGE)
   steps:
     - name: summary
-      image: quay.io/redhat-appstudio/rhtap-task-runner:latest
+      image: quay.io/redhat-tssc/task-runner:1.9
       script: |
         echo "running summary"
         /workspace/source/tssc/summary.sh

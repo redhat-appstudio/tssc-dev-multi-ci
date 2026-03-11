@@ -44,7 +44,7 @@ spec:
         description: Workspace containing the source code to verify.
   steps:
     - name: download
-      image: quay.io/redhat-appstudio/rhtap-task-runner:latest
+      image: quay.io/redhat-tssc/task-runner:1.9
       script: |
         echo "running download-sbom-from-url-in-attestation"
         $(workspaces.source.path)/tssc/download-sbom-from-url-in-attestation.sh

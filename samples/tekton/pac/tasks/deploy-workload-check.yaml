@@ -58,7 +58,7 @@ spec:
             key: password
   steps:
     - name: deploy-check
-      image: quay.io/redhat-appstudio/rhtap-task-runner:latest
+      image: quay.io/redhat-tssc/task-runner:1.9
       script: |
         echo "running acs-deploy-check"
         /workspace/source/tssc/acs-deploy-check.sh

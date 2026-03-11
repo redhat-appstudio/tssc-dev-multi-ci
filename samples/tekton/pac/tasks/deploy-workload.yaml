@@ -45,7 +45,7 @@ spec:
             key: password
   steps:
     - name: deploy
-      image: quay.io/redhat-appstudio/rhtap-task-runner:latest
+      image: quay.io/redhat-tssc/task-runner:1.9
       script: |
         echo "running update-deployment"
         /workspace/source/tssc/update-deployment.sh
