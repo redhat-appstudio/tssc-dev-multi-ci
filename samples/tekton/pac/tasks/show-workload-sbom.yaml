@@ -46,7 +46,7 @@ spec:
       name: LINK_TO_SBOM
   steps:
     - name: show-sbom
-      image: quay.io/redhat-appstudio/rhtap-task-runner:latest
+      image: quay.io/redhat-tssc/task-runner:1.9
       script: |
         echo "running show-sbom-rhdh"
         /workspace/source/tssc/show-sbom-rhdh.sh

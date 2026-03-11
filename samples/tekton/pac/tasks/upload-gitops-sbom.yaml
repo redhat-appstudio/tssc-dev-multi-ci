@@ -48,7 +48,7 @@ spec:
         description: Workspace containing the source code to verify.
   steps:
     - name: upload
-      image: quay.io/redhat-appstudio/rhtap-task-runner:latest
+      image: quay.io/redhat-tssc/task-runner:1.9
       script: |
         echo "running upload-sbom-to-trustification"
         $(workspaces.source.path)/tssc/upload-sbom-to-trustification.sh

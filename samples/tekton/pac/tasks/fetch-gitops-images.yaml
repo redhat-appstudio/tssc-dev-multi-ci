@@ -49,7 +49,7 @@ spec:
         description: Workspace containing the source code to verify.
   steps:
     - name: init
-      image: quay.io/redhat-appstudio/rhtap-task-runner:latest
+      image: quay.io/redhat-tssc/task-runner:1.9
       script: |
         pwd
         ls -la
@@ -67,7 +67,7 @@ spec:
         echo $COSIGN_PUBLIC_KEY > $(results.COSIGN_PUBLIC_KEY.path)
       imagePullPolicy: Always
     - name: get-images
-      image: quay.io/redhat-appstudio/rhtap-task-runner:latest
+      image: quay.io/redhat-tssc/task-runner:1.9
       script: |
         echo "running gather-images-to-upload-sbom"
         $(workspaces.source.path)/tssc/gather-images-to-upload-sbom.sh
