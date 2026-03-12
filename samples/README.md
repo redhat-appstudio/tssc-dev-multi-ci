@@ -1,4 +1,4 @@
-# RHTAP Sample Backstage Templates
+# RHADS Sample Backstage Templates
 
 ## Software Supply Chain Security
 
