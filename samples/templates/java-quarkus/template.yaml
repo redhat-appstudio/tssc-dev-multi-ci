@@ -285,7 +285,7 @@ spec:
           isJenkins: ${{ parameters.ciType === 'jenkins' }}
           gitSecret: ${{ 'gitops-auth-secret' if parameters.hostType === 'GitHub' else ('gitlab-auth-secret' if parameters.hostType === 'GitLab' else 'bitbucket-auth-secret') }}
           gitSecretKey: password
-          webhookSecret: pipelines-secret
+          webhookSecret: ${{ parameters.hostType | lower }}-pipelines-secret
           webhookSecretKey: webhook.secret
           defaultBranch: ${{ parameters.branch }}
 
@@ -324,7 +324,7 @@ spec:
           isJenkins: ${{ parameters.ciType === 'jenkins' }}
           gitSecret: ${{ 'gitops-auth-secret' if parameters.hostType === 'GitHub' else ('gitlab-auth-secret' if parameters.hostType === 'GitLab' else 'bitbucket-auth-secret')}}
           gitSecretKey: password
-          webhookSecret: pipelines-secret
+          webhookSecret: ${{ parameters.hostType | lower }}-pipelines-secret
           webhookSecretKey: webhook.secret
           defaultBranch: ${{ parameters.branch }}
     - action: fs:rename

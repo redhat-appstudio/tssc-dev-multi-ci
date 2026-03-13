@@ -56,6 +56,11 @@ spec:
           secretKeyRef:
             name: $(params.gitops-secret-name)
             key: password
+      - name: GITOPS_AUTH_USERNAME
+        valueFrom:
+          secretKeyRef:
+            name: $(params.gitops-secret-name)
+            key: username
   steps:
     - name: deploy-check
       image: quay.io/redhat-tssc/task-runner:1.9

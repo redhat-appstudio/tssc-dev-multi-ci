@@ -12,7 +12,7 @@ spec:
     secret:
       name: ${{ values.gitSecret }}
       key: ${{ values.gitSecretKey }}
-    {%- if values.hostType == 'Gitlab' %}
+    {%- if values.hostType == 'GitLab' %}
     webhook_secret:
       name: ${{ values.webhookSecret }}
       key:  ${{ values.webhookSecretKey }}
