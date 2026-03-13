@@ -4,7 +4,7 @@
       "name": "backend-tests",
       "templates": ["go","python","dotnet-basic","nodejs","java-quarkus","java-springboot"],
       "tssc": [{
-        "git": "github",
+        "git": "gitlab",
         "ci": "tekton",
         "registry": "quay",
         "tpa": "remote",
