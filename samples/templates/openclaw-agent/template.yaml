@@ -1,0 +1,197 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: openclaw-agent
+  title: OpenClaw AI Agent
+  description: Deploy an OpenClaw AI agent with browser automation on OpenShift, managed via GitOps.
+  tags:
+    - ai
+    - agent
+    - openclaw
+    - openshift
+spec:
+  owner: user:default/deanpeterson
+  type: service
+
+  parameters:
+    - title: Agent Identity
+      required:
+        - name
+        - displayName
+        - systemPrompt
+        - owner
+      properties:
+        name:
+          title: Agent Name
+          type: string
+          description: Unique agent name (lowercase, DNS-safe)
+          pattern: "^[a-z0-9][a-z0-9-]*[a-z0-9]$"
+          maxLength: 63
+          ui:autofocus: true
+        displayName:
+          title: Display Name
+          type: string
+          description: Human-readable name shown in Agent Office
+        emoji:
+          title: Emoji
+          type: string
+          description: Single emoji for the agent avatar
+          default: "\U0001F916"
+          maxLength: 2
+        description:
+          title: Description
+          type: string
+          description: Brief description of what this agent does
+        systemPrompt:
+          title: Directive (System Prompt)
+          type: string
+          description: The agent's core directive — what it should do and how it should behave
+          ui:widget: textarea
+          ui:options:
+            rows: 8
+        owner:
+          title: Owner
+          type: string
+          description: Owner entity reference
+          ui:field: EntityPicker
+          ui:options:
+            catalogFilter:
+              kind:
+                - Group
+                - User
+
+    - title: LLM Backend
+      required:
+        - provider
+      properties:
+        provider:
+          title: Model Provider
+          type: string
+          description: Which LLM backend the agent uses
+          enum:
+            - smr
+            - openai
+            - anthropic
+          enumNames:
+            - Small Model Router (on-cluster, cost-optimized)
+            - OpenAI API
+            - Anthropic API
+          default: anthropic
+        modelName:
+          title: Model Name
+          type: string
+          description: Model ID (leave empty for default)
+        routerRef:
+          title: Router Name
+          type: string
+          description: SmallModelRouter CR name (only for SMR provider)
+          ui:widget: hidden
+        apiKey:
+          title: API Key
+          type: string
+          description: API key for the selected provider
+          ui:widget: password
+
+    - title: Tools & Deployment
+      required:
+        - namespace
+      properties:
+        tools:
+          title: Enabled Tools
+          type: array
+          description: Tools available to the agent
+          uniqueItems: true
+          items:
+            type: string
+            enum:
+              - web_search
+              - web_fetch
+              - browser
+              - exec
+              - memory
+          default:
+            - browser
+            - exec
+            - memory
+        namespace:
+          title: Namespace
+          type: string
+          description: OpenShift namespace for the agent deployment
+          default: agent-office
+        ghOwner:
+          title: GitHub Owner
+          type: string
+          description: GitHub organization or user for the gitops repo
+          default: enterprisewebservice
+
+  steps:
+    # 1. Scaffold the gitops repo from skeleton
+    - id: fetch-gitops
+      name: Fetch GitOps Skeleton
+      action: fetch:template
+      input:
+        url: ./skeleton
+        targetPath: gitops
+        values:
+          name: ${{ parameters.name }}
+          displayName: ${{ parameters.displayName }}
+          emoji: ${{ parameters.emoji }}
+          description: ${{ parameters.description }}
+          systemPrompt: ${{ parameters.systemPrompt }}
+          provider: ${{ parameters.provider }}
+          modelName: ${{ parameters.modelName }}
+          routerRef: ${{ parameters.routerRef }}
+          apiKey: ${{ parameters.apiKey }}
+          tools: ${{ parameters.tools }}
+          namespace: ${{ parameters.namespace }}
+          owner: ${{ parameters.owner }}
+          repoURL: https://github.com/${{ parameters.ghOwner }}/${{ parameters.name }}-agent-gitops
+          defaultBranch: main
+          argoNS: openshift-gitops
+          argoProject: default
+
+    # 2. Publish gitops repo to GitHub
+    - id: publish-gitops
+      name: Publish GitOps Repository
+      action: publish:github
+      input:
+        repoUrl: github.com?owner=${{ parameters.ghOwner }}&repo=${{ parameters.name }}-agent-gitops
+        sourcePath: gitops
+        defaultBranch: main
+        repoVisibility: public
+        description: "GitOps manifests for OpenClaw agent: ${{ parameters.displayName }}"
+
+    # 3. Wait for repo to be available
+    - id: wait-repo
+      name: Wait for Repository
+      action: debug:wait
+      input:
+        seconds: 3
+
+    # 4. Register ArgoCD Application
+    - id: argocd-register
+      name: Register in ArgoCD
+      action: argocd:create-resources
+      input:
+        appName: ${{ parameters.name }}-agent
+        argoInstance: openshift-gitops
+        namespace: openshift-gitops
+        repoUrl: ${{ steps['publish-gitops'].output.remoteUrl }}
+        path: .
+        projectName: default
+
+    # 5. Register in Backstage catalog
+    - id: catalog-register
+      name: Register in Catalog
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps['publish-gitops'].output.repoContentsUrl }}
+        catalogInfoPath: /catalog-info.yaml
+
+  output:
+    links:
+      - title: GitOps Repository
+        url: ${{ steps['publish-gitops'].output.remoteUrl }}
+      - title: Open in Catalog
+        icon: catalog
+        entityRef: ${{ steps['catalog-register'].output.entityRef }}

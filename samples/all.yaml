@@ -12,3 +12,4 @@ spec:
     - ./templates/java-springboot/template.yaml
     - ./templates/nodejs/template.yaml
     - ./templates/python/template.yaml
+    - ./templates/openclaw-agent/template.yaml

@@ -1,0 +1,120 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: agent-${{ values.name }}-config
+  namespace: ${{ values.namespace }}
+data:
+  openclaw.json: |
+    {
+      "gateway": {
+        "port": 18789,
+        "host": "0.0.0.0"
+      },
+      "models": {
+        "providers": {
+{%- if values.provider == "smr" %}
+          "smr": {
+            "baseUrl": "http://smr-router-${{ values.routerRef }}.${{ values.namespace }}.svc.cluster.local",
+            "api": "openai-completions",
+            "apiKey": "${SMR_API_KEY}",
+            "models": [{"id": "auto", "name": "auto"}]
+          }
+{%- elif values.provider == "openai" %}
+          "openai": {
+            "baseUrl": "https://api.openai.com/v1",
+            "api": "openai-completions",
+            "apiKey": "${OPENAI_API_KEY}",
+            "models": [{"id": "${{ values.modelName | default('gpt-4o', true) }}", "name": "${{ values.modelName | default('gpt-4o', true) }}"}]
+          }
+{%- elif values.provider == "anthropic" %}
+          "anthropic": {
+            "baseUrl": "https://api.anthropic.com/v1",
+            "api": "openai-completions",
+            "apiKey": "${ANTHROPIC_API_KEY}",
+            "models": [{"id": "${{ values.modelName | default('claude-sonnet-4-20250514', true) }}", "name": "${{ values.modelName | default('claude-sonnet-4-20250514', true) }}"}]
+          }
+{%- endif %}
+        }
+      },
+      "agents": {
+        "defaults": {
+          "model": {
+{%- if values.provider == "smr" %}
+            "primary": "auto"
+{%- elif values.provider == "openai" %}
+            "primary": "${{ values.modelName | default('gpt-4o', true) }}"
+{%- elif values.provider == "anthropic" %}
+            "primary": "${{ values.modelName | default('claude-sonnet-4-20250514', true) }}"
+{%- endif %}
+          }
+        }
+      },
+      "tools": {
+        "browser": {
+          "enabled": true
+        }
+      }
+    }
+  IDENTITY.md: |
+    ---
+    name: ${{ values.displayName }}
+    emoji: ${{ values.emoji }}
+    creature: AI Agent
+    vibe: professional and helpful
+    ---
+
+    # ${{ values.displayName }}
+
+    I am ${{ values.displayName }}, an AI agent managed by Agent Office.
+  SOUL.md: |
+    ---
+    name: ${{ values.displayName }} Soul
+    ---
+
+    # Core Directive
+
+    ${{ values.systemPrompt }}
+
+    # Values
+
+    - Be genuinely helpful, not performatively helpful
+    - Be concise and direct — respect the user's time
+    - When uncertain, say so rather than guessing
+    - Request permission before taking destructive or irreversible actions
+    - Respect privacy and handle data carefully
+  USER.md: |
+    ---
+    name: User
+    ---
+
+    # User Profile
+
+    - **Name**: (not yet known)
+    - **What to call them**: (ask on first interaction)
+
+    # Context
+
+    This agent was created via Agent Office on OpenShift.
+    The user interacts through the Agent Office chat interface.
+  TOOLS.md: |
+    ---
+    name: Tool Guidance
+    ---
+
+    # Available Tools
+{%- for tool in values.tools %}
+    - **${{ tool }}**
+{%- endfor %}
+
+    # Browser
+
+    This agent has Playwright + Chromium available for web browsing and automation.
+    Use the browser tool for web research, form filling, screenshots, and page interaction.
+  AGENTS.md: |
+    ---
+    name: ${{ values.name }}
+    ---
+
+    # ${{ values.displayName }}
+
+    ${{ values.systemPrompt }}

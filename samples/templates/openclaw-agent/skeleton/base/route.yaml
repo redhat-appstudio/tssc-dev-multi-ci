@@ -1,0 +1,15 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: agent-${{ values.name }}
+  namespace: ${{ values.namespace }}
+spec:
+  to:
+    kind: Service
+    name: agent-${{ values.name }}
+    weight: 100
+  port:
+    targetPort: gateway
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
