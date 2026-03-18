@@ -73,7 +73,7 @@ data:
 
     # Core Directive
 
-    ${{ values.systemPrompt }}
+    ${{ values.systemPrompt | indent(4) }}
 
     # Values
 
@@ -117,4 +117,4 @@ data:
 
     # ${{ values.displayName }}
 
-    ${{ values.systemPrompt }}
+    ${{ values.systemPrompt | indent(4) }}
