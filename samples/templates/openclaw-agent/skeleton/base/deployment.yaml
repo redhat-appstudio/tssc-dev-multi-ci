@@ -17,8 +17,6 @@ spec:
         app.kubernetes.io/name: ${{ values.name }}
         agentoffice.ai/agent: ${{ values.name }}
     spec:
-      securityContext:
-        fsGroup: 1000
       initContainers:
         - name: init-config
           image: registry.access.redhat.com/ubi9/ubi-minimal:latest
