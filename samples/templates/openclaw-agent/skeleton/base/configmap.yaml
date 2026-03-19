@@ -7,7 +7,8 @@ data:
   openclaw.json: |
     {
       "gateway": {
-        "port": 18789
+        "port": 18789,
+        "bind": "lan"
       },
       "models": {
         "providers": {
