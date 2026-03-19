@@ -45,14 +45,27 @@ spec:
             - name: gateway
               containerPort: 18789
               protocol: TCP
+          env:
+            - name: CLAUDE_PROXY_ENABLED
+              value: "${{ values.claudeProxyEnabled | default('false', true) }}"
+            - name: CLAUDE_PROXY_PORT
+              value: "3456"
           envFrom:
             - secretRef:
                 name: agent-${{ values.name }}-secret
           volumeMounts:
             - name: workspace
               mountPath: /home/node/.openclaw
+            - name: claude-state
+              mountPath: /home/node/.claude
             - name: dshm
               mountPath: /dev/shm
+{%- if values.claudeProxyEnabled == "true" %}
+            - name: claude-credentials
+              mountPath: /home/node/.claude/.credentials.json
+              subPath: credentials.json
+              readOnly: true
+{%- endif %}
           livenessProbe:
             httpGet:
               path: /healthz
@@ -79,7 +92,15 @@ spec:
         - name: workspace
           persistentVolumeClaim:
             claimName: agent-${{ values.name }}-workspace
+        - name: claude-state
+          persistentVolumeClaim:
+            claimName: agent-${{ values.name }}-claude
         - name: dshm
           emptyDir:
             medium: Memory
             sizeLimit: 1Gi
+{%- if values.claudeProxyEnabled == "true" %}
+        - name: claude-credentials
+          secret:
+            secretName: claude-subscription-credentials
+{%- endif %}

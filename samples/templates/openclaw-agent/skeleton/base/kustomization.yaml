@@ -9,6 +9,7 @@ resources:
   - configmap.yaml
   - secret.yaml
   - pvc.yaml
+  - pvc-claude.yaml
   - deployment.yaml
   - service.yaml
   - route.yaml
