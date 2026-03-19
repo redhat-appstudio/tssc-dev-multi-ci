@@ -64,13 +64,6 @@ data:
         "browser": {
           "enabled": true
         }
-      },
-      "plugins": {
-        "allow": [
-{%- if values.provider == "claude-subscription" %}
-          "claude-code-bridge"
-{%- endif %}
-        ]
       }
     }
   IDENTITY.md: |
