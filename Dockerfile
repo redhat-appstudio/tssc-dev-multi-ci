@@ -30,7 +30,7 @@ RUN \
   cd git-clone/image/git-init && \
   go build -trimpath -o /usr/local/bin/git-init
 
-FROM registry.access.redhat.com/ubi9/ubi-minimal:9.7-1773204619@sha256:69f5c9886ecb19b23e88275a5cd904c47dd982dfa370fbbd0c356d7b1047ef68
+FROM registry.access.redhat.com/ubi9/ubi-minimal:9.7-1773939694@sha256:83006d535923fcf1345067873524a3980316f51794f01d8655be55d6e9387183
 
 # required per https://github.com/release-engineering/rhtap-ec-policy/blob/main/data/rule_data.yml
 LABEL com.redhat.component="rhtap-task-runner"
