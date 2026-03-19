@@ -12,7 +12,18 @@ data:
       },
       "models": {
         "providers": {
-{%- if values.provider == "smr" %}
+{%- if values.provider == "claude-subscription" %}
+          "claude-subscription": {
+            "baseUrl": "http://127.0.0.1:3456/v1",
+            "api": "openai-completions",
+            "apiKey": "not-needed",
+            "models": [
+              {"id": "claude-opus-4-6", "name": "claude-opus-4-6"},
+              {"id": "claude-sonnet-4-6", "name": "claude-sonnet-4-6"},
+              {"id": "claude-haiku-4-5", "name": "claude-haiku-4-5"}
+            ]
+          }
+{%- elif values.provider == "smr" %}
           "smr": {
             "baseUrl": "http://smr-router-${{ values.routerRef }}.${{ values.namespace }}.svc.cluster.local",
             "api": "openai-completions",
@@ -39,7 +50,9 @@ data:
       "agents": {
         "defaults": {
           "model": {
-{%- if values.provider == "smr" %}
+{%- if values.provider == "claude-subscription" %}
+            "primary": "${{ values.modelName | default('claude-opus-4-6', true) }}"
+{%- elif values.provider == "smr" %}
             "primary": "auto"
 {%- elif values.provider == "openai" %}
             "primary": "${{ values.modelName | default('gpt-4o', true) }}"

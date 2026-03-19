@@ -47,7 +47,7 @@ spec:
               protocol: TCP
           env:
             - name: CLAUDE_PROXY_ENABLED
-              value: "${{ values.claudeProxyEnabled | default('false', true) }}"
+              value: "{%- if values.provider == 'claude-subscription' %}true{%- else %}false{%- endif %}"
             - name: CLAUDE_PROXY_PORT
               value: "3456"
           envFrom:
@@ -60,7 +60,7 @@ spec:
               mountPath: /home/node/.claude
             - name: dshm
               mountPath: /dev/shm
-{%- if values.claudeProxyEnabled == "true" %}
+{%- if values.provider == "claude-subscription" %}
             - name: claude-credentials
               mountPath: /home/node/.claude/.credentials.json
               subPath: credentials.json
@@ -99,7 +99,7 @@ spec:
           emptyDir:
             medium: Memory
             sizeLimit: 1Gi
-{%- if values.claudeProxyEnabled == "true" %}
+{%- if values.provider == "claude-subscription" %}
         - name: claude-credentials
           secret:
             secretName: claude-subscription-credentials
