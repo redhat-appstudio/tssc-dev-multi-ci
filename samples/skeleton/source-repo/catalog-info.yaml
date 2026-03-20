@@ -18,6 +18,7 @@ metadata:
   {%- endif %} 
   {%- if values.ciType == 'gitlabci' %} 
     gitlab.com/project-slug: '${{ values.gitRepoOwner }}/${{ values.gitRepoName }}'
+    gitlab.com/enabled: 'true'
   {%- endif %}    
   {%- if values.ciType == 'azure' %}
     dev.azure.com/project: ${{ values.azureProject }}
