@@ -17,20 +17,35 @@ spec:
         app.kubernetes.io/name: ${{ values.name }}
         agentoffice.ai/agent: ${{ values.name }}
     spec:
+      imagePullSecrets:
+        - name: quay-pull-secret
       initContainers:
         - name: init-config
           image: registry.access.redhat.com/ubi9/ubi-minimal:latest
+          envFrom:
+            - secretRef:
+                name: agent-${{ values.name }}-secret
           command:
             - /bin/sh
             - -c
             - |
               cp /config/openclaw.json /workspace/openclaw.json
-              mkdir -p /workspace/workspace
-              for f in AGENTS.md IDENTITY.md SOUL.md USER.md TOOLS.md; do
-                if [ ! -f "/workspace/workspace/$f" ]; then
-                  cp "/config/$f" "/workspace/workspace/$f"
+              # Substitute all secret env vars into openclaw.json
+              for var in OPENAI_API_KEY ANTHROPIC_API_KEY SMR_API_KEY OPENCLAW_GATEWAY_TOKEN; do
+                val=$(eval echo \$$var)
+                if [ -n "$val" ]; then
+                  sed -i "s|\${${var}}|${val}|g" /workspace/openclaw.json
                 fi
               done
+              mkdir -p /workspace/workspace
+              # Always overwrite config-driven files
+              for f in AGENTS.md IDENTITY.md SOUL.md TOOLS.md; do
+                cp "/config/$f" "/workspace/workspace/$f"
+              done
+              # Only create USER.md if missing
+              if [ ! -f "/workspace/workspace/USER.md" ]; then
+                cp "/config/USER.md" "/workspace/workspace/USER.md"
+              fi
               # Install skills from ConfigMap (SKILL_<name>.md → skills/<name>/SKILL.md)
               for f in /config/SKILL_*.md; do
                 [ -f "$f" ] || continue
@@ -46,12 +61,15 @@ spec:
               mountPath: /workspace
       containers:
         - name: openclaw
-          image: quay.io/aicatalyst/openclaw:latest
+          image: quay-quay-quay-test.apps.salamander.aimlworkbench.com/deanpeterson/openclaw:latest
           imagePullPolicy: Always
           ports:
             - name: gateway
               containerPort: 18789
               protocol: TCP
+          env:
+            - name: CLAUDE_CODE_OAUTH_TOKEN_FILE
+              value: "/home/claude/.claude/remote/.oauth_token"
           envFrom:
             - secretRef:
                 name: agent-${{ values.name }}-secret
@@ -62,12 +80,10 @@ spec:
               mountPath: /home/node/.claude
             - name: dshm
               mountPath: /dev/shm
-{%- if values.provider == "claude-subscription" %}
             - name: claude-credentials
-              mountPath: /home/node/.claude/.credentials.json
-              subPath: credentials.json
+              mountPath: /home/claude/.claude/remote/.oauth_token
+              subPath: oauth-token
               readOnly: true
-{%- endif %}
           livenessProbe:
             httpGet:
               path: /healthz
@@ -103,8 +119,6 @@ spec:
           emptyDir:
             medium: Memory
             sizeLimit: 1Gi
-{%- if values.provider == "claude-subscription" %}
         - name: claude-credentials
           secret:
             secretName: claude-subscription-credentials
-{%- endif %}

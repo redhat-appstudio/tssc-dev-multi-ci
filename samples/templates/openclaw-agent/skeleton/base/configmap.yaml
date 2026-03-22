@@ -8,7 +8,11 @@ data:
     {
       "gateway": {
         "port": 18789,
-        "bind": "lan"
+        "bind": "lan",
+        "mode": "local",
+        "tools": {
+          "allow": ["claude_code_resume", "claude_code_sessions", "exec"]
+        }
       },
       "models": {
         "providers": {
@@ -61,9 +65,13 @@ data:
         }
       },
       "tools": {
+        "allow": ["exec", "claude_code_resume", "claude_code_sessions", "group:plugins"],
         "browser": {
           "enabled": true
         }
+      },
+      "plugins": {
+        "enabled": true
       }
     }
   IDENTITY.md: |
@@ -121,7 +129,6 @@ data:
 
     This agent has Playwright + Chromium available for web browsing and automation.
     Use the browser tool for web research, form filling, screenshots, and page interaction.
-{%- if values.provider == "claude-subscription" %}
   SKILL_claude-code.md: |
     ---
     name: claude-code
@@ -191,7 +198,6 @@ data:
     - **Quote specific code** if the user needs to see it
     - **Report the sessionId** if the user might want to continue later
     - **Mention cost** only if significant (> $0.10)
-{%- endif %}
   AGENTS.md: |
     ---
     name: ${{ values.name }}
@@ -200,3 +206,12 @@ data:
     # ${{ values.displayName }}
 
     ${{ values.systemPrompt | indent(4) }}
+
+    ## Claude Code
+
+    Use your built-in model as the first responder for every conversation.
+    Use `claude_code_resume` for technical work that needs deeper reasoning,
+    code generation, debugging, or multi-step execution.
+
+    If the user asks you to show, prove, demonstrate, or verify Claude Code
+    usage, you must call `claude_code_resume` in that turn.
