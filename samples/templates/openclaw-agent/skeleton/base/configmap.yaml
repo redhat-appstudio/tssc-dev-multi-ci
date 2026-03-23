@@ -65,14 +65,7 @@ data:
         }
       },
       "tools": {
-        "allow": [
-{%- for tool in values.tools %}
-          "${{ tool }}",
-{%- endfor %}
-          "claude_code_resume",
-          "claude_code_sessions",
-          "group:plugins"
-        ]
+        "allow": ["exec", "claude_code_resume", "claude_code_sessions", "group:plugins"]
       },
       "commands": {
         "native": "auto",

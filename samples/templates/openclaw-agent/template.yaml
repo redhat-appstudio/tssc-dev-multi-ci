@@ -78,7 +78,7 @@ spec:
             - Small Model Router (on-cluster, cost-optimized)
             - OpenAI API (pay per request)
             - Anthropic API (pay per request)
-          default: claude-subscription
+          default: openai
         modelName:
           title: Model Name
           type: string
@@ -106,14 +106,16 @@ spec:
           items:
             type: string
             enum:
+              - browser
               - web_search
               - web_fetch
               - exec
               - memory
           default:
-            - web_search
-            - exec
             - memory
+            - web_search
+            - web_fetch
+            - browser
         namespace:
           title: Namespace
           type: string
