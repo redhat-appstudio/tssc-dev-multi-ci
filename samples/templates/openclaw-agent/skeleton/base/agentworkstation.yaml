@@ -11,7 +11,7 @@ spec:
   emoji: "${{ values.emoji }}"
   description: ${{ values.description }}
   systemPrompt: |
-${{ values.systemPrompt | indent(4) }}
+    ${{ values.systemPrompt | replace('\n', '\n    ') }}
   image: quay-quay-quay-test.apps.salamander.aimlworkbench.com/deanpeterson/openclaw:latest
   model:
     provider: ${{ values.provider if values.provider != "claude-subscription" else "anthropic" }}
