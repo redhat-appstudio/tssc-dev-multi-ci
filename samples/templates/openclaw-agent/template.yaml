@@ -161,6 +161,8 @@ spec:
         sourcePath: gitops
         defaultBranch: main
         repoVisibility: public
+        gitAuthorName: Dean Peterson
+        gitAuthorEmail: deanpeterson@users.noreply.github.com
         description: "GitOps manifests for OpenClaw agent: ${{ parameters.displayName }}"
 
     # 3. Wait for repo to be available
