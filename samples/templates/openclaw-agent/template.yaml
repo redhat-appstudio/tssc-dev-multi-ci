@@ -182,7 +182,6 @@ spec:
         namespace: openshift-gitops
         repoUrl: ${{ steps['publish-gitops'].output.remoteUrl }}
         path: .
-        projectName: default
 
     # 5. Register in Backstage catalog
     - id: catalog-register
