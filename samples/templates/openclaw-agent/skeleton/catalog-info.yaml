@@ -1,15 +1,17 @@
 apiVersion: backstage.io/v1alpha1
-kind: Resource
+kind: Component
 metadata:
-  name: ${{ values.name }}-agent-gitops
-  description: GitOps manifests for OpenClaw agent ${{ values.displayName }}
+  name: ${{ values.name }}
+  title: ${{ values.displayName }}
+  description: ${{ values.description }}
   annotations:
     argocd/app-name: ${{ values.name }}-agent
+    backstage.io/kubernetes-id: ${{ values.name }}
   tags:
     - ai
     - agent
     - openclaw
 spec:
-  type: gitops
+  type: service
   lifecycle: production
   owner: ${{ values.owner }}

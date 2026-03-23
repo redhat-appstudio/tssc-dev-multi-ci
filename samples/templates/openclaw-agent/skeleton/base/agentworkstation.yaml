@@ -1,0 +1,26 @@
+apiVersion: agentoffice.ai/v1alpha1
+kind: AgentWorkstation
+metadata:
+  name: ${{ values.name }}
+  namespace: ${{ values.namespace }}
+  labels:
+    app.kubernetes.io/managed-by: agent-office
+    agentoffice.ai/agent: ${{ values.name }}
+spec:
+  displayName: ${{ values.displayName }}
+  emoji: "${{ values.emoji }}"
+  description: ${{ values.description }}
+  systemPrompt: |
+${{ values.systemPrompt | indent(4) }}
+  image: quay-quay-quay-test.apps.salamander.aimlworkbench.com/deanpeterson/openclaw:latest
+  model:
+    provider: ${{ values.provider if values.provider != "claude-subscription" else "anthropic" }}
+    modelName: ${{ values.modelName | default("gpt-4o-mini", true) }}
+{%- if values.provider == "smr" and values.routerRef %}
+    modelRouterRef: ${{ values.routerRef }}
+{%- endif %}
+  tools:
+    allow:
+{%- for tool in values.tools %}
+      - ${{ tool }}
+{%- endfor %}

@@ -6,6 +6,7 @@ commonLabels:
   agentoffice.ai/agent: ${{ values.name }}
   backstage.io/kubernetes-id: ${{ values.name }}
 resources:
+  - agentworkstation.yaml
   - configmap.yaml
   - pvc.yaml
   - pvc-claude.yaml
