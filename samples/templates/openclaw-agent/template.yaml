@@ -179,9 +179,9 @@ spec:
       input:
         appName: ${{ parameters.name }}-agent
         argoInstance: default
-        namespace: openshift-gitops
+        namespace: ${{ parameters.namespace }}
         repoUrl: ${{ steps['publish-gitops'].output.remoteUrl }}
-        path: .
+        path: overlays/development
 
     # 5. Register in Backstage catalog
     - id: catalog-register
