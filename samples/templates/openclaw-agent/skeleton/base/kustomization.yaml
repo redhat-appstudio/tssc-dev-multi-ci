@@ -7,7 +7,6 @@ commonLabels:
   backstage.io/kubernetes-id: ${{ values.name }}
 resources:
   - configmap.yaml
-  - secret.yaml
   - pvc.yaml
   - pvc-claude.yaml
   - deployment.yaml
