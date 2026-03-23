@@ -15,7 +15,15 @@ ${{ values.systemPrompt | indent(4) }}
   image: quay-quay-quay-test.apps.salamander.aimlworkbench.com/deanpeterson/openclaw:latest
   model:
     provider: ${{ values.provider if values.provider != "claude-subscription" else "anthropic" }}
+{%- if values.provider == "claude-subscription" %}
+    modelName: ${{ values.modelName | default("claude-sonnet-4-6", true) }}
+{%- elif values.provider == "smr" %}
+    modelName: ${{ values.modelName | default("auto", true) }}
+{%- elif values.provider == "openai" %}
     modelName: ${{ values.modelName | default("gpt-4o-mini", true) }}
+{%- elif values.provider == "anthropic" %}
+    modelName: ${{ values.modelName | default("claude-sonnet-4-20250514", true) }}
+{%- endif %}
 {%- if values.provider == "smr" and values.routerRef %}
     modelRouterRef: ${{ values.routerRef }}
 {%- endif %}

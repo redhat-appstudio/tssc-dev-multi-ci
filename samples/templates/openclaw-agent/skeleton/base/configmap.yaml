@@ -22,7 +22,7 @@ data:
             "api": "openai-completions",
             "apiKey": "bridge-managed",
             "models": [
-              {"id": "claude-sonnet-4-6", "name": "claude-sonnet-4-6"}
+              {"id": "${{ values.modelName | default('claude-sonnet-4-6', true) }}", "name": "${{ values.modelName | default('claude-sonnet-4-6', true) }}"}
             ]
           }
 {%- elif values.provider == "smr" %}
@@ -37,7 +37,7 @@ data:
             "baseUrl": "https://api.openai.com/v1",
             "api": "openai-completions",
             "apiKey": "${OPENAI_API_KEY}",
-            "models": [{"id": "${{ values.modelName | default('gpt-4o', true) }}", "name": "${{ values.modelName | default('gpt-4o', true) }}"}]
+            "models": [{"id": "${{ values.modelName | default('gpt-4o-mini', true) }}", "name": "${{ values.modelName | default('gpt-4o-mini', true) }}"}]
           }
 {%- elif values.provider == "anthropic" %}
           "anthropic": {
@@ -53,22 +53,32 @@ data:
         "defaults": {
           "model": {
 {%- if values.provider == "claude-subscription" %}
-            "primary": "${{ values.modelName | default('claude-opus-4-6', true) }}"
+            "primary": "anthropic/${{ values.modelName | default('claude-sonnet-4-6', true) }}"
 {%- elif values.provider == "smr" %}
-            "primary": "auto"
+            "primary": "${{ values.modelName | default('auto', true) }}"
 {%- elif values.provider == "openai" %}
-            "primary": "${{ values.modelName | default('gpt-4o', true) }}"
+            "primary": "openai/${{ values.modelName | default('gpt-4o-mini', true) }}"
 {%- elif values.provider == "anthropic" %}
-            "primary": "${{ values.modelName | default('claude-sonnet-4-20250514', true) }}"
+            "primary": "anthropic/${{ values.modelName | default('claude-sonnet-4-20250514', true) }}"
 {%- endif %}
           }
         }
       },
       "tools": {
-        "allow": ["exec", "claude_code_resume", "claude_code_sessions", "group:plugins"],
-        "browser": {
-          "enabled": true
-        }
+        "allow": [
+{%- for tool in values.tools %}
+          "${{ tool }}",
+{%- endfor %}
+          "claude_code_resume",
+          "claude_code_sessions",
+          "group:plugins"
+        ]
+      },
+      "commands": {
+        "native": "auto",
+        "nativeSkills": "auto",
+        "restart": true,
+        "ownerDisplay": "raw"
       },
       "plugins": {
         "enabled": true
@@ -124,11 +134,6 @@ data:
 {%- for tool in values.tools %}
     - **${{ tool }}**
 {%- endfor %}
-
-    # Browser
-
-    This agent has Playwright + Chromium available for web browsing and automation.
-    Use the browser tool for web research, form filling, screenshots, and page interaction.
   SKILL_claude-code.md: |
     ---
     name: claude-code

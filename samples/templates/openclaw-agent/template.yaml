@@ -3,7 +3,7 @@ kind: Template
 metadata:
   name: openclaw-agent
   title: OpenClaw AI Agent
-  description: Deploy an OpenClaw AI agent with browser automation on OpenShift, managed via GitOps.
+  description: Deploy an OpenClaw AI agent on OpenShift, managed via GitOps and discoverable in Agent Office.
   tags:
     - ai
     - agent
@@ -82,7 +82,7 @@ spec:
         modelName:
           title: Model Name
           type: string
-          description: Model ID (leave empty for default). Claude subscription models - claude-opus-4-6, claude-sonnet-4-6, claude-haiku-4-5
+          description: Model ID (leave empty for default). Claude subscription models: claude-sonnet-4-6, claude-opus-4-1, claude-haiku-4-5
         routerRef:
           title: Router Name
           type: string
@@ -108,11 +108,10 @@ spec:
             enum:
               - web_search
               - web_fetch
-              - browser
               - exec
               - memory
           default:
-            - browser
+            - web_search
             - exec
             - memory
         namespace:
