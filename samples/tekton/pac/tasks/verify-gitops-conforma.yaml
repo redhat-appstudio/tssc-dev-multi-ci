@@ -27,14 +27,6 @@ spec:
       type: string
       default: "true"
       description: Fail the task if policy fails. Set to `"false"` to disable it.
-    - name: TUF_MIRROR
-      type: string
-      default: ""
-      description: The TUF mirror that Conforma should use.
-    - name: REKOR_HOST
-      type: string
-      default: ""
-      description: The Rekor host that Conforma should use to look up transparency logs.
   results:
     - description: Short summary of the policy evaluation for each image.
       name: TEST_OUTPUT
@@ -47,10 +39,16 @@ spec:
         value: $(params.STRICT)
       - name: POLICY_CONFIGURATION
         value: $(params.POLICY_CONFIGURATION)
-      - name: TUF_MIRROR
-        value: $(params.TUF_MIRROR)
       - name: REKOR_HOST
-        value: $(params.REKOR_HOST)
+        valueFrom:
+          secretKeyRef:
+            name: tas-secret
+            key: rekor_url
+      - name: TUF_MIRROR
+        valueFrom:
+          secretKeyRef:
+            name: tas-secret
+            key: tuf_url
       - name: COSIGN_PUBLIC_KEY
         value: $(params.COSIGN_PUBLIC_KEY)
     workspaces:

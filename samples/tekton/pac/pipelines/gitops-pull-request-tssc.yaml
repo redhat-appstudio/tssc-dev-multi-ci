@@ -27,14 +27,6 @@ spec:
       description: The public key that EC should use to verify signatures
       name: ec-public-key
       type: string
-    - default: http://rekor-server.tssc-tas.svc
-      description: The Rekor host that EC should use to look up transparency logs
-      name: ec-rekor-host
-      type: string
-    - default: http://tuf.tssc-tas.svc
-      description: The TUF mirror that EC should use
-      name: ec-tuf-mirror
-      type: string
     - default: tpa-secret
       description: The name of the Secret that contains Trustification (TPA) configuration
       name: trustification-secret-name
@@ -82,10 +74,6 @@ spec:
           value: $(params.ec-policy-configuration)
         - name: COSIGN_PUBLIC_KEY
           value: $(tasks.get-images.results.COSIGN_PUBLIC_KEY)
-        - name: TUF_MIRROR
-          value: $(params.ec-tuf-mirror)
-        - name: REKOR_HOST
-          value: $(params.ec-rekor-host)
       runAfter:
         - get-images
       taskRef:
@@ -104,10 +92,6 @@ spec:
           value: $(tasks.get-images.results.COSIGN_PUBLIC_KEY)
         - name: SBOM_IMAGES
           value: $(tasks.get-images.results.SBOM_IMAGES)
-        - name: TUF_MIRROR
-          value: $(params.ec-tuf-mirror)
-        - name: REKOR_HOST
-          value: $(params.ec-rekor-host)
       runAfter:
         - get-images
       taskRef:
