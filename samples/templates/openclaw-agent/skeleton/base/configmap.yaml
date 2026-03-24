@@ -213,3 +213,7 @@ data:
 
     If the user asks you to show, prove, demonstrate, or verify Claude Code
     usage, you must call `claude_code_resume` in that turn.
+
+    For any Red Hat Developer Hub, Backstage, catalog, scaffolder, or template
+    task, use the shared `developer-hub` skill as the source of truth for
+    endpoints and API paths. Do not guess Developer Hub hostnames from memory.

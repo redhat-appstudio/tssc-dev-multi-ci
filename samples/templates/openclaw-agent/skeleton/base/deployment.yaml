@@ -46,8 +46,8 @@ spec:
               if [ ! -f "/workspace/workspace/USER.md" ]; then
                 cp "/config/USER.md" "/workspace/workspace/USER.md"
               fi
-              # Install skills from ConfigMap (SKILL_<name>.md → skills/<name>/SKILL.md)
-              for f in /config/SKILL_*.md; do
+              # Install skills from agent config and shared office skills
+              for f in /config/SKILL_*.md /shared-skills/SKILL_*.md; do
                 [ -f "$f" ] || continue
                 skill_name=$(basename "$f" .md | sed 's/^SKILL_//')
                 mkdir -p "/workspace/workspace/skills/$skill_name"
@@ -56,6 +56,9 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /config
+              readOnly: true
+            - name: shared-skills
+              mountPath: /shared-skills
               readOnly: true
             - name: workspace
               mountPath: /workspace
@@ -122,3 +125,7 @@ spec:
         - name: claude-credentials
           secret:
             secretName: claude-subscription-credentials
+        - name: shared-skills
+          configMap:
+            name: agent-office-shared-skills
+            optional: true
