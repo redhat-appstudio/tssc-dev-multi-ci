@@ -18,14 +18,6 @@ spec:
       type: string
       default: ""
       description: Images to be considered for SBOM download.
-    - name: TUF_MIRROR
-      type: string
-      default: ""
-      description: The TUF mirror that Conforma should use.
-    - name: REKOR_HOST
-      type: string
-      default: ""
-      description: The Rekor host that Conforma should use to look up transparency logs.
   stepTemplate:
     workingDir: $(workspaces.source.path)/source
     env:
@@ -35,10 +27,16 @@ spec:
         value: $(params.COSIGN_PUBLIC_KEY)
       - name: IMAGES
         value: $(params.SBOM_IMAGES)
-      - name: TUF_MIRROR
-        value: $(params.TUF_MIRROR)
       - name: REKOR_HOST
-        value: $(params.REKOR_HOST)
+        valueFrom:
+          secretKeyRef:
+            name: tas-secret
+            key: rekor_url
+      - name: TUF_MIRROR
+        valueFrom:
+          secretKeyRef:
+            name: tas-secret
+            key: tuf_url
     workspaces:
       - name: source
         description: Workspace containing the source code to verify.
