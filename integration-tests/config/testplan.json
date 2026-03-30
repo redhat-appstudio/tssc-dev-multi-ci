@@ -1,21 +1,17 @@
 {
   "testPlans": [
     {
-      "name": "backend-tests",
+      "name": "e2e-tests",
       "templates": ["go","python","dotnet-basic","nodejs","java-quarkus","java-springboot"],
       "tssc": [{
         "git": "github",
         "ci": "tekton",
-        "registry": "quay",
-        "tpa": "remote",
-        "acs": "remote"
+        "registry": "quay"
       },
       {
         "git": "github",
         "ci": "azure",
-        "registry": "quay",
-        "tpa": "remote",
-        "acs": "remote"
+        "registry": "quay"
       }],
       "tests": ["full_workflow.test.ts"]
     }
