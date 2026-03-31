@@ -2,13 +2,8 @@
   "testPlans": [
     {
       "name": "e2e-tests",
-      "templates": ["go","python","dotnet-basic","nodejs","java-quarkus","java-springboot"],
+      "templates": ["go"],
       "tssc": [{
-        "git": "github",
-        "ci": "tekton",
-        "registry": "quay"
-      },
-      {
         "git": "github",
         "ci": "azure",
         "registry": "quay"
