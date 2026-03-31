@@ -17,8 +17,17 @@ function initialize-tuf() {
         echo 'TUF_MIRROR not set or set to "none". Skipping TUF root initialization.'
     else
         echo 'Initializing TUF root...'
+        curl -fsL "${TUF_MIRROR}/root.json"
         root_sha256=$(get_remote_sha256 "${TUF_MIRROR}/root.json")
         cosign initialize --mirror "${TUF_MIRROR}" --root-checksum "$root_sha256" --root "${TUF_MIRROR}/root.json"
+        echo "cache after init"
+        ls -Rla ~/.sigstore/
+        TUF_HOST="${TUF_MIRROR#https://}"
+        trusted_root=$(cat "/root/.sigstore/root/${TUF_HOST}/targets/trusted_root.json")
+        cat "/root/.sigstore/root/${TUF_HOST}/root.json"
+        echo "$trusted_root" | jq
+        echo "$trusted_root" | jq -r '.tlogs[0].publicKey.rawBytes' | base64 -d | openssl pkey -inform DER -pubin -outform PEM > rekor_public_key.pem
+        cat rekor_public_key.pem
         echo 'Done!'
     fi
 }
@@ -51,6 +60,8 @@ function validate() {
     fi
 
     PUBLIC_KEY=$(base64 -d <<< "$COSIGN_PUBLIC_KEY")
+
+    #export SIGSTORE_REKOR_PUBLIC_KEY=$(pwd)/rekor_public_key.pem
 
     ec validate image \
         "--images" \
