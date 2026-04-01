@@ -189,7 +189,6 @@ spec:
         - imageRegistry
         - imageOrg
         - imageName
-        - namespace
       properties:
         imageRegistry:
           title: Image Registry
@@ -208,14 +207,6 @@ spec:
           ui:autofocus: true
           ui:options:
             rows: 5
-        namespace:
-          title: Deployment Namespace
-          type: string
-          default: tssc-app
-          ui:autofocus: true
-          ui:options:
-            rows: 5
-          ui:help: "This will be the prefix of the following three namespaces for deployment: <namespace>-development, <namespace>-stage, <namespace>-prod"
   # These steps are executed in the scaffolder backend, using data that we gathered
   # via the parameters above.
   steps:
@@ -228,7 +219,7 @@ spec:
         url: ${{ parameters.inputUrl }}
         values:
           name: ${{ parameters.name }}
-          namespace: ${{ parameters.namespace }}
+          namespace: tssc-app
           repoURL: https://${{ parameters.ghHost if parameters.hostType === 'GitHub' else (parameters.glHost if parameters.hostType === 'GitLab' else parameters.bbHost)}}/${{ parameters.workspace if parameters.hostType === 'Bitbucket' else (parameters.ghOwner if parameters.hostType === 'GitHub' else parameters.glOwner)  }}/${{ parameters.repoName }}-gitops
           srcRepoURL: https://${{ parameters.ghHost if parameters.hostType === 'GitHub' else (parameters.glHost if parameters.hostType === 'GitLab' else parameters.bbHost)}}/${{ parameters.workspace if parameters.hostType === 'Bitbucket' else (parameters.ghOwner if parameters.hostType === 'GitHub' else parameters.glOwner)  }}/${{ parameters.repoName }}
     - id: fetch-docs
@@ -238,7 +229,7 @@ spec:
         url: ./generate/content
         values:
           name: ${{ parameters.name }}
-          namespace: ${{ parameters.namespace }}
+          namespace: tssc-app
           repoURL: https://${{ parameters.ghHost if parameters.hostType === 'GitHub' else (parameters.glHost if parameters.hostType === 'GitLab' else parameters.bbHost)}}/${{ parameters.workspace if parameters.hostType === 'Bitbucket' else (parameters.ghOwner if parameters.hostType === 'GitHub' else parameters.glOwner)  }}/${{ parameters.repoName }}-gitops
           srcRepoURL: https://${{ parameters.ghHost if parameters.hostType === 'GitHub' else (parameters.glHost if parameters.hostType === 'GitLab' else parameters.bbHost)}}/${{ parameters.workspace if parameters.hostType === 'Bitbucket' else (parameters.ghOwner if parameters.hostType === 'GitHub' else parameters.glOwner)  }}/${{ parameters.repoName }}
     # Renders all the template variables into the files and directory names and content, and places the result in the workspace.
@@ -249,7 +240,7 @@ spec:
         url: ../../skeleton/source-repo
         values:
           name: ${{ parameters.name }}
-          namespace: ${{ parameters.namespace }}
+          namespace: tssc-app
           description: Secure Supply Chain Example for User Provided Repo
           dockerfile: ${{ parameters.dockerfileLocation }}
           buildContext: ${{ parameters.dockerfileBuildContext }}
@@ -275,7 +266,7 @@ spec:
           - .github/workflows/*
         values:
           name: ${{ parameters.name }}
-          namespace: ${{ parameters.namespace }}
+          namespace: tssc-app
           description: Secure Supply Chain Example for User Supplied Repo
           dockerfile: ${{ parameters.dockerfileLocation }}
           buildContext: ${{ parameters.dockerfileBuildContext }}
@@ -328,7 +319,7 @@ spec:
           name: ${{ parameters.name }}
           appName: ${{ parameters.name }}-gitops # for now just use the component name, since it's single component app
           description: This is GitOps manifest for ${{ parameters.name }}
-          namespace: ${{ parameters.namespace }}
+          namespace: tssc-app
           rhtapNamespace: tssc
           defaultDeployNamespace: tssc-app
           # example: github.com?owner=<owner>&repo=<srcRepo>, the gitops repo name will be <srcRepo>-gitops
@@ -366,7 +357,7 @@ spec:
           name: ${{ parameters.name }}
           appName: ${{ parameters.name }}-gitops # for now just use the component name, since it's single component app
           description: This is GitOps manifest for ${{ parameters.name }}
-          namespace: ${{ parameters.namespace }}
+          namespace: tssc-app
           rhtapNamespace: tssc
           defaultDeployNamespace: tssc-app
           # example: github.com?owner=<owner>&repo=<srcRepo>, the gitops repo name will be <srcRepo>-gitops
