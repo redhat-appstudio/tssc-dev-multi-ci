@@ -1,6 +1,6 @@
-FROM registry.redhat.io/rhtas/cosign-rhel9:1.3.2@sha256:a8289d488491991d454a32784de19476f2c984917eb7a33b4544e55512f2747c as cosign
+FROM quay.io/securesign/cli-cosign@sha256:be9bda33512e33d56ea6f20f29c81f31017a3ff4815d333502fcaef6c65bd85b as cosign
 
-FROM registry.redhat.io/rhtas/ec-rhel9:0.7-1772025373@sha256:d864cad870adad9df23ce860e8c31eb86f61201b408ed00d01fec00714569fd1 as ec
+FROM quay.io/redhat-user-workloads/rhtap-contract-tenant/ec-v08/cli-v08@sha256:52b9fa65832c0d27a81ac85058feea1b54a60e103f956ff101abe97d8bcf00e5 as ec
 
 FROM registry.redhat.io/openshift4/ose-cli:latest@sha256:ef83967297f619f45075e7fd1428a1eb981622a6c174c46fb53b158ed24bed85 as oc
 
