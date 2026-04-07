@@ -19,7 +19,7 @@ buildDefinition:
 
 runDetails:
   builder:
-    id: "${AGENT_ID}"
+    id: "${SYSTEM_COLLECTIONURI}${SYSTEM_TEAMPROJECT}/_builders/${AGENT_ID}"
 
   metadata:
     invocationId: "${BUILD_BUILDURI}"

@@ -6,6 +6,9 @@ SCRIPTDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" > /dev/null 2>&1 && pwd)"
 # cosign-sign-attest
 source $SCRIPTDIR/common.sh
 
+echo "Checking cosign version"
+cosign version
+
 base64d() {
     base64 -d <<< "$1"
 }
@@ -69,7 +72,7 @@ function login() {
 # vars COSIGN_SECRET_PASSWORD and COSIGN_SECRET_KEY.
 function sign() {
     echo "Running $TASK_NAME:sign"
-    cosign-cmd sign
+    cosign-cmd sign --use-signing-config=false
 }
 
 # Create provenance predicate and use it to cosign attest the image
@@ -77,8 +80,13 @@ function attest() {
     echo "Running $TASK_NAME:attest"
     # Put the predicate file in the results also for debugging purposes
     create-att-predicate > "$RESULTS/att-predicate.json"
+
+    echo "--- Verifying SLSA Builder ID ---"
+    yq '.runDetails.builder.id' "$RESULTS/att-predicate.json"
+    echo "---------------------------------"
+
     # (Assume we did cosign login already)
-    cosign-cmd attest --predicate "$RESULTS/att-predicate.json" --type slsaprovenance1
+    cosign-cmd attest --predicate "$RESULTS/att-predicate.json" --type slsaprovenance1 --use-signing-config=false
 }
 
 function show-rekor-url() {
