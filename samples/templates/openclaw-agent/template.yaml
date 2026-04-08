@@ -69,20 +69,20 @@ spec:
           type: string
           description: Which LLM backend the agent uses
           enum:
-            - claude-subscription
+            - openai-codex
             - smr
             - openai
             - anthropic
           enumNames:
-            - Claude Max Subscription (no per-request cost)
+            - OpenAI Codex Subscription (ChatGPT/Codex plan)
             - Small Model Router (on-cluster, cost-optimized)
             - OpenAI API (pay per request)
             - Anthropic API (pay per request)
-          default: openai
+          default: openai-codex
         modelName:
           title: Model Name
           type: string
-          description: Model ID (leave empty for default). Claude subscription models: claude-sonnet-4-6, claude-opus-4-1, claude-haiku-4-5
+          description: Model ID (leave empty for default). Codex subscription default: gpt-5.4
         routerRef:
           title: Router Name
           type: string
@@ -91,7 +91,7 @@ spec:
         apiKey:
           title: API Key
           type: string
-          description: API key for the selected provider (not needed for Claude subscription)
+          description: API key for the selected provider (not needed for OpenAI Codex subscription)
           ui:widget: password
 
     - title: Tools & Deployment

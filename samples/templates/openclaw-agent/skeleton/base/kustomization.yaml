@@ -9,7 +9,6 @@ resources:
   - agentworkstation.yaml
   - configmap.yaml
   - pvc.yaml
-  - pvc-claude.yaml
   - deployment.yaml
   - service.yaml
   - route.yaml

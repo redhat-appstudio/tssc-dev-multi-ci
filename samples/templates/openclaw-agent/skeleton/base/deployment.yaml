@@ -64,29 +64,26 @@ spec:
               mountPath: /workspace
       containers:
         - name: openclaw
-          image: quay-quay-quay-test.apps.salamander.aimlworkbench.com/deanpeterson/openclaw:latest
+          image: quay-quay-quay-test.apps.salamander.aimlworkbench.com/deanpeterson/openclaw@sha256:8d8b5c0379d01a5907110b37d942e7e985cd9538112f8cac175e91dea015dc06
           imagePullPolicy: Always
           ports:
             - name: gateway
               containerPort: 18789
               protocol: TCP
           env:
-            - name: CLAUDE_CODE_OAUTH_TOKEN_FILE
-              value: "/home/claude/.claude/remote/.oauth_token"
+            - name: CODEX_HOME
+              value: "/home/node/.codex"
           envFrom:
             - secretRef:
                 name: agent-${{ values.name }}-secret
           volumeMounts:
             - name: workspace
               mountPath: /home/node/.openclaw
-            - name: claude-state
-              mountPath: /home/node/.claude
+            - name: codex-credentials
+              mountPath: /home/node/.codex
+              readOnly: true
             - name: dshm
               mountPath: /dev/shm
-            - name: claude-credentials
-              mountPath: /home/claude/.claude/remote/.oauth_token
-              subPath: oauth-token
-              readOnly: true
           livenessProbe:
             httpGet:
               path: /healthz
@@ -115,16 +112,13 @@ spec:
         - name: workspace
           persistentVolumeClaim:
             claimName: agent-${{ values.name }}-workspace
-        - name: claude-state
-          persistentVolumeClaim:
-            claimName: agent-${{ values.name }}-claude
         - name: dshm
           emptyDir:
             medium: Memory
             sizeLimit: 1Gi
-        - name: claude-credentials
+        - name: codex-credentials
           secret:
-            secretName: claude-subscription-credentials
+            secretName: codex-subscription-credentials
         - name: shared-skills
           configMap:
             name: agent-office-shared-skills
