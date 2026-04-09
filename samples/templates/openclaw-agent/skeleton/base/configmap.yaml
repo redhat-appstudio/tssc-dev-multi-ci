@@ -58,6 +58,12 @@ data:
       "tools": {
         "allow": ["exec", "group:plugins"]
       },
+{%- if "browser" in values.tools %}
+      "browser": {
+        "enabled": true,
+        "defaultProfile": "openclaw"
+      },
+{%- endif %}
       "commands": {
         "native": "auto",
         "nativeSkills": "auto",
@@ -138,3 +144,10 @@ data:
     For any Red Hat Developer Hub, Backstage, catalog, scaffolder, or template
     task, use the shared `developer-hub` skill as the source of truth for
     endpoints and API paths. Do not guess Developer Hub hostnames from memory.
+
+{%- if "browser" in values.tools %}
+    For browser tasks in this OpenShift environment, use the shared
+    `browser-nodehost` skill as the source of truth. Do not assume a local
+    desktop browser exists inside the pod just because the browser tool is
+    installed.
+{%- endif %}
