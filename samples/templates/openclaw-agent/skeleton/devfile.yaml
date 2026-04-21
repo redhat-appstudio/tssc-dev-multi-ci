@@ -1,0 +1,28 @@
+schemaVersion: 2.2.0
+metadata:
+  name: ${{ values.name }}-agent
+  version: 1.0.0
+  provider: Red Hat
+  description: "Edit manifests for agent: ${{ values.displayName }}"
+components:
+  - name: tools
+    container:
+      image: registry.redhat.io/devspaces/udi-rhel9:latest
+      memoryLimit: 3Gi
+      mountSources: true
+commands:
+  - id: init-git-config
+    exec:
+      commandLine: |
+        GIT_USER_EMAIL=""
+        GIT_USER_NAME=""
+        if [ -d /config/user/profile ]; then
+          GIT_USER_NAME=$(cat /config/user/profile/name 2>/dev/null || true)
+          GIT_USER_EMAIL=$(cat /config/user/profile/email 2>/dev/null || true)
+        fi
+        git config --global user.name "$GIT_USER_NAME"
+        git config --global user.email "$GIT_USER_EMAIL"
+      component: tools
+events:
+  postStart:
+    - init-git-config

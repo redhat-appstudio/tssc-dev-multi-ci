@@ -148,6 +148,7 @@ spec:
           tools: ${{ parameters.tools }}
           namespace: ${{ parameters.namespace }}
           owner: ${{ parameters.owner }}
+          ghOwner: ${{ parameters.ghOwner }}
           repoURL: https://github.com/${{ parameters.ghOwner }}/${{ parameters.name }}-agent-gitops
           defaultBranch: main
           argoNS: openshift-gitops
