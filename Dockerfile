@@ -7,7 +7,7 @@ FROM registry.redhat.io/openshift4/ose-cli:latest@sha256:ef83967297f619f45075e7f
 # Since this is a tech preview image we should double check with TPA team this on next release cycle
 FROM registry.redhat.io/rh-syft-tech-preview/syft-rhel9:1.29.0-1756223792@sha256:15ed82f0b5311a570ccb8ea02135d9776c6d61e545c51b256b3fc5b5db20ba67 as syft
 
-FROM registry.access.redhat.com/ubi10/go-toolset:1.25.8-1775437069@sha256:a743f6dc6879f38a25c705330b3e61e26118488a20ad5175e7dc57d2983fbae8 as go-builder
+FROM registry.access.redhat.com/ubi10/go-toolset:1.25.9-1777537854@sha256:26c8a0d96e77939118b1bee3721f4e0fc248bd0be8795066f9f1dc991ad85f9c as go-builder
 
 WORKDIR /opt/app-root/src
 
