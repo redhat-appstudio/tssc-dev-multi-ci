@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "js-yaml": "^4.1.0",
+    "js-yaml": "^4.2.0",
     "nunjucks": "^3.2.4"
   }
 }
